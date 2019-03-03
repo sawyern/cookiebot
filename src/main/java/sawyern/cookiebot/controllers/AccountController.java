@@ -1,4 +1,4 @@
-package sawyern.mahjongcalculator.demo.controllers;
+package sawyern.cookiebot.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

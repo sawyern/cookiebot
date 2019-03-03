@@ -1,4 +1,4 @@
-package sawyern.mahjongcalculator.demo.models.entity;
+package sawyern.cookiebot.models.entity;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -20,15 +20,6 @@ public abstract class DbItem extends DbObject {
 
     @Column(name = "STATUS", length = 20)
     private String status;
-
-    @Column(name = "DESCRIPTION", length = 4000)
-    private String description;
-
-    @Column(name = "OWNER", length = 12)
-    private String owner;
-
-    @Column(name = "DATA_CLASS")
-    private Character dataClass;
 
     @CreatedDate
     @Column(name = "CREATE_DATE")
@@ -77,30 +68,6 @@ public abstract class DbItem extends DbObject {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public Character getDataClass() {
-        return dataClass;
-    }
-
-    public void setDataClass(Character dataClass) {
-        this.dataClass = dataClass;
     }
 
     public Date getCreateDate() {

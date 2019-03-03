@@ -1,4 +1,4 @@
-package sawyern.mahjongcalculator.demo.models.entity;
+package sawyern.cookiebot.models.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -24,7 +24,7 @@ public abstract class DbObject {
     )
     private String id;
 
-    public DbObject() {}
+    DbObject() {}
 
     @Transient
     public String getDiscriminatorValue() {

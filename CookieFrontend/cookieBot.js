@@ -4,7 +4,6 @@ var auth = require('./auth.json');
 
 const baseurl = 'ec2-18-224-150-136.us-east-2.compute.amazonaws.com';
 const pokeApiUrl = 'https://pokeapi.co/api/v2/pokemon/';
-const animeApiUrl = 'https://hummingbirdv1.p.rapidapi.com/anime/'
 
 // Configure logger settings
 
@@ -34,7 +33,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
             case 'ping':
                 bot.sendMessage({
                     to: channelID,
-                    message: 'fuck you'
+                    message: 'Hi ' + user
                 })
             break
             case 'howTall':
@@ -44,17 +43,18 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                         to: channelID,
                         message: args[0] + ' is ' + (data / 10) + 'm tall'
                     })
+                }).catch(error => {
+                    bot.sendMessage({
+                        to: channelID,
+                        message: 'Invalid pokemon ' + args[0]
+                    })
                 })
             break
-            case 'animeInfo':
-            getAnimeVal(args[0], args[1])
-            .then(data => {
+            default:
                 bot.sendMessage({
                     to: channelID,
-                    message: data
+                    message: 'Invalid command ' + cmd
                 })
-            })
-            break
          }
      }
 });
@@ -66,10 +66,11 @@ function getPokemonData (name) {
         .then(response => {
             console.log('success')
             resolve(response.data)
-        })
-    }, error => {
-        reject(error.error)
-    })
+        }).catch(error => {
+            console.log('failed')
+            reject(error)
+         })
+     })
 }
 
 async function getPokemonHeight (name) {
@@ -77,30 +78,5 @@ async function getPokemonHeight (name) {
     .then(data => {
         console.log(data.height)
         return data.height
-    }).catch(error => {
-        return error.error
-    })
-}
-
-function getAnimeData (name) {
-    console.log('making request to: ' + animeApiUrl + name)
-    return new Promise((resolve, reject) => {
-        axios.get(animeApiUrl + name, { 'headers': { 'X-RapidAPI-Key': '5f9fb1ac95msh462e2fffa90613dp116d80jsncc3406f6fe20'}})
-        .then(response => {
-            console.log('success')
-            resolve(response.data)
-        })
-    }, error => {
-        reject(error.error)
-    })
-}
-
-async function getAnimeVal(name, arg) {
-    return await getAnimeData(name)
-    .then(data => {
-        console.log(data)
-        return data
-    }).catch(error => {
-        throw error.error
     })
 }

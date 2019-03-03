@@ -1,4 +1,4 @@
-package sawyern.mahjongcalculator.demo;
+package sawyern.cookiebot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,12 +8,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "sawyern.mahjongcalculator.demo")
+@ComponentScan(basePackages = "sawyern.cookiebot")
 @EntityScan
 @EnableJpaRepositories
 @EnableSwagger2
-public class DemoApplication {
+public class CookieBotApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(CookieBotApplication.class, args);
 	}
 }

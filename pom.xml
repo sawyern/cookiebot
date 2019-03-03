@@ -8,12 +8,12 @@
 		<version>2.1.1.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>sawyern.mahjong-calculator</groupId>
-	<artifactId>demo</artifactId>
+	<groupId>sawyern.cookiebot</groupId>
+	<artifactId>cookiebot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>demo</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Keeps track of cookies</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -75,6 +75,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>

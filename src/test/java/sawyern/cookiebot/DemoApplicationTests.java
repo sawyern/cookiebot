@@ -1,4 +1,4 @@
-package sawyern.mahjongcalculator.demo;
+package sawyern.cookiebot;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

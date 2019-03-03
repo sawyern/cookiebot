@@ -1,4 +1,4 @@
-package sawyern.mahjongcalculator.demo.services;
+package sawyern.cookiebot.services;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
