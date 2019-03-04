@@ -4,6 +4,7 @@ var auth = require('./auth.json');
 
 const baseurl = 'ec2-18-224-150-136.us-east-2.compute.amazonaws.com';
 const pokeApiUrl = 'https://pokeapi.co/api/v2/pokemon/';
+const cookieUrl = 'http://localhost:8080/api/cookiebot/v1'
 
 // Configure logger settings
 
@@ -50,6 +51,34 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     })
                 })
             break
+            case 'register':
+                registerAccount(userID)
+                .then(() => {
+                    bot.sendMessage({
+                        to: channelID,
+                        message: `Successfully registered ${user}.`
+                    })
+                }).catch(error => {
+                    bot.sendMessage({
+                        to: channelID,
+                        message: 'Error registering account.'
+                    })
+                })
+            break
+            case 'cookies':
+                getCookies(userID)
+                .then(data => {
+                    bot.sendMessage({
+                        to: channelID,
+                        message: `${user} has ${data.numCookies} cookies.`
+                    })
+                }).catch(error => {
+                    bot.sendMessage({
+                        to: channelID,
+                        message: 'Error getting cookies.'
+                    })
+                })
+            break
             default:
                 bot.sendMessage({
                     to: channelID,
@@ -58,6 +87,38 @@ bot.on('message', function (user, userID, channelID, message, evt) {
          }
      }
 });
+
+function register (userID) {
+    console.log('making request to: ' + cookieUrl + `/accounts?id=${userID}`)
+    return new Promise((resolve, reject) => {
+        axios.put(cookieUrl + `/accounts?id=${userID}`)
+        .then(response => {
+            console.log('success')
+            resolve(response.data)
+        }).catch (error => {
+            console.log('failed')
+            reject(error)
+        })
+    })
+}
+
+async function registerAccount (userID) {
+    return await register (userID)
+}
+
+function getCookies (userID) {
+    console.log('making request to: ' + cookieUrl + `/cookies?id={userID}`)
+    return new Promise((resolve, reject) => {
+        axios.get(cookieUrl + `/cookies?id=${userID}`)
+        .then(response => {
+            console.log('success')
+            resolve(response.data)
+        }).catch (error => {
+            console.log('failed')
+            reject(error)
+        })
+    })
+}
 
 function getPokemonData (name) {
     console.log('making request to: ' + pokeApiUrl + name)

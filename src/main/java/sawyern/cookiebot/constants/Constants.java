@@ -1,4 +1,4 @@
-package sawyern.cookiebot.models.constants;
+package sawyern.cookiebot.constants;
 
 public class Constants {
     private Constants() {}
