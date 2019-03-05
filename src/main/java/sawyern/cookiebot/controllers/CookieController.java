@@ -5,11 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
-import sawyern.cookiebot.constants.CookieConstants;
 import sawyern.cookiebot.constants.CookieType;
 import sawyern.cookiebot.models.dto.CookieDto;
 import sawyern.cookiebot.models.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
+
+import javax.transaction.Transactional;
 
 @RestController
 @RequestMapping(value = "api/cookiebot/v1/cookies")
@@ -38,7 +39,22 @@ public class CookieController {
         }
     }
 
+    @PostMapping(value = "/give")
+    public ResponseEntity<String> giveCookieTo(
+            @RequestParam(name = "id") String discordId,
+            @RequestParam(name = "num") int numCookies,
+            @RequestParam(name = "recipientId") String recipientId
+    ) {
+        try {
+            cookieService.giveCookieTo(discordId, numCookies, recipientId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (CookieException e) {
+            return new ResponseEntity<>(e.getHttpStatus());
+        }
+    }
+
     @PutMapping
+    @Transactional
     public ResponseEntity<String> addCookie(
             @RequestParam(name = "id") String discordId,
             @RequestParam(required = false, defaultValue = "1") int numCookies
@@ -53,6 +69,7 @@ public class CookieController {
     }
 
     @DeleteMapping
+    @Transactional
     public ResponseEntity<String> removeCookie(
             @RequestParam(name = "id") String discordId
     ) {

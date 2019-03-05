@@ -47,7 +47,7 @@ public class AccountService {
      * @throws CookieException
      */
     public Account getAccount(String discordId) throws CookieException {
-        return accountRepository.findByDiscordId(discordId).orElseThrow(() -> new CookieException(HttpStatus.NOT_FOUND));
+        return accountRepository.findByDiscordId(discordId).orElseThrow(() -> new CookieException("Unable to find account with id " + discordId, HttpStatus.NOT_FOUND));
     }
 
     /**
