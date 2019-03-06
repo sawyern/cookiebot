@@ -46,9 +46,7 @@ public class CookieBotDiscordClient {
     public void setupClient(DiscordClient client) {
         client.getEventDispatcher().on(ReadyEvent .class)
                 .subscribe(ready -> LOGGER.info("Logged in as " + ready.getSelf().getUsername()));
-        botCommands.forEach(command -> {
-            command.subscribeCommand(client);
-        });
+        botCommands.forEach(command -> command.subscribeCommand(client));
     }
 
     public List<BotCommand> getBotCommands() {

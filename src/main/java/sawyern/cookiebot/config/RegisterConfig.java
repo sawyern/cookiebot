@@ -14,6 +14,6 @@ public class RegisterConfig {
 
     @Before("execution(* sawyern.cookiebot.bot.*.*subscribeCommand(..))")
     public void logRegisterCommand(JoinPoint joinPoint) {
-        LOGGER.info("Registering command: " + joinPoint.getTarget().toString());
+        LOGGER.info("Registering command: " + joinPoint.getTarget().getClass().getSimpleName());
     }
 }
