@@ -16,10 +16,8 @@ public abstract class GenericBotCommand implements BotCommand {
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .subscribe(event -> {
                     try {
-                        if (parseCommand(event
-                                .getMessage()
-                                .getContent()
-                                .orElseThrow(() -> new CookieException("Error getting message content.")))
+                        if (parseCommand(event.getMessage().getContent()
+                                .orElseThrow(() -> new CookieException("")))
                         )
                             execute(event);
                     } catch (Exception e) {
