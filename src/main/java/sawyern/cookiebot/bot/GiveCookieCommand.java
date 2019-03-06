@@ -27,6 +27,8 @@ public class GiveCookieCommand extends GenericBotCommand {
         giveCookieDto.setRecieverId(BotUtil.getIdFromUser(event, getArgs().get(2)));
         giveCookieDto.setNumCookies(Integer.parseInt(getArgs().get(1)));
         cookieService.giveCookieTo(giveCookieDto);
+
+        sendMessage(event, "Successfully transferred cookies.");
     }
 
     @Autowired
