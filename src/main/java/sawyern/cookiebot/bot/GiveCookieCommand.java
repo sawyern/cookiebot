@@ -8,6 +8,8 @@ import sawyern.cookiebot.models.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
 
+import java.text.MessageFormat;
+
 @Component
 public class GiveCookieCommand extends GenericBotCommand {
 
@@ -28,7 +30,18 @@ public class GiveCookieCommand extends GenericBotCommand {
         giveCookieDto.setNumCookies(Integer.parseInt(getArgs().get(1)));
         cookieService.giveCookieTo(giveCookieDto);
 
-        sendMessage(event, "Successfully transferred cookies.");
+        String senderUser = BotUtil.getMember(event).getUsername();
+        String recieverUser = getArgs().get(2);
+        int senderTotal = cookieService.getAllCookiesForAccount(giveCookieDto.getSenderId());
+        int recieverTotal = cookieService.getAllCookiesForAccount(giveCookieDto.getRecieverId());
+
+        sendMessage(event, MessageFormat.format(
+                "Successfully transferred cookies. {0}: {1}, {2}: {3}",
+                senderUser,
+                String.valueOf(senderTotal),
+                recieverUser,
+                String.valueOf(recieverTotal))
+        );
     }
 
     @Autowired
