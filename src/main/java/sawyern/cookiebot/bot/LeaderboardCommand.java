@@ -8,7 +8,6 @@ import sawyern.cookiebot.models.exception.CookieException;
 import sawyern.cookiebot.services.AccountService;
 import sawyern.cookiebot.services.CookieService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,22 +24,22 @@ public class LeaderboardCommand extends GenericBotCommand {
 
     @Override
     public void execute(MessageCreateEvent event) throws CookieException {
-        List<String> leaderboard = new ArrayList<>();
+        String leaderboard = "```";
         List<String> userIds = event.getClient().getUsers()
                 .toStream()
                 .map(user -> user.getId().toString())
                 .collect(Collectors.toList());
-        leaderboard.add("```");
         for (String id : userIds) {
             try {
                 Account account = accountService.getAccount(id);
                 int cookies = cookieService.getAllCookiesForAccount(id);
-                leaderboard.add(account.getUsername() + ": " + cookies + "\n");
+                leaderboard += account.getUsername() + ": " + cookies + "\n";
             } catch (Exception e) {
                 continue;
             }
         }
-        leaderboard.add("```");
+        leaderboard += "```";
+        sendMessage(event, leaderboard);
     }
 
     @Autowired
