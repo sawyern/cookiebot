@@ -5,8 +5,11 @@ import discord4j.core.event.domain.message.MessageCreateEvent;
 import sawyern.cookiebot.constants.CommandConstants;
 import sawyern.cookiebot.models.exception.CookieException;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public abstract class GenericBotCommand implements BotCommand {
     private List<String> args;
@@ -37,7 +40,11 @@ public abstract class GenericBotCommand implements BotCommand {
     }
 
     public List<String> parseArgs(String message) {
-        return Arrays.asList(message.split(CommandConstants.COMMAND_DELIM));
+        List<String> msgArgs = new ArrayList<>();
+        Matcher m = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(message);
+        while (m.find())
+            msgArgs.add(m.group(1).replace("\"", ""));
+        return msgArgs;
     }
 
     public void sendMessage(MessageCreateEvent event, String message) {
