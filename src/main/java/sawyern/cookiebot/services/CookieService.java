@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import sawyern.cookiebot.constants.CookieConstants;
 import sawyern.cookiebot.constants.CookieType;
 import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.models.entity.Cookie;
@@ -69,7 +68,7 @@ public class CookieService {
         Account account = accountService.getAccount(discordId);
         List<HasCookie> cookies = hasCookieRepository.findByAccount(account);
         cookies = cookies.stream().filter(hasCookie -> hasCookie.getCookie().getType().equals(type)).collect(Collectors.toList());
-        HasCookie hasCookie = cookies.stream().findAny().orElseThrow(() -> new CookieException("No cookies to remove", HttpStatus.NOT_FOUND));
+        HasCookie hasCookie = cookies.stream().findFirst().orElseThrow(() -> new CookieException("No cookies to remove", HttpStatus.NOT_FOUND));
         Cookie cookie = hasCookie.getCookie();
         try {
             cookieRepository.delete(cookie);

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sawyern.cookiebot.models.dto.AccountDto;
 import sawyern.cookiebot.models.exception.CookieException;
 import sawyern.cookiebot.services.AccountService;
 
@@ -23,10 +24,10 @@ public class AccountController {
     @PutMapping
     @Transactional
     public ResponseEntity<String> registerNewUser(
-            @RequestParam(name = "id") String discordId
-    ) {
+            @RequestBody AccountDto accountDto
+            ) {
         try {
-            accountService.registerAccount(discordId);
+            accountService.registerAccount(accountDto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (CookieException e) {
             return new ResponseEntity<>(e.getMessage(), e.getHttpStatus());

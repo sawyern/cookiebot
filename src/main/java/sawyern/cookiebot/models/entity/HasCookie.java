@@ -6,11 +6,11 @@ import javax.persistence.*;
 @Table(name = "HAS_COOKIE")
 public class HasCookie extends DbItem {
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ACCOUNT_ID")
     private Account account;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "COOKIE_ID")
     private Cookie cookie;
 

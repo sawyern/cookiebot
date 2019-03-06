@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import sawyern.cookiebot.models.dto.AccountDto;
 import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.models.exception.CookieException;
 import sawyern.cookiebot.repository.AccountRepository;
@@ -24,14 +25,14 @@ public class AccountService {
 
     /**
      * creates new account if not already exists
-     * @param discordId
+     * @param accountDto
      * @throws CookieException
      */
-    public void registerAccount(String discordId) throws CookieException {
-        if (accountRepository.findByDiscordId(discordId).isPresent())
+    public void registerAccount(AccountDto accountDto) throws CookieException {
+        if (accountRepository.findByDiscordId(accountDto.getDiscordId()).isPresent())
             throw new CookieException("Account already registered.");
 
-        Account account = new Account(discordId);
+        Account account = new Account(accountDto.getDiscordId(), accountDto.getUsername());
         try {
             accountRepository.save(account);
         } catch (Exception e) {
