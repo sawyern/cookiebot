@@ -40,20 +40,15 @@ public class CookieService {
 
     @Transactional
     public void giveCookieTo(GiveCookieDto giveCookieDto) throws CookieException {
-        try {
-            if (giveCookieDto.getNumCookies() <= 0)
-                throw new CookieException("Invalid number of cookies", HttpStatus.BAD_REQUEST);
-            int cookies = getAllCookiesForAccount(giveCookieDto.getSenderId());
-            if (cookies < giveCookieDto.getNumCookies())
-                throw new CookieException("Not enough cookies to give", HttpStatus.BAD_REQUEST);
+        if (giveCookieDto.getNumCookies() <= 0)
+            throw new CookieException("Invalid number of cookies", HttpStatus.BAD_REQUEST);
+        int cookies = getAllCookiesForAccount(giveCookieDto.getSenderId());
+        if (cookies < giveCookieDto.getNumCookies())
+            throw new CookieException("Not enough cookies to give", HttpStatus.BAD_REQUEST);
 
-            for (int i = 0; i < giveCookieDto.getNumCookies(); i++) {
-                removeCookieOfType(giveCookieDto.getSenderId(), CookieType.NORMAL);
-                generateCookie(giveCookieDto.getRecieverId(), CookieType.NORMAL);
-            }
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new CookieException("Error transferring cookies", HttpStatus.INTERNAL_SERVER_ERROR);
+        for (int i = 0; i < giveCookieDto.getNumCookies(); i++) {
+            removeCookieOfType(giveCookieDto.getSenderId(), CookieType.NORMAL);
+            generateCookie(giveCookieDto.getRecieverId(), CookieType.NORMAL);
         }
     }
 

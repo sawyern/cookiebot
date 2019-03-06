@@ -1,7 +1,6 @@
 package sawyern.cookiebot.bot;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import discord4j.core.object.entity.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.models.dto.GiveCookieDto;
