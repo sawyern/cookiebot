@@ -29,7 +29,7 @@ public class AccountService {
      */
     public void registerAccount(String discordId) throws CookieException {
         if (accountRepository.findByDiscordId(discordId).isPresent())
-            return;
+            throw new CookieException("Account already registered.");
 
         Account account = new Account(discordId);
         try {

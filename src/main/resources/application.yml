@@ -9,3 +9,5 @@ spring:
       ddl-auto: update
 security:
   ignored: /**
+discord:
+  token: NTQ0ODg5OTcyMDA0NzQ5MzEy.D0Sc0g.19n9etb7Dhq_1HtHZjcnPJ-kYsY
