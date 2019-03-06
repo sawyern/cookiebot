@@ -7,28 +7,40 @@ import org.springframework.stereotype.Component;
 import sawyern.cookiebot.models.dto.AccountDto;
 import sawyern.cookiebot.models.exception.CookieException;
 import sawyern.cookiebot.services.AccountService;
+import sawyern.cookiebot.services.CookieService;
+import sawyern.cookiebot.util.BotUtil;
 
 @Component
 public class RegisterCommand extends GenericBotCommand {
 
     private AccountService accountService;
-
-    @Autowired
-    public RegisterCommand (AccountService accountService) {
-        this.accountService = accountService;
-    }
+    private CookieService cookieService;
 
     @Override
     public void execute(MessageCreateEvent event) throws CookieException {
-        Member member = event.getMember().orElseThrow(CookieException::new);
+        Member member = BotUtil.getMember(event);
         AccountDto accountDto = new AccountDto();
         accountDto.setDiscordId(member.getId().asString());
         accountDto.setUsername(member.getUsername());
         accountService.registerAccount(accountDto);
+
+        for (int i = 0; i < 10; i++)
+            cookieService.generateCookie(accountDto.getDiscordId());
+        sendMessage(event, "Successfully registered " + accountDto.getUsername());
     }
 
     @Override
     public String getCommand() {
         return "register";
+    }
+
+    @Autowired
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    @Autowired
+    public void setCookieService(CookieService cookieService) {
+        this.cookieService = cookieService;
     }
 }

@@ -14,6 +14,7 @@ import sawyern.cookiebot.models.exception.CookieException;
 import sawyern.cookiebot.repository.CookieRepository;
 import sawyern.cookiebot.repository.HasCookieRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,7 @@ public class CookieService {
         this.accountService = accountService;
     }
 
+    @Transactional
     public void giveCookieTo(GiveCookieDto giveCookieDto) throws CookieException {
         try {
             if (giveCookieDto.getNumCookies() <= 0)
@@ -65,6 +67,7 @@ public class CookieService {
         return cookieRepository.findById(id).orElseThrow(CookieException::new);
     }
 
+    @Transactional
     public void removeCookieOfType(String discordId, String type) throws CookieException {
         Account account = accountService.getAccount(discordId);
         List<HasCookie> cookies = hasCookieRepository.findByAccount(account);
@@ -97,6 +100,7 @@ public class CookieService {
         return generateCookie(discordId, CookieType.NORMAL);
     }
 
+    @Transactional
     public Cookie generateCookie(String discordId, String type) throws CookieException {
         Cookie cookie = new Cookie(type);
         Account account = accountService.getAccount(discordId);
