@@ -2,11 +2,12 @@ package sawyern.cookiebot.bot;
 
 import discord4j.core.DiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sawyern.cookiebot.constants.CommandConstants;
 import sawyern.cookiebot.models.exception.CookieException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,17 +15,23 @@ import java.util.regex.Pattern;
 public abstract class GenericBotCommand implements BotCommand {
     private List<String> args;
 
+    private static Logger LOGGER = LoggerFactory.getLogger(GenericBotCommand.class);
+
     @Override
     public void subscribeCommand(DiscordClient client) {
         client.getEventDispatcher().on(MessageCreateEvent.class)
                 .subscribe(event -> {
                     try {
                         if (parseCommand(event.getMessage().getContent()
-                                .orElseThrow(() -> new CookieException("")))
-                        )
+                                .orElseThrow(NullPointerException::new))
+                        ) {
+                            LOGGER.info("Received command: " + getCommand());
                             execute(event);
-                    } catch (Exception e) {
+                        }
+                    } catch (CookieException e) {
                         sendMessage(event, e.getMessage());
+                    } catch (NullPointerException e) {
+                        return;
                     }
                 });
     }

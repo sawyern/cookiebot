@@ -21,6 +21,7 @@ public class HelpCommand extends GenericBotCommand {
         helpStrings.add("!cookies -- returns how many cookies you have");
         helpStrings.add("!cookies {username} -- returns how many cookies that user has");
         helpStrings.add("!givecookie {num} {username} -- gives num cookies to username");
+        helpStrings.add("!leaderboard -- show all cookie count");
         helpStrings.add("!roll {maxNum} -- roll a random number between 0 and maxNum");
 
         StringBuilder helpString = new StringBuilder("```");
