@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import sawyern.cookiebot.constants.CookieType;
+import sawyern.cookiebot.models.dto.GiveCookieDto;
 import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.models.entity.Cookie;
 import sawyern.cookiebot.models.entity.HasCookie;
@@ -36,17 +37,17 @@ public class CookieService {
         this.accountService = accountService;
     }
 
-    public void giveCookieTo(String discordId, int numCookies, String recipientId) throws CookieException {
+    public void giveCookieTo(GiveCookieDto giveCookieDto) throws CookieException {
         try {
-            if (numCookies <= 0)
+            if (giveCookieDto.getNumCookies() <= 0)
                 throw new CookieException("Invalid number of cookies", HttpStatus.BAD_REQUEST);
-            int cookies = getAllCookiesForAccount(discordId);
-            if (cookies < numCookies)
+            int cookies = getAllCookiesForAccount(giveCookieDto.getSenderId());
+            if (cookies < giveCookieDto.getNumCookies())
                 throw new CookieException("Not enough cookies to give", HttpStatus.BAD_REQUEST);
 
-            for (int i = 0; i < numCookies; i++) {
-                removeCookieOfType(discordId, CookieType.NORMAL);
-                generateCookie(recipientId, CookieType.NORMAL);
+            for (int i = 0; i < giveCookieDto.getNumCookies(); i++) {
+                removeCookieOfType(giveCookieDto.getSenderId(), CookieType.NORMAL);
+                generateCookie(giveCookieDto.getRecieverId(), CookieType.NORMAL);
             }
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -71,8 +72,8 @@ public class CookieService {
         HasCookie hasCookie = cookies.stream().findFirst().orElseThrow(() -> new CookieException("No cookies to remove", HttpStatus.NOT_FOUND));
         Cookie cookie = hasCookie.getCookie();
         try {
-            cookieRepository.delete(cookie);
             hasCookieRepository.delete(hasCookie);
+            cookieRepository.deleteById(cookie.getId());
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new CookieException("Failed to delete cookie");

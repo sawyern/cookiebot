@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sawyern.cookiebot.constants.CookieType;
 import sawyern.cookiebot.models.dto.CookieDto;
+import sawyern.cookiebot.models.dto.GiveCookieDto;
 import sawyern.cookiebot.models.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
 
@@ -41,12 +42,10 @@ public class CookieController {
 
     @PostMapping(value = "/give")
     public ResponseEntity<String> giveCookieTo(
-            @RequestParam(name = "id") String discordId,
-            @RequestParam(name = "num") int numCookies,
-            @RequestParam(name = "recipientId") String recipientId
-    ) {
+            @RequestBody GiveCookieDto giveCookieDto
+            ) {
         try {
-            cookieService.giveCookieTo(discordId, numCookies, recipientId);
+            cookieService.giveCookieTo(giveCookieDto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (CookieException e) {
             return new ResponseEntity<>(e.getHttpStatus());
