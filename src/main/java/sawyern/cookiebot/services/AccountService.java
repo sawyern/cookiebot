@@ -11,6 +11,7 @@ import sawyern.cookiebot.models.exception.CookieException;
 import sawyern.cookiebot.repository.AccountRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 
 @Service
@@ -68,6 +69,15 @@ public class AccountService {
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new CookieException("Failed to delete account");
+        }
+    }
+
+    public List<Account> findAllAccount() throws CookieException {
+        try {
+            return accountRepository.findAll();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new CookieException("Failed to find all accounts.");
         }
     }
 }

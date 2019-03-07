@@ -1,15 +1,18 @@
 package sawyern.cookiebot.bot;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
+import jdk.internal.joptsimple.util.KeyValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.models.exception.CookieException;
 import sawyern.cookiebot.services.AccountService;
 import sawyern.cookiebot.services.CookieService;
+import sawyern.cookiebot.util.MapUtil;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @Component
 public class LeaderboardCommand extends GenericBotCommand {
@@ -24,22 +27,26 @@ public class LeaderboardCommand extends GenericBotCommand {
 
     @Override
     public void execute(MessageCreateEvent event) throws CookieException {
-        String leaderboard = "```";
-        List<String> userIds = event.getClient().getUsers()
-                .toStream()
-                .map(user -> user.getId().asString())
-                .collect(Collectors.toList());
-        for (String id : userIds) {
-            try {
-                Account account = accountService.getAccount(id);
-                int cookies = cookieService.getAllCookiesForAccount(id);
-                leaderboard += account.getUsername() + ": " + cookies + "\n";
-            } catch (Exception e) {
-                continue;
-            }
+        StringBuilder leaderboard = new StringBuilder("```");
+        Map<String, Integer> leaderboardMap = new HashMap<>();
+
+        List<Account> accounts = accountService.findAllAccount();
+
+        for (Account account : accounts) {
+            int cookies = cookieService.getAllCookiesForAccount(account.getDiscordId());
+            leaderboardMap.put(account.getUsername(), cookies);
         }
-        leaderboard += "```";
-        sendMessage(event, leaderboard);
+
+        leaderboardMap = MapUtil.sortByValue(leaderboardMap);
+        for (Map.Entry<String, Integer> entry : leaderboardMap.entrySet()) {
+            leaderboard.append(entry.getKey())
+                    .append(": ")
+                    .append(entry.getValue())
+                    .append("\n");
+        }
+
+        leaderboard.append("```");
+        sendMessage(event, leaderboard.toString());
     }
 
     @Autowired
