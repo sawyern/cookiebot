@@ -27,7 +27,7 @@ public class LeaderboardCommand extends GenericBotCommand {
         String leaderboard = "```";
         List<String> userIds = event.getClient().getUsers()
                 .toStream()
-                .map(user -> user.getId().toString())
+                .map(user -> user.getId().asString())
                 .collect(Collectors.toList());
         for (String id : userIds) {
             try {
