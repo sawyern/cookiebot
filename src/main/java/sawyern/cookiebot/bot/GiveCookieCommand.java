@@ -27,7 +27,13 @@ public class GiveCookieCommand extends GenericBotCommand {
         GiveCookieDto giveCookieDto = new GiveCookieDto();
         giveCookieDto.setSenderId(BotUtil.getMember(event).getId().asString());
         giveCookieDto.setRecieverId(BotUtil.getIdFromUser(event, getArgs().get(2)));
-        giveCookieDto.setNumCookies(Integer.parseInt(getArgs().get(1)));
+
+        try {
+            giveCookieDto.setNumCookies(Integer.parseInt(getArgs().get(1)));
+        } catch (NumberFormatException e) {
+            throw new CookieException("Invalid argument.");
+        }
+
         cookieService.giveCookieTo(giveCookieDto);
 
         String senderUser = BotUtil.getMember(event).getUsername();
