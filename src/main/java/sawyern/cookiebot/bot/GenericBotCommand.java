@@ -2,6 +2,7 @@ package sawyern.cookiebot.bot;
 
 import discord4j.core.DiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
+import discord4j.core.object.entity.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sawyern.cookiebot.constants.CommandConstants;
@@ -54,8 +55,8 @@ public abstract class GenericBotCommand implements BotCommand {
         return msgArgs;
     }
 
-    public void sendMessage(MessageCreateEvent event, String message) {
-        event.getMessage().getChannel().block().createMessage(message).block();
+    public Message sendMessage(MessageCreateEvent event, String message) {
+        return event.getMessage().getChannel().block().createMessage(message).block();
     }
 
     public List<String> getArgs() {
