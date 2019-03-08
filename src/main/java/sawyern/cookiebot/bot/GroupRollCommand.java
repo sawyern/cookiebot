@@ -101,6 +101,10 @@ public class GroupRollCommand extends GenericBotCommand {
                 if (RollDieCommand.roll(0, 1) == 1)
                     winner = entry;
         }
+
+        if (winner == null)
+            throw new CookieException("No eligible winners. Cancelling bet.");
+
         builder.append("Winner @" + winner.getKey().getUsername() + "!");
         builder.append("```");
 
