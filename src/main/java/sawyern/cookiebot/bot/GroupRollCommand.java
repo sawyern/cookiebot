@@ -84,8 +84,10 @@ public class GroupRollCommand extends GenericBotCommand {
         Map.Entry<Account, Integer> winner = null;
 
         for (Map.Entry<Account, Integer> entry : userRollMap.entrySet()) {
-            if (cookieService.getAllCookiesForAccount(entry.getKey().getDiscordId()) < bet)
-                throw new CookieException("@" + entry.getKey().getUsername() + " can't pay. Canceling bet.");
+            if (cookieService.getAllCookiesForAccount(entry.getKey().getDiscordId()) < bet) {
+                sendMessage(event, "@" + entry.getKey().getUsername() + " can't pay. Roll not considered.");
+                continue;
+            }
 
             if (winner == null) {
                 winner = entry;
