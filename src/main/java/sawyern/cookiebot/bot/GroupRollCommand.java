@@ -89,15 +89,13 @@ public class GroupRollCommand extends GenericBotCommand {
 
             if (winner == null) {
                 winner = entry;
-                return;
             }
 
-            if (entry.getValue().compareTo(winner.getValue()) > 0) {
+            else if (entry.getValue().compareTo(winner.getValue()) > 0) {
                 winner = entry;
-                return;
             }
 
-            if (entry.getValue().equals(winner.getValue()))
+            else if (entry.getValue().equals(winner.getValue()))
                 if (RollDieCommand.roll(0, 1) == 1)
                     winner = entry;
         }
