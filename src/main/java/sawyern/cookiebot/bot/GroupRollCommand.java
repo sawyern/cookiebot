@@ -85,7 +85,7 @@ public class GroupRollCommand extends GenericBotCommand {
 
         for (Map.Entry<Account, Integer> entry : userRollMap.entrySet()) {
             if (cookieService.getAllCookiesForAccount(entry.getKey().getDiscordId()) < bet) {
-                sendMessage(event, "@" + entry.getKey().getUsername() + " can't pay. Roll not considered.");
+                sendMessage(event, "<@" + entry.getKey().getDiscordId() + "> can't pay. Roll not considered.");
                 continue;
             }
 
@@ -105,13 +105,13 @@ public class GroupRollCommand extends GenericBotCommand {
         if (winner == null)
             throw new CookieException("No eligible winners. Cancelling bet.");
 
-        builder.append("Winner @" + winner.getKey().getUsername() + "!");
         builder.append("```");
 
         for (Account account : userRollMap.keySet()) {
             cookieService.giveCookieTo(new GiveCookieDto(account.getDiscordId(), winner.getKey().getDiscordId(), bet));
         }
         sendMessage(event, builder.toString());
+        sendMessage(event,"Winner <@" + winner.getKey().getDiscordId() + ">!");
     }
 
     @Autowired
