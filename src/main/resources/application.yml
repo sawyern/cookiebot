@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://<<hostname>>:5432/<<db name>>
+    username: <<your username>>
+    password: <<your password>>
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+security:
+  ignored: /**
+discord:
+  token: <<discord bot token here>>

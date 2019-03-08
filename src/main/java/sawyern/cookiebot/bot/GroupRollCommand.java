@@ -90,8 +90,22 @@ public class GroupRollCommand extends GenericBotCommand {
             if (cookieService.getAllCookiesForAccount(entry.getKey().getDiscordId()) < bet)
                 throw new CookieException("@" + entry.getKey().getUsername() + " can't pay. Canceling bet.");
 
-            if (winner == null || entry.getValue().compareTo(winner.getValue()) > 0)
+            if (winner == null) {
                 winner = entry;
+                return;
+            }
+
+            if (entry.getValue().compareTo(winner.getValue()) > 0) {
+                winner = entry;
+                return;
+            }
+
+            if (entry.getValue() == winner.getValue()) {
+                int roll = RollDieCommand.roll(0, 1);
+                if (roll == 1)
+                    winner = entry;
+            }
+
         }
         builder.append("Winner @" + winner.getKey().getUsername() + "!");
         builder.append("```");
