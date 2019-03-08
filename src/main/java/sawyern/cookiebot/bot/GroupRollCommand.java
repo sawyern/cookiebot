@@ -51,7 +51,7 @@ public class GroupRollCommand extends GenericBotCommand {
             throw new CookieException("Invalid parameter.");
         }
 
-        countdown = 10;
+        countdown = 20;
 
         Message message = sendMessage(event, getMessageContent());
         message.addReaction(ReactionEmoji.unicode(CommandConstants.DICE));
@@ -82,6 +82,8 @@ public class GroupRollCommand extends GenericBotCommand {
             userRollMap.put(new Account(user.getId().asString(), user.getUsername()), roll);
         });
 
+        if (userRollMap.isEmpty())
+            throw new CookieException("No players want to play.");
         Map.Entry<Account, Integer> winner = null;
 
         for (Map.Entry<Account, Integer> entry : userRollMap.entrySet()) {
