@@ -3,7 +3,6 @@ package sawyern.cookiebot.bot;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
-import discord4j.core.object.reaction.Reaction;
 import discord4j.core.object.reaction.ReactionEmoji;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,13 +13,11 @@ import sawyern.cookiebot.constants.CommandConstants;
 import sawyern.cookiebot.models.dto.GiveCookieDto;
 import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.models.exception.CookieException;
-import sawyern.cookiebot.services.AccountService;
 import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -100,12 +97,9 @@ public class GroupRollCommand extends GenericBotCommand {
                 return;
             }
 
-            if (entry.getValue() == winner.getValue()) {
-                int roll = RollDieCommand.roll(0, 1);
-                if (roll == 1)
+            if (entry.getValue().equals(winner.getValue()))
+                if (RollDieCommand.roll(0, 1) == 1)
                     winner = entry;
-            }
-
         }
         builder.append("Winner @" + winner.getKey().getUsername() + "!");
         builder.append("```");
