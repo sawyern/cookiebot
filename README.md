@@ -1,7 +1,7 @@
 # cookiebot
 Keeps track of cookies owed
 
-#Pre Requisites
+# Pre Requisites
 Requires java 8+, maven, and database of your choice.
 
 # Configuration
