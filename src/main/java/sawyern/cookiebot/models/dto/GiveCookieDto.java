@@ -5,6 +5,13 @@ public class GiveCookieDto {
     private String recieverId;
     private int numCookies;
 
+    public GiveCookieDto() {}
+    public GiveCookieDto(String senderId, String recieverId, int numCookies) {
+        this.senderId = senderId;
+        this.recieverId = recieverId;
+        this.numCookies = numCookies;
+    }
+
     public String getSenderId() {
         return senderId;
     }

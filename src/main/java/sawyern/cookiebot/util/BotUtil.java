@@ -17,4 +17,8 @@ public class BotUtil {
     public static Member getMember(MessageCreateEvent event) throws CookieException {
         return event.getMember().orElseThrow(() -> new CookieException("Error getting member."));
     }
+
+    public static String getSelfId(MessageCreateEvent event) throws CookieException {
+        return event.getClient().getSelfId().orElseThrow(() -> new CookieException("Error getting bot id")).asString();
+    }
 }

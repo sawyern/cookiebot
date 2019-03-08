@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sawyern.cookiebot.constants.CommandConstants;
 import sawyern.cookiebot.models.exception.CookieException;
+import sawyern.cookiebot.models.exception.DiscordException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +25,17 @@ public abstract class GenericBotCommand implements BotCommand {
                 .subscribe(event -> {
                     try {
                         if (parseCommand(event.getMessage().getContent()
-                                .orElseThrow(NullPointerException::new))
+                                .orElseThrow(DiscordException::new))
                         ) {
                             LOGGER.info("Received command: " + getCommand());
                             execute(event);
                         }
                     } catch (CookieException e) {
                         sendMessage(event, e.getMessage());
-                    } catch (NullPointerException e) {
+                    } catch (DiscordException e) {
                         return;
+                    } catch (Exception e) {
+                        LOGGER.error(e.getMessage(), e);
                     }
                 });
     }

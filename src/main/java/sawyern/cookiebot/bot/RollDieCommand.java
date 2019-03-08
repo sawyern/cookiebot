@@ -17,7 +17,7 @@ public class RollDieCommand extends GenericBotCommand {
         if (getArgs().size() != 2)
             throw new CookieException("Invalid arguments. !roll {maxNum}");
         int maxNum;
-        int minNum = 0;
+        int minNum = 1;
         try {
             maxNum = Integer.parseInt(getArgs().get(1));
         } catch (NumberFormatException e) {
@@ -27,8 +27,10 @@ public class RollDieCommand extends GenericBotCommand {
         if (maxNum <= 0)
             throw new CookieException("Invalid number argument.");
 
-        Integer roll = (int)(Math.random() * ((maxNum - minNum) + 1) + minNum);
+        sendMessage(event, BotUtil.getMember(event).getUsername() + " rolls: " + RollDieCommand.roll(minNum, maxNum).toString());
+    }
 
-        sendMessage(event, BotUtil.getMember(event).getUsername() + " rolls: " + roll.toString());
+    public static Integer roll(int min, int max) {
+        return (int)(Math.random() * ((max - min) + 1) + min);
     }
 }
