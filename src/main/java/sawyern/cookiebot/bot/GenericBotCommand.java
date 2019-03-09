@@ -4,11 +4,11 @@ import discord4j.core.DiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sawyern.cookiebot.bot.exception.InvalidMessageCookieException;
-import sawyern.cookiebot.bot.exception.MessageParseCommandCookieException;
+import sawyern.cookiebot.exception.InvalidMessageCookieException;
+import sawyern.cookiebot.exception.MessageParseCommandCookieException;
 import sawyern.cookiebot.constants.CommandConstants;
-import sawyern.cookiebot.bot.exception.CookieException;
-import sawyern.cookiebot.bot.exception.DiscordException;
+import sawyern.cookiebot.exception.CookieException;
+import sawyern.cookiebot.exception.DiscordException;
 import sawyern.cookiebot.util.BotUtil;
 
 import java.text.MessageFormat;

@@ -13,9 +13,9 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
-import sawyern.cookiebot.bot.exception.InvalidMessageCookieException;
+import sawyern.cookiebot.exception.InvalidMessageCookieException;
 import sawyern.cookiebot.constants.CommandConstants;
-import sawyern.cookiebot.bot.exception.CookieException;
+import sawyern.cookiebot.exception.CookieException;
 
 import java.util.List;
 import java.util.Optional;

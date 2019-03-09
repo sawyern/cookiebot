@@ -1,4 +1,4 @@
-package sawyern.cookiebot.bot.exception;
+package sawyern.cookiebot.exception;
 
 public class DiscordException extends Exception {
 }

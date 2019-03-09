@@ -10,7 +10,7 @@ import sawyern.cookiebot.models.dto.GiveCookieDto;
 import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.models.entity.Cookie;
 import sawyern.cookiebot.models.entity.HasCookie;
-import sawyern.cookiebot.bot.exception.CookieException;
+import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.repository.CookieRepository;
 import sawyern.cookiebot.repository.HasCookieRepository;
 
@@ -89,6 +89,12 @@ public class CookieService {
 
     public Cookie createCookie(String type) throws CookieException {
         return null;
+    }
+
+    public void generateCookie(String discordId, String type, int num) throws CookieException {
+        for (int i = 0; i < num; i++) {
+            generateCookie(discordId, type);
+        }
     }
 
     public Cookie generateCookie(String discordId) throws CookieException {

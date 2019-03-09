@@ -4,7 +4,7 @@ import discord4j.core.event.domain.message.MessageCreateEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.models.dto.GiveCookieDto;
-import sawyern.cookiebot.bot.exception.CookieException;
+import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
 

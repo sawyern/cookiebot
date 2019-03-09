@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sawyern.cookiebot.models.dto.AccountDto;
-import sawyern.cookiebot.bot.exception.CookieException;
+import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.AccountService;
 
 import javax.transaction.Transactional;

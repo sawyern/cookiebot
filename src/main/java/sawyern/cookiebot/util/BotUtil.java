@@ -6,7 +6,7 @@ import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sawyern.cookiebot.bot.exception.CookieException;
+import sawyern.cookiebot.exception.CookieException;
 
 public class BotUtil {
     private static Logger LOGGER = LoggerFactory.getLogger(BotUtil.class);

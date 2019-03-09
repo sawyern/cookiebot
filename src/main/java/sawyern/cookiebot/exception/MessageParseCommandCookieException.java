@@ -1,4 +1,4 @@
-package sawyern.cookiebot.bot.exception;
+package sawyern.cookiebot.exception;
 
 public class MessageParseCommandCookieException extends CookieException {
     public MessageParseCommandCookieException() {

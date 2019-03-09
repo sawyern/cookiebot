@@ -12,7 +12,7 @@ import reactor.core.publisher.Flux;
 import sawyern.cookiebot.constants.CommandConstants;
 import sawyern.cookiebot.models.dto.GiveCookieDto;
 import sawyern.cookiebot.models.entity.Account;
-import sawyern.cookiebot.bot.exception.CookieException;
+import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
 

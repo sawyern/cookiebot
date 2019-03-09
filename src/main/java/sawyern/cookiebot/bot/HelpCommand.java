@@ -2,7 +2,7 @@ package sawyern.cookiebot.bot;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import org.springframework.stereotype.Component;
-import sawyern.cookiebot.bot.exception.CookieException;
+import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.util.BotUtil;
 
 import java.util.ArrayList;
@@ -24,6 +24,9 @@ public class HelpCommand extends GenericBotCommand {
         helpStrings.add("!givecookie {num} {username} -- gives num cookies to username");
         helpStrings.add("!leaderboard -- show all cookie count");
         helpStrings.add("!roll {maxNum} -- roll a random number between 0 and maxNum");
+        helpStrings.add("!grouproll {bet} -- initiates group automated gambling");
+        helpStrings.add("!lootbox -- pay one cookie for a chance at more.");
+        helpStrings.add("!odds -- show odds of lootbox");
 
         StringBuilder helpString = new StringBuilder("```");
         for (String str : helpStrings) {
