@@ -108,6 +108,8 @@ public class GroupRollCommand extends GenericBotCommand {
         builder.append("```");
 
         for (Account account : userRollMap.keySet()) {
+            if (cookieService.getAllCookiesForAccount(account.getDiscordId()) < bet)
+                continue;
             cookieService.giveCookieTo(new GiveCookieDto(account.getDiscordId(), winner.getKey().getDiscordId(), bet));
         }
         BotUtil.sendMessage(event, builder.toString());
