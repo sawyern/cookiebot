@@ -15,14 +15,14 @@ public class LootBoxCommand extends GenericBotCommand {
 
     private static Integer COST = 1;
 
-    private double ZERO = 30.3125d;
-    private double ONE = 45d;
-    private double TWO = 15d;
-    private double THREE = 5d;
-    private double FOUR = 2.5d;
-    private double FIVE = 1.25d;
-    private double SIX = .625d;
-    private double SEVEN = 0.3125d;
+    private static double ZERO = 30.3125d;
+    private static double ONE = 45d;
+    private static double TWO = 15d;
+    private static double THREE = 5d;
+    private static double FOUR = 2.5d;
+    private static double FIVE = 1.25d;
+    private static double SIX = .625d;
+    private static double SEVEN = 0.3125d;
 
 
     @Override
@@ -68,6 +68,42 @@ public class LootBoxCommand extends GenericBotCommand {
     @Autowired
     public void setCookieService(CookieService cookieService) {
         this.cookieService = cookieService;
+    }
+
+    public static Integer getCOST() {
+        return COST;
+    }
+
+    public static double getZERO() {
+        return ZERO;
+    }
+
+    public static double getONE() {
+        return ONE;
+    }
+
+    public static double getTWO() {
+        return TWO;
+    }
+
+    public static double getTHREE() {
+        return THREE;
+    }
+
+    public static double getFOUR() {
+        return FOUR;
+    }
+
+    public static double getFIVE() {
+        return FIVE;
+    }
+
+    public static double getSIX() {
+        return SIX;
+    }
+
+    public static double getSEVEN() {
+        return SEVEN;
     }
 
     private double roll() {
