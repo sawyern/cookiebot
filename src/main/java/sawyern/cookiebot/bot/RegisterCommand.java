@@ -5,7 +5,7 @@ import discord4j.core.object.entity.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.models.dto.AccountDto;
-import sawyern.cookiebot.models.exception.CookieException;
+import sawyern.cookiebot.bot.exception.CookieException;
 import sawyern.cookiebot.services.AccountService;
 import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
@@ -26,7 +26,7 @@ public class RegisterCommand extends GenericBotCommand {
 
         for (int i = 0; i < 10; i++)
             cookieService.generateCookie(accountDto.getDiscordId());
-        sendMessage(event, "Successfully registered " + accountDto.getUsername());
+        BotUtil.sendMessage(event, "Successfully registered " + accountDto.getUsername());
     }
 
     @Override

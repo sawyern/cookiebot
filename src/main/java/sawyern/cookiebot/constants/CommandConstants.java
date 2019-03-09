@@ -9,5 +9,9 @@ public class CommandConstants {
     public static final String REGISTER = "register";
     public static final String COOKIES = "cookies";
 
+    public static final String QUOTE = "\"";
+    public static final String EMPTY_STRING = "";
+
+    public static final String QUOTE_REGEX = "([^\"]\\S*|\".+?\")\\s*";
     public static final String DICE = "\uD83C\uDFB2";
 }

@@ -4,7 +4,7 @@ import discord4j.core.event.domain.message.MessageCreateEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.models.dto.GiveCookieDto;
-import sawyern.cookiebot.models.exception.CookieException;
+import sawyern.cookiebot.bot.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
 
@@ -45,7 +45,7 @@ public class GiveCookieCommand extends GenericBotCommand {
         int senderTotal = cookieService.getAllCookiesForAccount(giveCookieDto.getSenderId());
         int recieverTotal = cookieService.getAllCookiesForAccount(giveCookieDto.getRecieverId());
 
-        sendMessage(event, MessageFormat.format(
+        BotUtil.sendMessage(event, MessageFormat.format(
                 "Successfully transferred cookies. {0}: {1}, {2}: {3}",
                 senderUser,
                 String.valueOf(senderTotal),

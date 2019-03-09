@@ -16,43 +16,33 @@ import java.util.List;
 
 @Component
 public class CookieBotDiscordClient {
-    private DiscordClientProperties discordClientProperties;
     private DiscordClient discordClient;
+
+    private DiscordClientProperties discordClientProperties;
     private List<BotCommand> botCommands;
 
     private static Logger LOGGER = LoggerFactory.getLogger(CookieBotDiscordClient.class);
 
-    @Autowired
-    public CookieBotDiscordClient(
-            DiscordClientProperties discordClientProperties,
-            List<BotCommand> botCommands
-    ) {
-        this.discordClientProperties = discordClientProperties;
-        this.botCommands = botCommands;
-    }
-
     @EventListener(ApplicationReadyEvent.class)
     public void startDiscordClient() {
-        this.discordClient = this.createClient();
-        setupClient(discordClient);
+        this.discordClient = new DiscordClientBuilder(discordClientProperties.getToken()).build();
+        subscribeAllCommands(discordClient);
         discordClient.login().block();
     }
 
-    public DiscordClient createClient() {
-        String token = discordClientProperties.getToken();
-        return new DiscordClientBuilder(token).build();
-    }
-
-    public void setupClient(DiscordClient client) {
-        client.getEventDispatcher().on(ReadyEvent .class)
+    public void subscribeAllCommands(DiscordClient client) {
+        client.getEventDispatcher()
+                .on(ReadyEvent.class)
                 .subscribe(ready -> LOGGER.info("Logged in as " + ready.getSelf().getUsername()));
         botCommands.forEach(command -> command.subscribeCommand(client));
     }
 
-    public List<BotCommand> getBotCommands() {
-        return botCommands;
+    @Autowired
+    public void setDiscordClientProperties(DiscordClientProperties discordClientProperties) {
+        this.discordClientProperties = discordClientProperties;
     }
 
+    @Autowired
     public void setBotCommands(List<BotCommand> botCommands) {
         this.botCommands = botCommands;
     }

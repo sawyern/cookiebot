@@ -12,7 +12,7 @@ import reactor.core.publisher.Flux;
 import sawyern.cookiebot.constants.CommandConstants;
 import sawyern.cookiebot.models.dto.GiveCookieDto;
 import sawyern.cookiebot.models.entity.Account;
-import sawyern.cookiebot.models.exception.CookieException;
+import sawyern.cookiebot.bot.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
 
@@ -50,7 +50,7 @@ public class GroupRollCommand extends GenericBotCommand {
 
         countdown = 20;
 
-        Message message = sendMessage(event, getMessageContent());
+        Message message = BotUtil.sendMessage(event, getMessageContent());
         message.addReaction(ReactionEmoji.unicode(CommandConstants.DICE));
 
         try {
@@ -64,7 +64,7 @@ public class GroupRollCommand extends GenericBotCommand {
         }
 
         Flux<User> reactions = message.getReactors(ReactionEmoji.unicode(CommandConstants.DICE));
-        sendMessage(event, "Starting rolls...");
+        BotUtil.sendMessage(event, "Starting rolls...");
 
         StringBuilder builder = new StringBuilder("```");
         Map<Account, Integer> userRollMap = new HashMap<>();
@@ -85,7 +85,7 @@ public class GroupRollCommand extends GenericBotCommand {
 
         for (Map.Entry<Account, Integer> entry : userRollMap.entrySet()) {
             if (cookieService.getAllCookiesForAccount(entry.getKey().getDiscordId()) < bet) {
-                sendMessage(event, "<@" + entry.getKey().getDiscordId() + "> can't pay. Roll not considered.");
+                BotUtil.sendMessage(event, "<@" + entry.getKey().getDiscordId() + "> can't pay. Roll not considered.");
                 continue;
             }
 
@@ -110,8 +110,8 @@ public class GroupRollCommand extends GenericBotCommand {
         for (Account account : userRollMap.keySet()) {
             cookieService.giveCookieTo(new GiveCookieDto(account.getDiscordId(), winner.getKey().getDiscordId(), bet));
         }
-        sendMessage(event, builder.toString());
-        sendMessage(event,"Winner <@" + winner.getKey().getDiscordId() + ">!");
+        BotUtil.sendMessage(event, builder.toString());
+        BotUtil.sendMessage(event,"Winner <@" + winner.getKey().getDiscordId() + ">!");
     }
 
     @Autowired

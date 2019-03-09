@@ -1,4 +1,4 @@
-package sawyern.cookiebot.models.exception;
+package sawyern.cookiebot.bot.exception;
 
 import org.springframework.http.HttpStatus;
 

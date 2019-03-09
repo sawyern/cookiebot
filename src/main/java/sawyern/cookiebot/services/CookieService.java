@@ -10,7 +10,7 @@ import sawyern.cookiebot.models.dto.GiveCookieDto;
 import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.models.entity.Cookie;
 import sawyern.cookiebot.models.entity.HasCookie;
-import sawyern.cookiebot.models.exception.CookieException;
+import sawyern.cookiebot.bot.exception.CookieException;
 import sawyern.cookiebot.repository.CookieRepository;
 import sawyern.cookiebot.repository.HasCookieRepository;
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import sawyern.cookiebot.constants.CookieType;
 import sawyern.cookiebot.models.dto.CookieDto;
 import sawyern.cookiebot.models.dto.GiveCookieDto;
-import sawyern.cookiebot.models.exception.CookieException;
+import sawyern.cookiebot.bot.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
 
 import javax.transaction.Transactional;

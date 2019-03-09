@@ -2,7 +2,8 @@ package sawyern.cookiebot.bot;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import org.springframework.stereotype.Component;
-import sawyern.cookiebot.models.exception.CookieException;
+import sawyern.cookiebot.bot.exception.CookieException;
+import sawyern.cookiebot.util.BotUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,6 @@ public class HelpCommand extends GenericBotCommand {
             helpString.append("\n");
         }
         helpString.append("```");
-        sendMessage(event, helpString.toString());
+        BotUtil.sendMessage(event, helpString.toString());
     }
 }

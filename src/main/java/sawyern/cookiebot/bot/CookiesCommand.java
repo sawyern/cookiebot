@@ -3,7 +3,7 @@ package sawyern.cookiebot.bot;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Member;
 import org.springframework.stereotype.Component;
-import sawyern.cookiebot.models.exception.CookieException;
+import sawyern.cookiebot.bot.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
 
@@ -39,6 +39,6 @@ public class CookiesCommand extends GenericBotCommand {
             username = getArgs().get(1);
         }
         numCookies = cookieService.getAllCookiesForAccount(discordId);
-        sendMessage(event, MessageFormat.format("{0} has {1} cookies.", username, numCookies));
+        BotUtil.sendMessage(event, MessageFormat.format("{0} has {1} cookies.", username, numCookies));
     }
 }
