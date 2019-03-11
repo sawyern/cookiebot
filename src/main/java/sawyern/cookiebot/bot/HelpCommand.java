@@ -27,6 +27,8 @@ public class HelpCommand extends GenericBotCommand {
         helpStrings.add("!grouproll {bet} -- initiates group automated gambling");
         helpStrings.add("!lootbox -- pay one cookie for a chance at more.");
         helpStrings.add("!odds -- show odds of lootbox");
+        helpStrings.add("!weeklytokens -- get weekly tokens for the week");
+        helpStrings.add("!tokens -- returns how many tokens you have");
 
         StringBuilder helpString = new StringBuilder("```");
         for (String str : helpStrings) {
