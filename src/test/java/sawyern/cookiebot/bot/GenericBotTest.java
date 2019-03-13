@@ -75,16 +75,22 @@ public class GenericBotTest {
         Assert.assertFalse(actual);
     }
 
-    @Test(expected = InvalidMessageCookieException.class)
+    @Test
     public void parseCommandGivenNullMessage() throws CookieException {
         String testString = null;
-        genericBotCommand.parseCommand(testString);
+        Assert.assertFalse(genericBotCommand.parseCommand(testString));
     }
 
-    @Test(expected = InvalidMessageCookieException.class)
+    @Test
     public void parseCommandGivenEmptyMessage() throws CookieException {
         String testString = "";
-        genericBotCommand.parseCommand(testString);
+        Assert.assertFalse(genericBotCommand.parseCommand(testString));
+    }
+
+    @Test
+    public void parseCommandGivenDoubleQuotes() throws CookieException {
+        String testString = "\"\"\"\"";
+        Assert.assertFalse(genericBotCommand.parseCommand(testString));
     }
 
     @Test

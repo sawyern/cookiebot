@@ -1,7 +1,6 @@
 package sawyern.cookiebot.models.entity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity

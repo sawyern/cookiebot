@@ -2,6 +2,7 @@ package sawyern.cookiebot.bot;
 
 import discord4j.core.DiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
+import discord4j.core.object.entity.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sawyern.cookiebot.exception.InvalidMessageCookieException;
@@ -33,10 +34,8 @@ public abstract class GenericBotCommand implements BotCommand {
 
     protected void executeCommand(MessageCreateEvent event) {
         try {
-            if (parseCommand(event.getMessage()
-                    .getContent()
-                    .orElseThrow(DiscordException::new))
-            ) {
+            String content = event.getMessage().getContent().orElseThrow(DiscordException::new);
+            if (parseCommand(content)) {
                 LOGGER.info(MessageFormat.format("Received command: {0}", getCommand()));
 
                 // execute command
@@ -67,11 +66,11 @@ public abstract class GenericBotCommand implements BotCommand {
      * @see #getCommand()
      */
     public boolean parseCommand(String message) throws CookieException {
+        if (message == null || !message.startsWith(CommandConstants.COMMAND_START))
+            return false;
         this.args = parseArgs(message);
         String command = args.stream().findFirst().orElseThrow(MessageParseCommandCookieException::new);
-        if (command.startsWith(CommandConstants.COMMAND_START)) {
-            return command.substring(1).equalsIgnoreCase(getCommand());
-        } else return false;
+        return command.substring(1).equalsIgnoreCase(getCommand());
     }
 
     /**
