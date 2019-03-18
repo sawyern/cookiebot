@@ -7,6 +7,7 @@ import discord4j.core.object.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sawyern.cookiebot.exception.CookieException;
+import sawyern.cookiebot.exception.InvalidNumberParamCookieException;
 
 public class BotUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(BotUtil.class);
@@ -38,5 +39,15 @@ public class BotUtil {
 
     public static String getSelfId(MessageCreateEvent event) throws CookieException {
         return event.getClient().getSelfId().orElseThrow(() -> new CookieException("Error getting bot id")).asString();
+    }
+
+    public static int parseIntArgument(String arg) throws CookieException {
+        int parsedArg;
+        try {
+            parsedArg = Integer.parseInt(arg);
+        } catch (NumberFormatException e) {
+            throw new InvalidNumberParamCookieException();
+        }
+        return parsedArg;
     }
 }

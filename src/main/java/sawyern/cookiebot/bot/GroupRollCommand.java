@@ -16,8 +16,7 @@ import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -36,18 +35,13 @@ public class GroupRollCommand extends GenericBotCommand {
     }
 
     @Override
+    public List<Integer> allowedNumArgs() {
+        return Collections.singletonList(1);
+    }
+
+    @Override
     public void execute(MessageCreateEvent event) throws CookieException {
-        if (getArgs().size() != 2)
-            throw new CookieException("Invalid arguments. !grouproll {bet}");
-
-        int bet;
-
-        try {
-            bet = Integer.parseInt(getArgs().get(1));
-        } catch (NumberFormatException e) {
-            throw new CookieException("Invalid parameter.");
-        }
-
+        int bet = BotUtil.parseIntArgument(getArgs().get(1));
         countdown = 20;
 
         Message message = BotUtil.sendMessage(event, getMessageContent());

@@ -9,6 +9,8 @@ import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class GiveCookieCommand extends GenericBotCommand {
@@ -21,21 +23,29 @@ public class GiveCookieCommand extends GenericBotCommand {
     }
 
     @Override
-    public void execute(MessageCreateEvent event) throws CookieException {
-        if (getArgs().size() != 3)
-            throw new CookieException("Invalid arguments. !givecookie {num} {username}");
+    public List<Integer> allowedNumArgs() {
+        return Arrays.asList(2, 3);
+    }
 
+    @Override
+    public void execute(MessageCreateEvent event) throws CookieException {
         if (getArgs().get(2).equalsIgnoreCase(BotUtil.getMember(event).getUsername()))
             throw new CookieException("Can't give cookies to yourself.");
 
         GiveCookieDto giveCookieDto = new GiveCookieDto();
         giveCookieDto.setSenderId(BotUtil.getMember(event).getId().asString());
-        giveCookieDto.setRecieverId(BotUtil.getIdFromUser(event, getArgs().get(2)));
 
-        try {
-            giveCookieDto.setNumCookies(Integer.parseInt(getArgs().get(1)));
-        } catch (NumberFormatException e) {
-            throw new CookieException("Invalid argument.");
+        if (getArgs().size() == 2) {
+            // first argument is username
+            giveCookieDto.setRecieverId(BotUtil.getIdFromUser(event, getArgs().get(1)));
+            // give one cookie if not specified
+            giveCookieDto.setNumCookies(1);
+        }
+        else if (getArgs().size() == 3) {
+            // second argument is username
+            giveCookieDto.setRecieverId(BotUtil.getIdFromUser(event, getArgs().get(2)));
+            // first argument is numCookies
+            giveCookieDto.setNumCookies(BotUtil.parseIntArgument(getArgs().get(1)));
         }
 
         cookieService.giveCookieTo(giveCookieDto);

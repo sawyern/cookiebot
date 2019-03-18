@@ -8,6 +8,8 @@ import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class CookiesCommand extends GenericBotCommand {
@@ -21,6 +23,11 @@ public class CookiesCommand extends GenericBotCommand {
     @Override
     public String getCommand() {
         return "cookies";
+    }
+
+    @Override
+    public List<Integer> allowedNumArgs() {
+        return Arrays.asList(1, 2);
     }
 
     @Override

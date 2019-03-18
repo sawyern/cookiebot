@@ -4,14 +4,10 @@ import discord4j.core.DiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sawyern.cookiebot.exception.InvalidMessageCookieException;
-import sawyern.cookiebot.exception.MessageParseCommandCookieException;
+import sawyern.cookiebot.exception.*;
 import sawyern.cookiebot.constants.CommandConstants;
-import sawyern.cookiebot.exception.CookieException;
-import sawyern.cookiebot.exception.DiscordException;
 import sawyern.cookiebot.util.BotUtil;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,9 +28,16 @@ public abstract class GenericBotCommand implements BotCommand {
         client.getEventDispatcher().on(MessageCreateEvent.class).subscribe(this::executeCommand);
     }
 
+    /**
+     * parse command and execute if command matches getCommand()
+     * @param event
+     * @see #getCommand()
+     * @see #execute
+     */
     protected void executeCommand(MessageCreateEvent event) {
         try {
             String content = event.getMessage().getContent().orElseThrow(DiscordException::new);
+            parseArgs(content);
             if (parseCommand(content)) {
                 LOGGER.info("Received command: {}", getCommand());
 
@@ -61,7 +64,7 @@ public abstract class GenericBotCommand implements BotCommand {
     public abstract String getCommand();
 
     /**
-     * default is 0, override to change. Must not return null
+     * default is 0, override to change. Must not return null or negative integers
      * @return a list of acceptable argument lengths
      * @see #checkArgs()
      */
@@ -70,9 +73,14 @@ public abstract class GenericBotCommand implements BotCommand {
         return Collections.singletonList(0);
     }
 
+    /**
+     * throws CookieException if getArgs().size() is not within the allowedNumArgs list
+     * @throws CookieException if invalid number of arguments
+     */
     protected final void checkArgs() throws CookieException {
-        if (!allowedNumArgs().contains(getArgs().size()))
-            throw new CookieException(MessageFormat.format("Invalid number of arguments. Expected {0}", allowedNumArgs()));
+        // !command does not count as an argument but is included in the argument list, thus 1 is subtracted from size
+        if (!allowedNumArgs().contains(getArgs().size() - 1))
+            throw new InvalidCommandArgumentLengthCookieException(allowedNumArgs());
     }
 
     /**
@@ -84,8 +92,7 @@ public abstract class GenericBotCommand implements BotCommand {
     public boolean parseCommand(String message) throws CookieException {
         if (message == null || !message.startsWith(CommandConstants.COMMAND_START))
             return false;
-        parseArgs(message);
-        String command = args.stream().findFirst().orElseThrow(MessageParseCommandCookieException::new);
+        String command = getArgs().stream().findFirst().orElseThrow(MessageParseCommandCookieException::new);
         return command.substring(1).equalsIgnoreCase(getCommand());
     }
 
@@ -95,7 +102,7 @@ public abstract class GenericBotCommand implements BotCommand {
      * sets local msgArgs variable
      * @param message input message
      */
-    private void parseArgs(String message) throws CookieException {
+    protected void parseArgs(String message) throws CookieException {
         if (message == null || message.isEmpty())
             throw new InvalidMessageCookieException();
         List<String> msgArgs = new ArrayList<>();
@@ -106,9 +113,13 @@ public abstract class GenericBotCommand implements BotCommand {
         checkArgs();
     }
 
+    /**
+     * @return list of arguments
+     * @throws CookieException if parseArgs has not been called yet
+     */
     public List<String> getArgs() throws CookieException {
         if (this.args == null)
-            throw new CookieException("Args not yet parsed.");
+            throw new ArgsNotParsedCookieException();
         return args;
     }
 
