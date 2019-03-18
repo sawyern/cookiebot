@@ -1,22 +1,15 @@
 package sawyern.cookiebot.models.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AccountDto {
     private String discordId;
     private String username;
-
-    public String getDiscordId() {
-        return discordId;
-    }
-
-    public void setDiscordId(String discordId) {
-        this.discordId = discordId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 }

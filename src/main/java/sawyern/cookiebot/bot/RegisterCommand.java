@@ -19,9 +19,10 @@ public class RegisterCommand extends GenericBotCommand {
     @Override
     public void execute(MessageCreateEvent event) throws CookieException {
         Member member = BotUtil.getMember(event);
-        AccountDto accountDto = new AccountDto();
-        accountDto.setDiscordId(member.getId().asString());
-        accountDto.setUsername(member.getUsername());
+        AccountDto accountDto = AccountDto.builder()
+                .discordId(member.getId().asString())
+                .username(member.getUsername())
+                .build();
         accountService.registerAccount(accountDto);
 
         for (int i = 0; i < 10; i++)

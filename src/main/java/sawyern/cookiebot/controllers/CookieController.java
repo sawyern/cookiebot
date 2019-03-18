@@ -31,9 +31,10 @@ public class CookieController {
             @RequestParam(name = "id") String discordId
     ) {
         try {
-            CookieDto dto = new CookieDto();
-            dto.setDiscordId(discordId);
-            dto.setNumCookies(cookieService.getAllCookiesForAccount(discordId));
+            CookieDto dto = CookieDto.builder()
+                    .discordId(discordId)
+                    .numCookies(cookieService.getAllCookiesForAccount(discordId))
+                    .build();
             return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (CookieException e) {
             return new ResponseEntity<>(e.getHttpStatus());
