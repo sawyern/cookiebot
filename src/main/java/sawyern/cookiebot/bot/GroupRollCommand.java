@@ -111,16 +111,8 @@ public class GroupRollCommand extends GenericBotCommand {
         try {
             while (countdown > 0) {
                 TimeUnit.SECONDS.sleep(1);
-                String messageContent;
-                try {
-                    messageContent = getMessageContent();
-                } catch (CookieException e) {
-                    LOGGER.error(e.getMessage(), e);
-                    messageContent = "<<ERROR>>";
-                }
-
-                final String messageContentFinal = messageContent;
-                message.edit(m ->  m.setContent(messageContentFinal)).block();
+                final String messageContent = getMessageContent();
+                message.edit(m ->  m.setContent(messageContent)).block();
                 countdown--;
             }
         } catch (Exception e) {
