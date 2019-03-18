@@ -11,7 +11,6 @@ import sawyern.cookiebot.repository.WeeklyCooldownRepository;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.Period;
 
 @Service
 public class WeeklyCooldownService {

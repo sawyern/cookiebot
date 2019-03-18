@@ -25,7 +25,7 @@ public class GroupRollCommand extends GenericBotCommand {
 
     private int countdown;
     private CookieService cookieService;
-    private Logger LOGGER = LoggerFactory.getLogger(GroupRollCommand.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroupRollCommand.class);
 
     private static int min = 1;
     private static int max = 100;
@@ -40,7 +40,7 @@ public class GroupRollCommand extends GenericBotCommand {
         if (getArgs().size() != 2)
             throw new CookieException("Invalid arguments. !grouproll {bet}");
 
-        Integer bet;
+        int bet;
 
         try {
             bet = Integer.parseInt(getArgs().get(1));
@@ -53,15 +53,7 @@ public class GroupRollCommand extends GenericBotCommand {
         Message message = BotUtil.sendMessage(event, getMessageContent());
         message.addReaction(ReactionEmoji.unicode(CommandConstants.DICE));
 
-        try {
-            while (countdown > 0) {
-                TimeUnit.SECONDS.sleep(1);
-                message.edit(m ->  m.setContent(getMessageContent())).block();
-                countdown--;
-            }
-        } catch (InterruptedException e) {
-            throw new CookieException("Interrupted exception.");
-        }
+        startCountdownEditMessage(message);
 
         Flux<User> reactions = message.getReactors(ReactionEmoji.unicode(CommandConstants.DICE));
         BotUtil.sendMessage(event, "Starting rolls...");
@@ -97,8 +89,7 @@ public class GroupRollCommand extends GenericBotCommand {
                 winner = entry;
             }
 
-            else if (entry.getValue().equals(winner.getValue()))
-                if (RollDieCommand.roll(0, 1) == 1)
+            else if (entry.getValue().equals(winner.getValue()) && RollDieCommand.roll(0, 1) == 1)
                     winner = entry;
         }
 
@@ -116,12 +107,34 @@ public class GroupRollCommand extends GenericBotCommand {
         BotUtil.sendMessage(event,"Winner <@" + winner.getKey().getDiscordId() + ">!");
     }
 
+    protected void startCountdownEditMessage(Message message) throws CookieException {
+        try {
+            while (countdown > 0) {
+                TimeUnit.SECONDS.sleep(1);
+                String messageContent;
+                try {
+                    messageContent = getMessageContent();
+                } catch (CookieException e) {
+                    LOGGER.error(e.getMessage(), e);
+                    messageContent = "<<ERROR>>";
+                }
+
+                final String messageContentFinal = messageContent;
+                message.edit(m ->  m.setContent(messageContentFinal)).block();
+                countdown--;
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new CookieException("Thread interrupted.");
+        }
+    }
+
     @Autowired
     public void setCookieService(CookieService cookieService) {
         this.cookieService = cookieService;
     }
 
-    public String getMessageContent() {
+    public String getMessageContent() throws CookieException {
         return "React " + CommandConstants.DICE + " to join. Betting " + getArgs().get(1) + " cookies. Starting in " + this.countdown;
     }
 }

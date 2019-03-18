@@ -1,6 +1,10 @@
 package sawyern.cookiebot.constants;
 
+import java.util.Random;
+
 public class CommandConstants {
+
+    public static final Random RANDOM = new Random();
 
     public static final String PING = "ping";
     public static final String PONG = "Pong!";
@@ -14,4 +18,6 @@ public class CommandConstants {
 
     public static final String QUOTE_REGEX = "([^\"]\\S*|\".+?\")\\s*";
     public static final String DICE = "\uD83C\uDFB2";
+
+    private CommandConstants() {}
 }

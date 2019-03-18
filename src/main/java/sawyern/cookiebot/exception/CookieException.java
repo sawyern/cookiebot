@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 
 public class CookieException extends Exception {
 
-    private HttpStatus httpStatus;
+    private final HttpStatus httpStatus;
 
     public CookieException() {
         this(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -23,9 +23,5 @@ public class CookieException extends Exception {
 
     public HttpStatus getHttpStatus() {
         return httpStatus;
-    }
-
-    public void setHttpStatus(HttpStatus httpStatus) {
-        this.httpStatus = httpStatus;
     }
 }

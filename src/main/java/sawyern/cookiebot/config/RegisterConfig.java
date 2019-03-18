@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Aspect
 public class RegisterConfig {
-    private Logger LOGGER = LoggerFactory.getLogger(RegisterConfig.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegisterConfig.class);
 
     @Before("execution(* sawyern.cookiebot.bot.*.*subscribeCommand(..))")
     public void logRegisterCommand(JoinPoint joinPoint) {
-        LOGGER.info("Registering command: " + joinPoint.getTarget().getClass().getSimpleName());
+        LOGGER.info("Registering command: {}", joinPoint.getTarget().getClass().getSimpleName());
     }
 }

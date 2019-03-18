@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import sawyern.cookiebot.exception.CookieException;
 
 public class BotUtil {
-    private static Logger LOGGER = LoggerFactory.getLogger(BotUtil.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BotUtil.class);
+
+    private BotUtil() {}
 
     public static Message sendMessage(MessageCreateEvent event, String message) {
         Message messageObj = null;

@@ -25,7 +25,7 @@ public class CookieService {
     private CookieRepository cookieRepository;
     private AccountService accountService;
 
-    private static Logger LOGGER = LoggerFactory.getLogger(CookieService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CookieService.class);
 
     @Autowired
     public CookieService(
@@ -87,10 +87,6 @@ public class CookieService {
         }
     }
 
-    public Cookie createCookie(String type) throws CookieException {
-        return null;
-    }
-
     public void generateCookie(String discordId, String type, int num) throws CookieException {
         for (int i = 0; i < num; i++) {
             generateCookie(discordId, type);
@@ -101,7 +97,6 @@ public class CookieService {
         return generateCookie(discordId, CookieType.NORMAL);
     }
 
-    @Transactional
     public Cookie generateCookie(String discordId, String type) throws CookieException {
         Cookie cookie = new Cookie(type);
         Account account = accountService.getAccount(discordId);

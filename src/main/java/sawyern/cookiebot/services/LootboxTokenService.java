@@ -9,7 +9,6 @@ import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.models.entity.LootboxToken;
 import sawyern.cookiebot.repository.LootboxTokenRepository;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 @Service
@@ -18,7 +17,7 @@ public class LootboxTokenService {
     private AccountService accountService;
     private LootboxTokenRepository lootboxTokenRepository;
 
-    private static Logger LOGGER = LoggerFactory.getLogger(LootboxTokenService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LootboxTokenService.class);
 
     public List<LootboxToken> getAllByAccount(String discordId) throws CookieException {
         try {
@@ -51,7 +50,7 @@ public class LootboxTokenService {
                 token.setAccount(account);
                 lootboxTokenRepository.save(token);
             }
-            LOGGER.info(MessageFormat.format("Created {0} tokens for account {1}", num, discordId));
+            LOGGER.info("Created {} tokens for account {}", num, discordId);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             throw new CookieException("Error adding token.");

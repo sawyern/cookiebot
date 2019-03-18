@@ -16,16 +16,16 @@ import java.util.List;
 
 @Component
 public class CookieBotDiscordClient {
-    private DiscordClient discordClient;
+    private static DiscordClient discordClient;
 
     private DiscordClientProperties discordClientProperties;
     private List<BotCommand> botCommands;
 
-    private static Logger LOGGER = LoggerFactory.getLogger(CookieBotDiscordClient.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CookieBotDiscordClient.class);
 
     @EventListener(ApplicationReadyEvent.class)
     public void startDiscordClient() {
-        this.discordClient = new DiscordClientBuilder(discordClientProperties.getToken()).build();
+        setDiscordClient(new DiscordClientBuilder(discordClientProperties.getToken()).build());
         subscribeAllCommands(discordClient);
         discordClient.login().block();
     }
@@ -33,8 +33,16 @@ public class CookieBotDiscordClient {
     public void subscribeAllCommands(DiscordClient client) {
         client.getEventDispatcher()
                 .on(ReadyEvent.class)
-                .subscribe(ready -> LOGGER.info("Logged in as " + ready.getSelf().getUsername()));
+                .subscribe(ready -> LOGGER.info("Logged in as {}", ready.getSelf().getUsername()));
         botCommands.forEach(command -> command.subscribeCommand(client));
+    }
+
+    public static DiscordClient getDiscordClient() {
+        return CookieBotDiscordClient.getDiscordClient();
+    }
+
+    private static void setDiscordClient(DiscordClient discordClient) {
+        CookieBotDiscordClient.discordClient = discordClient;
     }
 
     @Autowired

@@ -19,7 +19,7 @@ public class AccountService {
 
     private AccountRepository accountRepository;
 
-    private static Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
 
     @Autowired
     public AccountService(AccountRepository accountRepository) {

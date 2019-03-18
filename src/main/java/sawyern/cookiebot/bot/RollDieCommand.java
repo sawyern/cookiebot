@@ -2,11 +2,14 @@ package sawyern.cookiebot.bot;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import org.springframework.stereotype.Component;
+import sawyern.cookiebot.constants.CommandConstants;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.util.BotUtil;
 
+
 @Component
 public class RollDieCommand extends GenericBotCommand {
+
     @Override
     public String getCommand() {
         return "roll";
@@ -31,6 +34,6 @@ public class RollDieCommand extends GenericBotCommand {
     }
 
     public static Integer roll(int min, int max) {
-        return (int)(Math.random() * ((max - min) + 1) + min);
+        return CommandConstants.RANDOM.nextInt(max) + min;
     }
 }

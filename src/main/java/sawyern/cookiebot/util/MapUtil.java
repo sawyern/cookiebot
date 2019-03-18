@@ -13,4 +13,6 @@ public class MapUtil {
         }
         return result;
     }
+
+    private MapUtil() {}
 }

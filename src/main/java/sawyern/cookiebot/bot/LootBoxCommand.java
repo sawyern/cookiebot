@@ -15,16 +15,16 @@ public class LootBoxCommand extends GenericBotCommand {
     private CookieService cookieService;
     private LootboxTokenService lootboxTokenService;
 
-    private static Integer COST = 1;
+    private static final Integer COST = 1;
 
-    private static double ZERO = 30.3125d;
-    private static double ONE = 45d;
-    private static double TWO = 15d;
-    private static double THREE = 5d;
-    private static double FOUR = 2.5d;
-    private static double FIVE = 1.25d;
-    private static double SIX = .625d;
-    private static double SEVEN = 0.3125d;
+    private static final double ZERO = 30.3125d;
+    private static final double ONE = 45d;
+    private static final double TWO = 15d;
+    private static final double THREE = 5d;
+    private static final double FOUR = 2.5d;
+    private static final double FIVE = 1.25d;
+    private static final double SIX = .625d;
+    private static final double SEVEN = 0.3125d;
 
 
     @Override

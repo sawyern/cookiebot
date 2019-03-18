@@ -1,38 +1,22 @@
 package sawyern.cookiebot.models.entity;
 
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "HAS_COOKIE")
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class HasCookie extends DbItem {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "ACCOUNT_ID")
+    @NonNull
     private Account account;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "COOKIE_ID")
+    @NonNull
     private Cookie cookie;
-
-    public HasCookie() {}
-    public HasCookie(Account account, Cookie cookie) {
-        this.account = account;
-        this.cookie = cookie;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public Cookie getCookie() {
-        return cookie;
-    }
-
-    public void setCookie(Cookie cookie) {
-        this.cookie = cookie;
-    }
 }
