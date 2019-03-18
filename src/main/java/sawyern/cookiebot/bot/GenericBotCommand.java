@@ -9,7 +9,6 @@ import sawyern.cookiebot.constants.CommandConstants;
 import sawyern.cookiebot.util.BotUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,13 +63,13 @@ public abstract class GenericBotCommand implements BotCommand {
     public abstract String getCommand();
 
     /**
-     * default is 0, override to change. Must not return null or negative integers
+     * empty is default and means infinite arguments allowed, override to change. Cannot contain negative integers.
      * @return a list of acceptable argument lengths
      * @see #checkArgs()
      */
     public List<Integer> allowedNumArgs() {
-        //default number of arguments is 0
-        return Collections.singletonList(0);
+        //default number of arguments is infinite
+        return new ArrayList<>();
     }
 
     /**
@@ -78,6 +77,10 @@ public abstract class GenericBotCommand implements BotCommand {
      * @throws CookieException if invalid number of arguments
      */
     protected final void checkArgs() throws CookieException {
+        // null means any number of arguments is okay
+        if (allowedNumArgs().isEmpty())
+            return;
+
         // !command does not count as an argument but is included in the argument list, thus 1 is subtracted from size
         if (!allowedNumArgs().contains(getArgs().size() - 1))
             throw new InvalidCommandArgumentLengthCookieException(allowedNumArgs());
@@ -100,6 +103,7 @@ public abstract class GenericBotCommand implements BotCommand {
      * splits the message by " " into a list of string arguments.
      * if argument is surrounded by quotes, it will consider the block as one argument
      * sets local msgArgs variable
+     * argument 0 is the command itself
      * @param message input message
      */
     protected void parseArgs(String message) throws CookieException {

@@ -14,13 +14,17 @@ import org.mockito.Spy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
 import sawyern.cookiebot.constants.CommandConstants;
+import sawyern.cookiebot.exception.ArgsNotParsedCookieException;
 import sawyern.cookiebot.exception.CookieException;
+import sawyern.cookiebot.exception.InvalidCommandArgumentLengthCookieException;
+import sawyern.cookiebot.exception.InvalidMessageCookieException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class GenericBotTest {
+public class GenericBotCommandTest {
 
     private GenericBotCommand genericBotCommand;
 
@@ -39,7 +43,7 @@ public class GenericBotTest {
     private Message message;
 
     @Before
-    public void setup() {
+    public void setup() throws CookieException {
         genericBotCommand = new PingCommand();
         Mockito.when(discordClient.getEventDispatcher()).thenReturn(eventDispatcher);
         Mockito.when(eventDispatcher.on(Mockito.eq(MessageCreateEvent.class))).thenReturn(messageCreateEventFlux);
@@ -56,14 +60,22 @@ public class GenericBotTest {
     @Test
     public void parseCommandTrue() throws CookieException {
         String testString = "!ping";
-        boolean actual = genericBotCommand.parseCommand(testString);
+        Mockito.doReturn(Arrays.asList("!ping"))
+                .when(genericBotCommandSpy).getArgs();
+        Mockito.doReturn("ping")
+                .when(genericBotCommandSpy).getCommand();
+        boolean actual = genericBotCommandSpy.parseCommand(testString);
         Assert.assertTrue(actual);
     }
 
     @Test
     public void parseCommandFalseWrongCommand() throws CookieException {
         String testString = "!pong";
-        boolean actual = genericBotCommand.parseCommand(testString);
+        Mockito.doReturn(Arrays.asList("!pong"))
+                .when(genericBotCommandSpy).getArgs();
+        Mockito.doReturn("ping")
+                .when(genericBotCommandSpy).getCommand();
+        boolean actual = genericBotCommandSpy.parseCommand(testString);
         Assert.assertFalse(actual);
     }
 
@@ -93,29 +105,40 @@ public class GenericBotTest {
     }
 
     @Test
-    public void getArgs() throws CookieException {
-        genericBotCommand.parseCommand("!ping arg1");
+    public void getArgsOneAllowed() throws CookieException {
+        genericBotCommand.parseArgs("!ping");
+        List<String> args = genericBotCommand.getArgs();
+        Assert.assertEquals(1, args.size());
+        Assert.assertEquals("!ping", args.get(0));
+    }
+
+    @Test
+    public void getArgsTwoAllowed() throws CookieException {
+        genericBotCommand.parseArgs("!ping arg1");
         List<String> args = genericBotCommand.getArgs();
         Assert.assertEquals(2, args.size());
-        Assert.assertEquals("arg1", args.get(1));
         Assert.assertEquals("!ping", args.get(0));
+        Assert.assertEquals("arg1", args.get(1));
+    }
+
+    @Test(expected = InvalidCommandArgumentLengthCookieException.class)
+    public void getArgsInvalidArguments() throws CookieException {
+        genericBotCommand.parseArgs("!ping arg1 arg2");
+        genericBotCommand.getArgs();
+    }
+
+    @Test(expected = ArgsNotParsedCookieException.class)
+    public void getArgsNullArgsThenThrowCookieException() throws CookieException {
+        genericBotCommand.getArgs();
     }
 
     @Test
     public void getArgsWithSpace() throws CookieException {
-        genericBotCommand.parseCommand("!ping \"arg1 with space\"");
+        genericBotCommand.parseArgs("!ping \"arg1 with space\"");
         List<String> args = genericBotCommand.getArgs();
         Assert.assertEquals(2, args.size());
         Assert.assertEquals("arg1 with space", args.get(1));
         Assert.assertEquals("!ping", args.get(0));
-    }
-
-    @Test
-    public void getArgs4Args() throws CookieException {
-        genericBotCommand.parseCommand("!ping arg1 arg2 arg3");
-        List<String> args = genericBotCommand.getArgs();
-        Assert.assertEquals(4, args.size());
-        Assert.assertEquals("arg2", args.get(2));
     }
 
     @Test
@@ -155,4 +178,13 @@ public class GenericBotTest {
         genericBotCommandSpy.executeCommand(messageCreateEvent);
     }
 
+    @Test(expected = InvalidMessageCookieException.class)
+    public void parseArgsInvalidMessage() throws CookieException {
+        genericBotCommand.parseArgs(null);
+    }
+
+    @Test(expected = InvalidMessageCookieException.class)
+    public void parseArgsEmptyMessage() throws CookieException {
+        genericBotCommand.parseArgs("");
+    }
 }
