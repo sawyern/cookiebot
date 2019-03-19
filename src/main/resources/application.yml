@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    include: encryption
   datasource:
     url: jdbc:postgresql://localhost:5432/CookieBot
     username: postgres

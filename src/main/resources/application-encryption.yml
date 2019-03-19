@@ -1,4 +1,0 @@
-jasypt:
-  encryptor:
-    algorithm: PBEWithMD5AndDES
-    password: <<your password here>>
