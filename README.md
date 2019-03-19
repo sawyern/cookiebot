@@ -1,7 +1,7 @@
 # cookiebot
 Keeps track of cookies owed
 
-#Sonar Qube
+# Sonar Qube
 https://sonarcloud.io/dashboard?id=sawyern.cookiebot%3Acookiebot
 
 # Pre Requisites
