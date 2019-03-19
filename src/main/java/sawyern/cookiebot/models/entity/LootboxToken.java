@@ -1,13 +1,15 @@
 package sawyern.cookiebot.models.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "LOOTBOX_TOKEN")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @EqualsAndHashCode(callSuper = true)
 public class LootboxToken extends DbItem {
     @ManyToOne

@@ -27,7 +27,7 @@ public class CookiesCommand extends GenericBotCommand {
 
     @Override
     public List<Integer> allowedNumArgs() {
-        return Arrays.asList(1, 2);
+        return Arrays.asList(0, 1);
     }
 
     @Override

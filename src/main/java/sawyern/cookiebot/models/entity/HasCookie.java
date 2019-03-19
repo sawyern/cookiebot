@@ -7,6 +7,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "HAS_COOKIE")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @EqualsAndHashCode(callSuper = true)
 public class HasCookie extends DbItem {
 

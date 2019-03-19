@@ -38,6 +38,8 @@ public abstract class GenericBotCommand implements BotCommand {
             String content = event.getMessage().getContent().orElseThrow(DiscordException::new);
             parseArgs(content);
             if (parseCommand(content)) {
+                checkArgs();
+
                 LOGGER.info("Received command: {}", getCommand());
 
                 // execute command
@@ -114,7 +116,6 @@ public abstract class GenericBotCommand implements BotCommand {
         while (m.find())
             msgArgs.add(m.group(1).replace(CommandConstants.QUOTE, CommandConstants.EMPTY_STRING));
         this.args = msgArgs;
-        checkArgs();
     }
 
     /**

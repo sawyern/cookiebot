@@ -1,7 +1,6 @@
 package sawyern.cookiebot.models.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,6 +8,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "WEEKLY_COOLDOWN")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @EqualsAndHashCode(callSuper = true)
 public class WeeklyCooldown extends DbItem {
     @OneToOne
