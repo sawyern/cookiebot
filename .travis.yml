@@ -7,8 +7,8 @@ addons:
 jdk: openjdk11
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean -Djasypt.encryptor.password=$JYASPT_PASSWORD org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonarb
-
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonarb
+  - mvn package -Djasypt.encryptor.password=$JYASPT_PASSWORD
 deploy:
     - provider: codedeploy
       revision_type: github
@@ -17,5 +17,4 @@ deploy:
       application: "CookieBot"
       deployment_group: "Production"
       region: "us-east-1"
-      skip_cleanup: true
 
