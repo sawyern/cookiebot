@@ -1,6 +1,9 @@
 # cookiebot
 Keeps track of cookies owed
 
+# Sonar Qube
+https://sonarcloud.io/dashboard?id=sawyern.cookiebot%3Acookiebot
+
 # Pre Requisites
 Requires java 8+, maven, and database of your choice.
 
