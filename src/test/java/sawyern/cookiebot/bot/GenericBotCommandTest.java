@@ -121,12 +121,6 @@ public class GenericBotCommandTest {
         Assert.assertEquals("arg1", args.get(1));
     }
 
-    @Test(expected = InvalidCommandArgumentLengthCookieException.class)
-    public void getArgsInvalidArguments() throws CookieException {
-        genericBotCommand.parseArgs("!ping arg1 arg2");
-        genericBotCommand.getArgs();
-    }
-
     @Test(expected = ArgsNotParsedCookieException.class)
     public void getArgsNullArgsThenThrowCookieException() throws CookieException {
         genericBotCommand.getArgs();
