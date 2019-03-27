@@ -8,10 +8,9 @@ jdk:
   - openjdk11
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+  - mvn clean -Dspring.profiles.active=production org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
 deploy:
   provider: heroku
   api_key:
     secure: $HEROKU_TOKEN
   app: cookiebot-discord-heroku
-  run:  java -jar -Dspring.profiles.active=production cookiebot-0.0.1-SNAPSHOT.jar
