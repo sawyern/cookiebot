@@ -1,7 +1,7 @@
 package sawyern.cookiebot.bot;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.models.dto.GiveCookieDto;
 import sawyern.cookiebot.exception.CookieException;
@@ -13,9 +13,10 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class GiveCookieCommand extends GenericBotCommand {
 
-    private CookieService cookieService;
+    private final CookieService cookieService;
 
     @Override
     public String getCommand() {
@@ -62,10 +63,5 @@ public class GiveCookieCommand extends GenericBotCommand {
                 recieverUser,
                 String.valueOf(recieverTotal))
         );
-    }
-
-    @Autowired
-    public void setCookieService(CookieService cookieService) {
-        this.cookieService = cookieService;
     }
 }

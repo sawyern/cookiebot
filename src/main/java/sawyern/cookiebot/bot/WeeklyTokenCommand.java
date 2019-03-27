@@ -1,7 +1,7 @@
 package sawyern.cookiebot.bot;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.LootboxTokenService;
@@ -13,10 +13,11 @@ import java.text.MessageFormat;
 import java.text.NumberFormat;
 
 @Component
+@RequiredArgsConstructor
 public class WeeklyTokenCommand extends GenericBotCommand {
 
-    private WeeklyCooldownService weeklyCooldownService;
-    private LootboxTokenService lootboxTokenService;
+    private final WeeklyCooldownService weeklyCooldownService;
+    private final LootboxTokenService lootboxTokenService;
 
     private static final int WEEKLY_TOKENS = 3;
 
@@ -37,15 +38,5 @@ public class WeeklyTokenCommand extends GenericBotCommand {
             NumberFormat format = new DecimalFormat("##.##");
             BotUtil.sendMessage(event, MessageFormat.format("Weekly cooldown not reset. Time remaining: {0} hours", format.format(remainingCd)));
         }
-    }
-
-    @Autowired
-    public void setLootboxTokenService(LootboxTokenService lootboxTokenService) {
-        this.lootboxTokenService = lootboxTokenService;
-    }
-
-    @Autowired
-    public void setWeeklyCooldownService(WeeklyCooldownService weeklyCooldownService) {
-        this.weeklyCooldownService = weeklyCooldownService;
     }
 }

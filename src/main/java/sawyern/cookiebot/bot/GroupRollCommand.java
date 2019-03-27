@@ -4,8 +4,8 @@ import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
 import discord4j.core.object.reaction.ReactionEmoji;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import sawyern.cookiebot.constants.CommandConstants;
@@ -20,10 +20,12 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class GroupRollCommand extends GenericBotCommand {
 
+    private final CookieService cookieService;
+
     private int countdown;
-    private CookieService cookieService;
 
     private static int min = 1;
     private static int max = 100;
@@ -118,11 +120,6 @@ public class GroupRollCommand extends GenericBotCommand {
             log.error(e.getMessage(), e);
             throw new CookieException("Thread interrupted.");
         }
-    }
-
-    @Autowired
-    public void setCookieService(CookieService cookieService) {
-        this.cookieService = cookieService;
     }
 
     public String getMessageContent() throws CookieException {

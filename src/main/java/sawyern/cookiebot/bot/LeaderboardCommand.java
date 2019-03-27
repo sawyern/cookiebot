@@ -1,7 +1,7 @@
 package sawyern.cookiebot.bot;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.exception.CookieException;
@@ -15,10 +15,11 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class LeaderboardCommand extends GenericBotCommand {
 
-    private CookieService cookieService;
-    private AccountService accountService;
+    private final CookieService cookieService;
+    private final AccountService accountService;
 
     @Override
     public String getCommand() {
@@ -47,16 +48,5 @@ public class LeaderboardCommand extends GenericBotCommand {
 
         leaderboard.append("```");
         BotUtil.sendMessage(event, leaderboard.toString());
-    }
-
-    @Autowired
-    public void setCookieService(CookieService cookieService) {
-        this.cookieService = cookieService;
-    }
-
-    @Autowired
-
-    public void setAccountService(AccountService accountService) {
-        this.accountService = accountService;
     }
 }

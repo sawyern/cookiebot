@@ -1,6 +1,6 @@
 package sawyern.cookiebot.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -11,20 +11,12 @@ import sawyern.cookiebot.models.dto.GiveCookieDto;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
 
-import javax.transaction.Transactional;
-
 @RestController
-@RequestMapping(value = "api/cookiebot/v1/cookies")
-public class CookieController {
+@RequestMapping(value = "/cookies")
+@RequiredArgsConstructor
+public class CookieController implements GenericController {
 
-    private CookieService cookieService;
-
-    @Autowired
-    public CookieController(
-            CookieService cookieService
-    ) {
-        this.cookieService = cookieService;
-    }
+    private final CookieService cookieService;
 
     @GetMapping
     public ResponseEntity<CookieDto> getCookies(
@@ -54,7 +46,6 @@ public class CookieController {
     }
 
     @PutMapping
-    @Transactional
     public ResponseEntity<String> addCookie(
             @RequestParam(name = "id") String discordId,
             @RequestParam(required = false, defaultValue = "1") int numCookies
@@ -69,7 +60,6 @@ public class CookieController {
     }
 
     @DeleteMapping
-    @Transactional
     public ResponseEntity<String> removeCookie(
             @RequestParam(name = "id") String discordId
     ) {

@@ -1,6 +1,6 @@
 package sawyern.cookiebot.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,15 +11,11 @@ import sawyern.cookiebot.services.AccountService;
 import javax.transaction.Transactional;
 
 @RestController
-@RequestMapping(value = "/api/cookiebot/v1/accounts")
-public class AccountController {
+@RequestMapping(value = "/accounts")
+@RequiredArgsConstructor
+public class AccountController implements GenericController {
 
-    private AccountService accountService;
-
-    @Autowired
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
-    }
+    private final AccountService accountService;
 
     @PutMapping
     @Transactional

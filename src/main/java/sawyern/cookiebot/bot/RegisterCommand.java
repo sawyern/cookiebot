@@ -2,7 +2,7 @@ package sawyern.cookiebot.bot;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Member;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.models.dto.AccountDto;
 import sawyern.cookiebot.exception.CookieException;
@@ -11,10 +11,11 @@ import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
 
 @Component
+@RequiredArgsConstructor
 public class RegisterCommand extends GenericBotCommand {
 
-    private AccountService accountService;
-    private CookieService cookieService;
+    private final AccountService accountService;
+    private final CookieService cookieService;
 
     @Override
     public void execute(MessageCreateEvent event) throws CookieException {
@@ -33,15 +34,5 @@ public class RegisterCommand extends GenericBotCommand {
     @Override
     public String getCommand() {
         return "register";
-    }
-
-    @Autowired
-    public void setAccountService(AccountService accountService) {
-        this.accountService = accountService;
-    }
-
-    @Autowired
-    public void setCookieService(CookieService cookieService) {
-        this.cookieService = cookieService;
     }
 }

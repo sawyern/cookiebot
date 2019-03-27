@@ -1,7 +1,7 @@
 package sawyern.cookiebot.bot;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.constants.CookieType;
 import sawyern.cookiebot.exception.CookieException;
@@ -10,10 +10,11 @@ import sawyern.cookiebot.services.LootboxTokenService;
 import sawyern.cookiebot.util.BotUtil;
 
 @Component
+@RequiredArgsConstructor
 public class LootBoxCommand extends GenericBotCommand {
 
-    private CookieService cookieService;
-    private LootboxTokenService lootboxTokenService;
+    private final CookieService cookieService;
+    private final LootboxTokenService lootboxTokenService;
 
     private static final Integer COST = 1;
 
@@ -77,16 +78,6 @@ public class LootBoxCommand extends GenericBotCommand {
         BotUtil.sendMessage(event, "```You open the lootbox!\nContains..." + numCookiesWon + " cookies!\n" +
                 BotUtil.getMember(event).getUsername() + " cookies: " + newTotal + "\n" +
                 BotUtil.getMember(event).getUsername() + " tokens: " + lootboxTokenService.getAllByAccount(id).size() + "```");
-    }
-
-    @Autowired
-    public void setCookieService(CookieService cookieService) {
-        this.cookieService = cookieService;
-    }
-
-    @Autowired
-    public void setLootboxTokenService(LootboxTokenService lootboxTokenService) {
-        this.lootboxTokenService = lootboxTokenService;
     }
 
     public static Integer getCOST() {
