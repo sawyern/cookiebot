@@ -5,7 +5,7 @@ addons:
     token:
       secure: $SONAR_TOKEN
 jdk:
-  - openjdk11
+  - openjdk8
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
   - mvn clean -Dspring.profiles.active=production org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
