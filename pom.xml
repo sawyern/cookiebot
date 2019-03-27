@@ -95,7 +95,7 @@
 				<configuration>
 					<appName>cookiebot-discord-heroku</appName>
 					<processTypes>
-						<web>java -jar Dspring.profiles.active=production target/cookiebot-0.0.1-SNAPSHOT.jar</web>
+						<web>java -jar -Dspring.profiles.active=production target/cookiebot-0.0.1-SNAPSHOT.jar</web>
 					</processTypes>
 				</configuration>
 			</plugin>
