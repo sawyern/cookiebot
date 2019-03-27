@@ -1,4 +1,12 @@
+security:
+  ignored: /**
+discord:
+  token: $(DISCORD_TOKEN)
+
+---
+
 spring:
+  profiles: production
   datasource:
     url: ${JDBC_DATABASE_URL}
     username: ${JDBC_DATABASE_USERNAME}
@@ -7,7 +15,16 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-security:
-  ignored: /**
-discord:
-  token: $(DISCORD_TOKEN)
+
+---
+
+spring:
+  profiles: local
+  datasource:
+    url: jdbc:postgresql://localhost:5432/CookieBot
+    username: postgres
+    password:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
