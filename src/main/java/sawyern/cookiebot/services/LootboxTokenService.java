@@ -1,7 +1,6 @@
 package sawyern.cookiebot.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sawyern.cookiebot.exception.CookieException;
@@ -12,18 +11,17 @@ import sawyern.cookiebot.repository.LootboxTokenRepository;
 import java.util.List;
 
 @Service
+@Slf4j
 public class LootboxTokenService {
 
     private AccountService accountService;
     private LootboxTokenRepository lootboxTokenRepository;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LootboxTokenService.class);
-
     public List<LootboxToken> getAllByAccount(String discordId) throws CookieException {
         try {
             return lootboxTokenRepository.findByAccount(accountService.getAccount(discordId));
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new CookieException("Error getting all tokens by account.");
         }
     }
@@ -35,9 +33,9 @@ public class LootboxTokenService {
                 LootboxToken token = tokens.stream().findFirst().orElseThrow(() -> new CookieException("Error getting tokens."));
                 lootboxTokenRepository.delete(token);
             }
-            LOGGER.warn("No token deleted");
+            log.warn("No token deleted");
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new CookieException("Error deleting tokens.");
         }
     }
@@ -50,9 +48,9 @@ public class LootboxTokenService {
                 token.setAccount(account);
                 lootboxTokenRepository.save(token);
             }
-            LOGGER.info("Created {} tokens for account {}", num, discordId);
+            log.info("Created {} tokens for account {}", num, discordId);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new CookieException("Error adding token.");
         }
     }

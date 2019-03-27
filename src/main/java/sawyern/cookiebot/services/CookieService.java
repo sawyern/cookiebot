@@ -1,7 +1,6 @@
 package sawyern.cookiebot.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,13 +18,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CookieService {
 
     private HasCookieRepository hasCookieRepository;
     private CookieRepository cookieRepository;
     private AccountService accountService;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CookieService.class);
 
     @Autowired
     public CookieService(
@@ -73,7 +71,7 @@ public class CookieService {
             hasCookieRepository.delete(hasCookie);
             cookieRepository.deleteById(cookie.getId());
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new CookieException("Failed to delete cookie");
         }
     }
@@ -82,7 +80,7 @@ public class CookieService {
         try {
             cookieRepository.deleteById(id);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new CookieException(HttpStatus.NOT_FOUND);
         }
     }
@@ -105,7 +103,7 @@ public class CookieService {
             cookieRepository.save(cookie);
             hasCookieRepository.save(hasCookie);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new CookieException("Error saving cookie");
         }
         return cookie;

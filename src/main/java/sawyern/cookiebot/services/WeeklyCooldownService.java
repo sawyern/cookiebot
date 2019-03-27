@@ -1,7 +1,6 @@
 package sawyern.cookiebot.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sawyern.cookiebot.exception.CookieException;
@@ -13,12 +12,12 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Service
+@Slf4j
 public class WeeklyCooldownService {
     private WeeklyCooldownRepository weeklyCooldownRepository;
     private AccountService accountService;
 
     private static final long WEEKLY_COOLDOWN = 1L;
-    private static final Logger LOGGER = LoggerFactory.getLogger(WeeklyCooldownService.class);
 
     public boolean isCooldown(String discordId) throws CookieException {
         WeeklyCooldown cooldown = getCooldownByAccountId(discordId);
@@ -33,7 +32,7 @@ public class WeeklyCooldownService {
                 weeklyCooldownRepository.save(cooldown);
             }
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new CookieException("Error putting weekly cooldown.");
         }
     }
@@ -45,7 +44,7 @@ public class WeeklyCooldownService {
                 cooldown = createCooldown(discordId);
             return cooldown;
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new CookieException("Error getting cooldown by account");
         }
     }
@@ -58,7 +57,7 @@ public class WeeklyCooldownService {
             cooldown.setAccount(account);
             cooldown.setCanUseNext(LocalDateTime.now().minus(Duration.ofSeconds(1)));
             weeklyCooldownRepository.save(cooldown);
-            LOGGER.info("New cooldown created.");
+            log.info("New cooldown created.");
         }
         return cooldown;
     }

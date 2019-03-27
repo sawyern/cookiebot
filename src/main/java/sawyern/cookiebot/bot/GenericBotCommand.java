@@ -2,8 +2,7 @@ package sawyern.cookiebot.bot;
 
 import discord4j.core.DiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import sawyern.cookiebot.exception.*;
 import sawyern.cookiebot.constants.CommandConstants;
 import sawyern.cookiebot.util.BotUtil;
@@ -13,10 +12,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 public abstract class GenericBotCommand implements BotCommand {
     private List<String> args;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(GenericBotCommand.class);
 
     /**
      * subscribes this command to be executed when the input message starts with "!" and matches getCommand()
@@ -40,7 +38,7 @@ public abstract class GenericBotCommand implements BotCommand {
             if (parseCommand(content)) {
                 checkArgs();
 
-                LOGGER.info("Received command: {}", getCommand());
+                log.info("Received command: {}", getCommand());
 
                 // execute command
                 execute(event);
@@ -52,7 +50,7 @@ public abstract class GenericBotCommand implements BotCommand {
             // text message was not sent. could be image etc. ignore this case
         } catch (Exception e) {
             // log unknown exceptions
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 

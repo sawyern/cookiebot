@@ -4,14 +4,12 @@ import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Member;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.exception.InvalidNumberParamCookieException;
 
+@Slf4j
 public class BotUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BotUtil.class);
-
     private BotUtil() {}
 
     public static Message sendMessage(MessageCreateEvent event, String message) {
@@ -19,7 +17,7 @@ public class BotUtil {
         try {
             messageObj = event.getMessage().getChannel().block().createMessage(message).block();
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         return messageObj;
     }

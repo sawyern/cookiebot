@@ -3,8 +3,7 @@ package sawyern.cookiebot;
 import discord4j.core.DiscordClient;
 import discord4j.core.DiscordClientBuilder;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -15,13 +14,12 @@ import sawyern.cookiebot.properties.DiscordClientProperties;
 import java.util.List;
 
 @Component
+@Slf4j
 public class CookieBotDiscordClient {
     private static DiscordClient discordClient;
 
     private DiscordClientProperties discordClientProperties;
     private List<BotCommand> botCommands;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CookieBotDiscordClient.class);
 
     @EventListener(ApplicationReadyEvent.class)
     public void startDiscordClient() {
@@ -33,7 +31,7 @@ public class CookieBotDiscordClient {
     public void subscribeAllCommands(DiscordClient client) {
         client.getEventDispatcher()
                 .on(ReadyEvent.class)
-                .subscribe(ready -> LOGGER.info("Logged in as {}", ready.getSelf().getUsername()));
+                .subscribe(ready -> log.info("Logged in as {}", ready.getSelf().getUsername()));
         botCommands.forEach(command -> command.subscribeCommand(client));
     }
 

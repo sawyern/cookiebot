@@ -1,7 +1,6 @@
 package sawyern.cookiebot.services;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,11 +14,10 @@ import java.util.List;
 
 
 @Service
+@Slf4j
 public class AccountService {
 
     private AccountRepository accountRepository;
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
 
     @Autowired
     public AccountService(AccountRepository accountRepository) {
@@ -40,7 +38,7 @@ public class AccountService {
         try {
             accountRepository.save(account);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new CookieException("Failed to create account");
         }
     }
@@ -67,7 +65,7 @@ public class AccountService {
         try {
             accountRepository.delete(account);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new CookieException("Failed to delete account");
         }
     }
@@ -76,7 +74,7 @@ public class AccountService {
         try {
             return accountRepository.findAll();
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             throw new CookieException("Failed to find all accounts.");
         }
     }
