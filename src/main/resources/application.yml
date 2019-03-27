@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/CookieBot
-    username: postgres
-    password: ENC(gHy95v4Yegc+Yz+m1ug8SHO/trY+DFc2)
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -10,4 +10,4 @@ spring:
 security:
   ignored: /**
 discord:
-  token: ENC(VR8XwS7weKlju0zR6NVeKtWkoWhOWp55ZhLHEaujpmBwgwQxtb5T9aKl1C+LVbTlzUWZ9SdAulzHseJmZCPrmRR60mOtlqER)
+  token: $(DISCORD_TOKEN)
