@@ -3,7 +3,12 @@ security:
 discord:
   token: $(DISCORD_TOKEN)
 
+server:
+  port: 8080
+
 ---
+server:
+  port: ${PORT}
 
 spring:
   profiles: production
