@@ -30,19 +30,27 @@ public class GiveCookieCommand extends GenericBotCommand {
 
     @Override
     public void execute(MessageCreateEvent event) throws CookieException {
-        if (getArgs().get(2).equalsIgnoreCase(BotUtil.getMember(event).getUsername()))
-            throw new CookieException("Can't give cookies to yourself.");
-
         GiveCookieDto giveCookieDto = new GiveCookieDto();
         giveCookieDto.setSenderId(BotUtil.getMember(event).getId().asString());
 
+        String senderUser = BotUtil.getMember(event).getUsername();
+        String recieverUser = null;
+
         if (getArgs().size() == 2) {
+            recieverUser = getArgs().get(1);
+            if (recieverUser.equalsIgnoreCase(BotUtil.getMember(event).getUsername()))
+                throw new CookieException("Can't give cookies to yourself.");
+
             // first argument is username
             giveCookieDto.setRecieverId(BotUtil.getIdFromUser(event, getArgs().get(1)));
             // give one cookie if not specified
             giveCookieDto.setNumCookies(1);
         }
         else if (getArgs().size() == 3) {
+            recieverUser = getArgs().get(2);
+            if (recieverUser.equalsIgnoreCase(BotUtil.getMember(event).getUsername()))
+                throw new CookieException("Can't give cookies to yourself.");
+
             // second argument is username
             giveCookieDto.setRecieverId(BotUtil.getIdFromUser(event, getArgs().get(2)));
             // first argument is numCookies
@@ -51,8 +59,6 @@ public class GiveCookieCommand extends GenericBotCommand {
 
         cookieService.giveCookieTo(giveCookieDto);
 
-        String senderUser = BotUtil.getMember(event).getUsername();
-        String recieverUser = getArgs().get(2);
         int senderTotal = cookieService.getAllCookiesForAccount(giveCookieDto.getSenderId());
         int recieverTotal = cookieService.getAllCookiesForAccount(giveCookieDto.getRecieverId());
 

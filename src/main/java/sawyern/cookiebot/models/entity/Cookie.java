@@ -3,9 +3,7 @@ package sawyern.cookiebot.models.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "COOKIE")
@@ -15,6 +13,10 @@ import javax.persistence.Table;
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class Cookie extends DbItem {
+    @ManyToOne
+    @JoinColumn(name = "ACCOUNT_ID")
+    private Account account;
+
     @Column(name = "type")
     public String type;
 }
