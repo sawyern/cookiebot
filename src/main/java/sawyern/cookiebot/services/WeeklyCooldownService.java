@@ -39,7 +39,7 @@ public class WeeklyCooldownService {
 
     public WeeklyCooldown getCooldownByAccountId(String discordId) throws CookieException {
         try {
-            WeeklyCooldown cooldown = weeklyCooldownRepository.findByAccount(accountService.getAccount(discordId));
+            WeeklyCooldown cooldown = weeklyCooldownRepository.findByAccountDiscordId(discordId);
             if (cooldown == null)
                 cooldown = createCooldown(discordId);
             return cooldown;
@@ -51,7 +51,7 @@ public class WeeklyCooldownService {
 
     public WeeklyCooldown createCooldown(String discordId) throws CookieException {
         Account account = accountService.getAccount(discordId);
-        WeeklyCooldown cooldown = weeklyCooldownRepository.findByAccount(account);
+        WeeklyCooldown cooldown = weeklyCooldownRepository.findByAccountDiscordId(discordId);
         if (cooldown == null) {
             cooldown = new WeeklyCooldown();
             cooldown.setAccount(account);

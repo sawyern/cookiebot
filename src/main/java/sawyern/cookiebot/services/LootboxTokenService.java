@@ -19,7 +19,7 @@ public class LootboxTokenService {
 
     public List<LootboxToken> getAllByAccount(String discordId) throws CookieException {
         try {
-            return lootboxTokenRepository.findByAccount(accountService.getAccount(discordId));
+            return lootboxTokenRepository.findByAccountDiscordId(discordId);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new CookieException("Error getting all tokens by account.");
@@ -33,7 +33,7 @@ public class LootboxTokenService {
                 LootboxToken token = tokens.stream().findFirst().orElseThrow(() -> new CookieException("Error getting tokens."));
                 lootboxTokenRepository.delete(token);
             }
-            log.warn("No token deleted");
+            else log.warn("No token deleted");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new CookieException("Error deleting tokens.");
@@ -43,6 +43,7 @@ public class LootboxTokenService {
     public void addLootboxToken(String discordId, int num) throws CookieException {
         try {
             Account account = accountService.getAccount(discordId);
+
             for (int i = 0; i < num; i++) {
                 LootboxToken token = new LootboxToken();
                 token.setAccount(account);
