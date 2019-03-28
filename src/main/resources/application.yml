@@ -4,7 +4,7 @@ discord:
   token: $(DISCORD_TOKEN)
 
 server:
-  port: 1234
+  port: 8952
 
 ---
 server:
@@ -35,7 +35,7 @@ spring:
     hibernate:
       ddl-auto: create
 discord:
-  token: NTQ0ODg5OTcyMDA0NzQ5MzEy.D32obA.PYsUDHNseMFNVygYbCrTXqpQqaE
+  token:
 
 ---
 
@@ -49,3 +49,5 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+discord:
+  token:
