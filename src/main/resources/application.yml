@@ -4,7 +4,7 @@ discord:
   token: $(DISCORD_TOKEN)
 
 server:
-  port: 1234
+  port: 8952
 
 ---
 server:
@@ -44,8 +44,10 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/CookieBot
     username: postgres
-    password:
+    password: 2DoRblt2
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: create
+discord:
+  token: NTQ0ODg5OTcyMDA0NzQ5MzEy.D32obA.PYsUDHNseMFNVygYbCrTXqpQqaE
