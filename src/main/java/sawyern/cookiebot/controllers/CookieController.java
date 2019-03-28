@@ -22,15 +22,11 @@ public class CookieController implements GenericController {
     public ResponseEntity<CookieDto> getCookies(
             @RequestParam(name = "id") String discordId
     ) {
-        try {
-            CookieDto dto = CookieDto.builder()
-                    .discordId(discordId)
-                    .numCookies(cookieService.getAllCookiesForAccount(discordId))
-                    .build();
-            return new ResponseEntity<>(dto, HttpStatus.OK);
-        } catch (CookieException e) {
-            return new ResponseEntity<>(e.getHttpStatus());
-        }
+        CookieDto dto = CookieDto.builder()
+                .discordId(discordId)
+                .numCookies(cookieService.getAllCookiesForAccount(discordId))
+                .build();
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @PostMapping(value = "/give")
