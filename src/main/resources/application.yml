@@ -35,7 +35,7 @@ spring:
     hibernate:
       ddl-auto: create
 discord:
-  token: NTQ0ODg5OTcyMDA0NzQ5MzEy.D32obA.PYsUDHNseMFNVygYbCrTXqpQqaE
+  token:
 
 ---
 
@@ -44,10 +44,10 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/CookieBot
     username: postgres
-    password: 2DoRblt2
+    password:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: create
 discord:
-  token: NTQ0ODg5OTcyMDA0NzQ5MzEy.D32obA.PYsUDHNseMFNVygYbCrTXqpQqaE
+  token:
