@@ -14,5 +14,7 @@ deploy:
   provider: heroku
   api_key:
     secure: $HEROKU_TOKEN
-  app: cookiebot-discord-heroku
+  app:
+    master: cookiebot-discord-heroku
+    dev: cookiebot-discord-dev
   skip_cleanup: true
