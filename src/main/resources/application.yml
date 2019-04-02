@@ -1,8 +1,13 @@
 security:
   ignored: /**
 
-server:
-  port: 8952
+spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non-contextual-creation: true
 
 ---
 server:
@@ -39,6 +44,8 @@ discord:
   token: $(DEV_DISCORD_TOKEN)
 
 ---
+server:
+  port: 8952
 
 spring:
   profiles: local
