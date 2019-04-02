@@ -22,6 +22,8 @@ discord:
   token: $(PROD_DISCORD_TOKEN)
 
 ---
+server:
+  port: ${PORT}
 
 spring:
   profiles: dev
