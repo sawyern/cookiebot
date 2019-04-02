@@ -9,6 +9,8 @@ import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.services.LootboxTokenService;
 import sawyern.cookiebot.util.BotUtil;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class LootBoxCommand extends GenericBotCommand {
@@ -34,7 +36,7 @@ public class LootBoxCommand extends GenericBotCommand {
     }
 
     @Override
-    public void execute(MessageCreateEvent event) throws CookieException {
+    public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
         double roll = roll();
         int numCookiesWon;
         boolean useToken = false;

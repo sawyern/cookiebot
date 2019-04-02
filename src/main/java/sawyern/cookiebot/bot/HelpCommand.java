@@ -2,7 +2,6 @@ package sawyern.cookiebot.bot;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import org.springframework.stereotype.Component;
-import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.util.BotUtil;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class HelpCommand extends GenericBotCommand {
     }
 
     @Override
-    public void execute(MessageCreateEvent event) throws CookieException {
+    public void execute(MessageCreateEvent event, List<String> args) {
         List<String> helpStrings = new ArrayList<>();
         helpStrings.add("!register -- registers your account");
         helpStrings.add("!cookies -- returns how many cookies you have");

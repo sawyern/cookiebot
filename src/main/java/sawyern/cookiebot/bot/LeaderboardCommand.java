@@ -27,7 +27,7 @@ public class LeaderboardCommand extends GenericBotCommand {
     }
 
     @Override
-    public void execute(MessageCreateEvent event) throws CookieException {
+    public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
         StringBuilder leaderboard = new StringBuilder("```");
         Map<String, Integer> leaderboardMap = new HashMap<>();
 

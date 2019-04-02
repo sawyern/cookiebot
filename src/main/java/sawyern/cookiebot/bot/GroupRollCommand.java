@@ -1,5 +1,6 @@
 package sawyern.cookiebot.bot;
 
+import com.google.common.collect.Sets;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
@@ -36,19 +37,19 @@ public class GroupRollCommand extends GenericBotCommand {
     }
 
     @Override
-    public List<Integer> allowedNumArgs() {
-        return Collections.singletonList(1);
+    public Set<Integer> getAllowedNumArgs() {
+        return Sets.newHashSet(1);
     }
 
     @Override
-    public void execute(MessageCreateEvent event) throws CookieException {
-        int bet = BotUtil.parseIntArgument(getArgs().get(1));
+    public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
+        int bet = BotUtil.parsePositiveIntArgument(args.get(0));
         countdown = 20;
 
-        Message message = BotUtil.sendMessage(event, getMessageContent());
+        Message message = BotUtil.sendMessage(event, getMessageContent(bet));
         message.addReaction(ReactionEmoji.unicode(CommandConstants.DICE));
 
-        startCountdownEditMessage(message);
+        startCountdownEditMessage(message, bet);
 
         Flux<User> reactions = message.getReactors(ReactionEmoji.unicode(CommandConstants.DICE));
         BotUtil.sendMessage(event, "Starting rolls...");
@@ -62,7 +63,7 @@ public class GroupRollCommand extends GenericBotCommand {
             if (user.getId().asString().equalsIgnoreCase(selfId))
                 return;
             int roll = RollDieCommand.roll(min, max);
-            builder.append(user.getUsername() + " rolls: " + roll + "\n");
+            builder.append(user.getUsername()).append(" rolls: ").append(roll).append("\n");
             userRollMap.put(new Account(user.getId().asString(), user.getUsername()), roll);
         });
 
@@ -108,11 +109,11 @@ public class GroupRollCommand extends GenericBotCommand {
         BotUtil.sendMessage(event,"Winner <@" + winner.getKey().getDiscordId() + ">!");
     }
 
-    protected void startCountdownEditMessage(Message message) throws CookieException {
+    protected void startCountdownEditMessage(Message message, int bet) throws CookieException {
         try {
             while (countdown > 0) {
                 TimeUnit.SECONDS.sleep(1);
-                final String messageContent = getMessageContent();
+                final String messageContent = getMessageContent(bet);
                 message.edit(m ->  m.setContent(messageContent)).block();
                 countdown--;
             }
@@ -122,7 +123,7 @@ public class GroupRollCommand extends GenericBotCommand {
         }
     }
 
-    public String getMessageContent() throws CookieException {
-        return "React " + CommandConstants.DICE + " to join. Betting " + getArgs().get(1) + " cookies. Starting in " + this.countdown;
+    public String getMessageContent(int bet) {
+        return "React " + CommandConstants.DICE + " to join. Betting " + bet + " cookies. Starting in " + this.countdown;
     }
 }

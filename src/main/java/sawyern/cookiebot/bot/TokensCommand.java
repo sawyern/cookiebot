@@ -7,6 +7,8 @@ import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.LootboxTokenService;
 import sawyern.cookiebot.util.BotUtil;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class TokensCommand extends GenericBotCommand {
@@ -19,7 +21,7 @@ public class TokensCommand extends GenericBotCommand {
     }
 
     @Override
-    public void execute(MessageCreateEvent event) throws CookieException {
+    public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
         String id = BotUtil.getMember(event).getId().asString();
         int numLootboxes = lootboxTokenService.getAllByAccount(id).size();
         BotUtil.sendMessage(event, BotUtil.getMember(event).getUsername() + " has " + numLootboxes + " tokens.");

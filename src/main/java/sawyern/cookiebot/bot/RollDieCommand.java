@@ -1,10 +1,14 @@
 package sawyern.cookiebot.bot;
 
+import com.google.common.collect.Sets;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.constants.CommandConstants;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.util.BotUtil;
+
+import java.util.List;
+import java.util.Set;
 
 
 @Component
@@ -16,13 +20,16 @@ public class RollDieCommand extends GenericBotCommand {
     }
 
     @Override
-    public void execute(MessageCreateEvent event) throws CookieException {
-        if (getArgs().size() != 2)
-            throw new CookieException("Invalid arguments. !roll {maxNum}");
+    public Set<Integer> getAllowedNumArgs() {
+        return Sets.newHashSet(1);
+    }
+
+    @Override
+    public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
         int maxNum;
         int minNum = 1;
         try {
-            maxNum = Integer.parseInt(getArgs().get(1));
+            maxNum = Integer.parseInt(args.get(0));
         } catch (NumberFormatException e) {
             throw new CookieException("Invalid number argument.");
         }

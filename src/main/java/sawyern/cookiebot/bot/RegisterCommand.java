@@ -10,6 +10,8 @@ import sawyern.cookiebot.services.AccountService;
 import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class RegisterCommand extends GenericBotCommand {
@@ -18,7 +20,7 @@ public class RegisterCommand extends GenericBotCommand {
     private final CookieService cookieService;
 
     @Override
-    public void execute(MessageCreateEvent event) throws CookieException {
+    public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
         Member member = BotUtil.getMember(event);
         AccountDto accountDto = AccountDto.builder()
                 .discordId(member.getId().asString())

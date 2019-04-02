@@ -4,14 +4,14 @@ import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Member;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.exception.InvalidNumberParamCookieException;
 
 @Slf4j
+@UtilityClass
 public class BotUtil {
-    private BotUtil() {}
-
     public static Message sendMessage(MessageCreateEvent event, String message) {
         Message messageObj = null;
         try {
@@ -21,7 +21,6 @@ public class BotUtil {
         }
         return messageObj;
     }
-
 
     public static String getIdFromUser(MessageCreateEvent event, String username) throws CookieException  {
         User user = event.getClient().getUsers()
@@ -43,6 +42,18 @@ public class BotUtil {
         int parsedArg;
         try {
             parsedArg = Integer.parseInt(arg);
+        } catch (NumberFormatException e) {
+            throw new InvalidNumberParamCookieException();
+        }
+        return parsedArg;
+    }
+
+    public static int parsePositiveIntArgument(String arg) throws CookieException {
+        int parsedArg;
+        try {
+            parsedArg = Integer.parseInt(arg);
+            if (parsedArg <= 0)
+                throw new NumberFormatException();
         } catch (NumberFormatException e) {
             throw new InvalidNumberParamCookieException();
         }

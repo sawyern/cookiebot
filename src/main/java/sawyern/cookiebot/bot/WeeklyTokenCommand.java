@@ -11,6 +11,7 @@ import sawyern.cookiebot.util.BotUtil;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.text.NumberFormat;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class WeeklyTokenCommand extends GenericBotCommand {
     }
 
     @Override
-    public void execute(MessageCreateEvent event) throws CookieException {
+    public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
         String id = BotUtil.getMember(event).getId().asString();
         if (weeklyCooldownService.isCooldown(id)) {
             weeklyCooldownService.putOnCooldown(id);

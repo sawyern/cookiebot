@@ -1,5 +1,6 @@
 package sawyern.cookiebot.bot;
 
+import com.google.common.collect.Sets;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,8 +10,8 @@ import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.util.BotUtil;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -24,37 +25,37 @@ public class GiveCookieCommand extends GenericBotCommand {
     }
 
     @Override
-    public List<Integer> allowedNumArgs() {
-        return Arrays.asList(1, 2);
+    public Set<Integer> getAllowedNumArgs() {
+        return Sets.newHashSet(1, 2);
     }
 
     @Override
-    public void execute(MessageCreateEvent event) throws CookieException {
+    public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
         GiveCookieDto giveCookieDto = new GiveCookieDto();
         giveCookieDto.setSenderId(BotUtil.getMember(event).getId().asString());
 
         String senderUser = BotUtil.getMember(event).getUsername();
         String recieverUser = null;
 
-        if (getArgs().size() == 2) {
-            recieverUser = getArgs().get(1);
+        if (args.size() == 1) {
+            recieverUser = args.get(0);
             if (recieverUser.equalsIgnoreCase(BotUtil.getMember(event).getUsername()))
                 throw new CookieException("Can't give cookies to yourself.");
 
             // first argument is username
-            giveCookieDto.setRecieverId(BotUtil.getIdFromUser(event, getArgs().get(1)));
+            giveCookieDto.setRecieverId(BotUtil.getIdFromUser(event, args.get(0)));
             // give one cookie if not specified
             giveCookieDto.setNumCookies(1);
         }
-        else if (getArgs().size() == 3) {
-            recieverUser = getArgs().get(2);
+        else if (args.size() == 2) {
+            recieverUser = args.get(1);
             if (recieverUser.equalsIgnoreCase(BotUtil.getMember(event).getUsername()))
                 throw new CookieException("Can't give cookies to yourself.");
 
             // second argument is username
-            giveCookieDto.setRecieverId(BotUtil.getIdFromUser(event, getArgs().get(2)));
+            giveCookieDto.setRecieverId(BotUtil.getIdFromUser(event, args.get(1)));
             // first argument is numCookies
-            giveCookieDto.setNumCookies(BotUtil.parseIntArgument(getArgs().get(1)));
+            giveCookieDto.setNumCookies(BotUtil.parsePositiveIntArgument(args.get(0)));
         }
 
         cookieService.giveCookieTo(giveCookieDto);
