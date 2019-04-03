@@ -3,7 +3,10 @@ package sawyern.cookiebot.services;
 import discord4j.core.DiscordClient;
 import discord4j.core.DiscordClientBuilder;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
-import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -15,19 +18,26 @@ import java.util.List;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class DiscordService {
-    private final DiscordClientProperties discordClientProperties;
-    private final List<BotCommand> botCommands;
 
+    @Setter
+    private DiscordClientProperties discordClientProperties;
+    @Setter
+    private List<BotCommand> botCommands;
+
+    @Getter(AccessLevel.PROTECTED)
     private DiscordClient discordClient;
 
     /**
      * Create discord client given token from properties file
      */
     public void setDiscordClient() {
-        Assert.notNull(discordClientProperties, AssertMessage.ERROR_LOADING_PROPERTY);
-        Assert.notNull(discordClientProperties.getToken(), AssertMessage.DISCORD_TOKEN_NOT_SET);
+        if (getDiscordClient() != null)
+            return;
+
+        Assert.state(discordClientProperties != null, AssertMessage.ERROR_LOADING_PROPERTY);
+        Assert.state(discordClientProperties.getToken() != null, AssertMessage.DISCORD_TOKEN_NOT_SET);
         discordClient = new DiscordClientBuilder(discordClientProperties.getToken()).build();
     }
 
@@ -35,16 +45,17 @@ public class DiscordService {
      * Subscribe commands to discord events
      */
     public void subscribeAllCommands() {
-        Assert.notNull(discordClient, AssertMessage.DISCORD_CLIENT_NOT_SET);
-        botCommands.forEach(command -> command.subscribeCommand(discordClient));
+        Assert.state(getDiscordClient() != null, AssertMessage.DISCORD_CLIENT_NOT_SET);
+        Assert.state(botCommands != null, AssertMessage.NULL_BOT_COMMANDS);
+        botCommands.forEach(command -> command.subscribeCommand(getDiscordClient()));
     }
 
     /**
      * log ready event
      */
     public void subscribeReady() {
-        Assert.notNull(discordClient, AssertMessage.DISCORD_CLIENT_NOT_SET);
-        discordClient.getEventDispatcher()
+        Assert.state(getDiscordClient() != null, AssertMessage.DISCORD_CLIENT_NOT_SET);
+        getDiscordClient().getEventDispatcher()
                 .on(ReadyEvent.class)
                 .subscribe(ready -> log.info("Logged in as {}", ready.getSelf().getUsername()));
     }
@@ -53,7 +64,7 @@ public class DiscordService {
      * discord client will log into server
      */
     public void login() {
-        Assert.notNull(discordClient, AssertMessage.DISCORD_CLIENT_NOT_SET);
-        discordClient.login().block();
+        Assert.state(getDiscordClient() != null, AssertMessage.DISCORD_CLIENT_NOT_SET);
+        getDiscordClient().login().block();
     }
 }
