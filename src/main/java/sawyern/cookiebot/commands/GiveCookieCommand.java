@@ -1,4 +1,4 @@
-package sawyern.cookiebot.bot;
+package sawyern.cookiebot.commands;
 
 import com.google.common.collect.Sets;
 import discord4j.core.event.domain.message.MessageCreateEvent;

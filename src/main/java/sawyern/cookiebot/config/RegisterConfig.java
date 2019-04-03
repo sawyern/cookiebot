@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Aspect
 @Slf4j
 public class RegisterConfig {
-    @Before("execution(* sawyern.cookiebot.bot.*.*subscribeCommand(..))")
+    @Before("execution(* sawyern.cookiebot.commands.*.*subscribeCommand(..))")
     public void logRegisterCommand(JoinPoint joinPoint) {
         log.info("Registering command: {}", joinPoint.getTarget().getClass().getSimpleName());
     }

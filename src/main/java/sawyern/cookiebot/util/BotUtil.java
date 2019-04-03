@@ -35,7 +35,7 @@ public class BotUtil {
     }
 
     public static String getSelfId(MessageCreateEvent event) throws CookieException {
-        return event.getClient().getSelfId().orElseThrow(() -> new CookieException("Error getting bot id")).asString();
+        return event.getClient().getSelfId().orElseThrow(() -> new CookieException("Error getting commands id")).asString();
     }
 
     public static int parseIntArgument(String arg) throws CookieException {

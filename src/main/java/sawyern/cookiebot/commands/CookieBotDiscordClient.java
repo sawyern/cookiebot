@@ -1,4 +1,4 @@
-package sawyern.cookiebot;
+package sawyern.cookiebot.commands;
 
 import discord4j.core.DiscordClient;
 import discord4j.core.DiscordClientBuilder;
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import sawyern.cookiebot.bot.BotCommand;
 import sawyern.cookiebot.properties.DiscordClientProperties;
 
 import java.util.List;

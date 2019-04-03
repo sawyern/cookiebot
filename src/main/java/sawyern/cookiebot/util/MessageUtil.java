@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 @UtilityClass
 public class MessageUtil {
     /**
-     * splits the message by " " into a list of string arguments.
+     * splits the message by " " (space) into a list of string arguments.
      * if argument is surrounded by quotes, it will consider the block as one argument
      *
      * ex. input -> this is a message
