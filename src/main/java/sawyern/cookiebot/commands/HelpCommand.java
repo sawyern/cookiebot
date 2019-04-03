@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class HelpCommand extends GenericBotCommand {
+public class HelpCommand extends MessageCreateEventBotCommand {
     @Override
     public String getCommand() {
         return "help";

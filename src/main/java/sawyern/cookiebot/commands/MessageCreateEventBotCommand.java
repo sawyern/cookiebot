@@ -13,15 +13,31 @@ import sawyern.cookiebot.util.MessageUtil;
 import java.util.*;
 
 @Slf4j
-public abstract class GenericBotCommand implements BotCommand {
-
+public abstract class MessageCreateEventBotCommand implements BotCommand {
     /**
      * subscribes this command to be executed when the input message starts with "!" and matches getCommand()
      * @param client discord client
      */
     @Override
-    public void subscribeCommand(@NonNull DiscordClient client) {
+    public final void subscribeCommand(@NonNull DiscordClient client) {
         client.getEventDispatcher().on(MessageCreateEvent.class).subscribe(this::executeCommand);
+    }
+
+    /**
+     * @return the name of the command
+     *
+     * ex. message content -> !myCommand arg1 arg2
+     *     getCommand() returns "myCommand"
+     */
+    public abstract String getCommand();
+
+    /**
+     * empty is default and means infinite arguments allowed, override to change.
+     * @return a list of acceptable argument lengths
+     */
+    public Set<Integer> getAllowedNumArgs() {
+        //default number of arguments is infinite
+        return new LinkedHashSet<>();
     }
 
     /**
@@ -30,7 +46,7 @@ public abstract class GenericBotCommand implements BotCommand {
      * @see #getCommand()
      * @see #execute
      */
-    protected void executeCommand(@NonNull MessageCreateEvent event) {
+    final void executeCommand(@NonNull MessageCreateEvent event) {
         try {
             // get text content from message, ignore non-text messages
             String content = event.getMessage().getContent().orElseThrow(DiscordException::new);
@@ -62,27 +78,10 @@ public abstract class GenericBotCommand implements BotCommand {
     }
 
     /**
-     * @return the name of the command
-     *
-     * ex. message content -> !myCommand arg1 arg2
-     *     getCommand() returns "myCommand"
-     */
-    public abstract String getCommand();
-
-    /**
-     * empty is default and means infinite arguments allowed, override to change.
-     * @return a list of acceptable argument lengths
-     */
-    public Set<Integer> getAllowedNumArgs() {
-        //default number of arguments is infinite
-        return new LinkedHashSet<>();
-    }
-
-    /**
      * Checks to make sure that a valid set of
      * @throws CookieException if invalid number of arguments
      */
-    protected final void checkValidNumArgs(@NonNull List<String> args) throws CookieException {
+    final void checkValidNumArgs(@NonNull List<String> args) throws CookieException {
         // empty means any number of arguments is okay
         if (getAllowedNumArgs().isEmpty())
             return;
@@ -91,8 +90,12 @@ public abstract class GenericBotCommand implements BotCommand {
             throw new InvalidCommandArgumentLengthCookieException(InvalidCommandArgumentLengthCookieException.getMessageIfSet(getAllowedNumArgs()));
     }
 
-
-    protected List<String> parseArgs(@NonNull String message) {
+    /**
+     * Splits string and return all but the first element
+     * @param message to be split
+     * @return list of arguments derived from input string
+     */
+    final List<String> parseArgs(@NonNull String message) {
         Assert.isTrue(!message.isEmpty(), AssertMessage.EMPTY_MESSAGE);
         List<String> splitMessage = MessageUtil.splitMessage(message);
 
@@ -102,7 +105,12 @@ public abstract class GenericBotCommand implements BotCommand {
         return splitMessage;
     }
 
-    protected String parseCommand(@NonNull String message) {
+    /**
+     * Splits string and return the first element without the "!"
+     * @param message to be spkit
+     * @return name of command received
+     */
+    final String parseCommand(@NonNull String message) {
         Assert.isTrue(!message.isEmpty(), AssertMessage.EMPTY_MESSAGE);
         String command = MessageUtil.splitMessage(message)
                 .stream()

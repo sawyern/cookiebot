@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class PingCommand extends GenericBotCommand {
+public class PingCommand extends MessageCreateEventBotCommand {
     @Override
     public void execute(MessageCreateEvent event, List<String> args)  {
         BotUtil.sendMessage(event, "pong!");

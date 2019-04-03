@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class TokensCommand extends GenericBotCommand {
+public class TokensCommand extends MessageCreateEventBotCommand {
 
     private final LootboxTokenService lootboxTokenService;
 

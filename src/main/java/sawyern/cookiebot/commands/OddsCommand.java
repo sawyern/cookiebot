@@ -7,7 +7,7 @@ import sawyern.cookiebot.util.BotUtil;
 import java.util.List;
 
 @Component
-public class OddsCommand extends GenericBotCommand {
+public class OddsCommand extends MessageCreateEventBotCommand {
     @Override
     public String getCommand() {
         return "odds";

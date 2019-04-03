@@ -13,7 +13,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class LootBoxCommand extends GenericBotCommand {
+public class LootBoxCommand extends MessageCreateEventBotCommand {
 
     private final CookieService cookieService;
     private final LootboxTokenService lootboxTokenService;

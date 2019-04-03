@@ -15,7 +15,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class WeeklyTokenCommand extends GenericBotCommand {
+public class WeeklyTokenCommand extends MessageCreateEventBotCommand {
 
     private final WeeklyCooldownService weeklyCooldownService;
     private final LootboxTokenService lootboxTokenService;

@@ -15,7 +15,7 @@ import java.util.*;
 
 @Component
 @RequiredArgsConstructor
-public class CookiesCommand extends GenericBotCommand {
+public class CookiesCommand extends MessageCreateEventBotCommand {
 
     private final CookieService cookieService;
 

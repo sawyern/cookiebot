@@ -14,7 +14,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class RegisterCommand extends GenericBotCommand {
+public class RegisterCommand extends MessageCreateEventBotCommand {
 
     private final AccountService accountService;
     private final CookieService cookieService;

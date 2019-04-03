@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class GroupRollCommand extends GenericBotCommand {
+public class GroupRollCommand extends MessageCreateEventBotCommand {
 
     private final CookieService cookieService;
 

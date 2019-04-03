@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class LeaderboardCommand extends GenericBotCommand {
+public class LeaderboardCommand extends MessageCreateEventBotCommand {
 
     private final CookieService cookieService;
     private final AccountService accountService;

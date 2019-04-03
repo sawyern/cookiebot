@@ -12,7 +12,7 @@ import java.util.Set;
 
 
 @Component
-public class RollDieCommand extends GenericBotCommand {
+public class RollDieCommand extends MessageCreateEventBotCommand {
 
     @Override
     public String getCommand() {
