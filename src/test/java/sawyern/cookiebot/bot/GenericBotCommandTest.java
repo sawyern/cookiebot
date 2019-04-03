@@ -97,6 +97,7 @@ public class GenericBotCommandTest {
         Mockito.doReturn(new ArrayList<>()).when(genericBotCommandSpy).parseArgs(Mockito.eq("!ping"));
         Mockito.doReturn("ping").when(genericBotCommandSpy).getCommand();
         genericBotCommandSpy.executeCommand(messageCreateEvent);
+        Mockito.verify(genericBotCommandSpy).getCommand();
     }
 
     @Test
@@ -110,12 +111,14 @@ public class GenericBotCommandTest {
         Mockito.doThrow(new CookieException()).when(genericBotCommandSpy).execute(Mockito.any(), Mockito.eq(new ArrayList<>()));
 
         genericBotCommandSpy.executeCommand(messageCreateEvent);
+        Mockito.verify(genericBotCommandSpy).getCommand();
     }
 
     @Test
     public void executeUnexpectedException() {
         Mockito.when(messageCreateEvent.getMessage()).thenThrow(new RuntimeException());
         genericBotCommand.executeCommand(messageCreateEvent);
+        Mockito.verify(genericBotCommandSpy).executeCommand(Mockito.eq(messageCreateEvent));
     }
 
     @Test(expected = IllegalArgumentException.class)
