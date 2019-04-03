@@ -4,6 +4,7 @@ import discord4j.core.DiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import sawyern.cookiebot.exception.*;
 import sawyern.cookiebot.constants.CommandConstants;
@@ -12,6 +13,7 @@ import sawyern.cookiebot.util.MessageUtil;
 
 import java.util.*;
 
+@Component
 @Slf4j
 public abstract class MessageCreateEventBotCommand implements BotCommand {
     /**
@@ -19,7 +21,7 @@ public abstract class MessageCreateEventBotCommand implements BotCommand {
      * @param client discord client
      */
     @Override
-    public final void subscribeCommand(@NonNull DiscordClient client) {
+    public void subscribeCommand(@NonNull DiscordClient client) {
         client.getEventDispatcher().on(MessageCreateEvent.class).subscribe(this::executeCommand);
     }
 
