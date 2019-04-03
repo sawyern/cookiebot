@@ -3,11 +3,10 @@ security:
 
 spring:
   jpa:
-    properties:
-      hibernate:
-        jdbc:
-          lob:
-            non-contextual-creation: true
+    hibernate:
+      jdbc:
+        lob:
+          non-contextual-creation: true
 
 ---
 server:
@@ -39,7 +38,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
 discord:
   token: $(DEV_DISCORD_TOKEN)
 
