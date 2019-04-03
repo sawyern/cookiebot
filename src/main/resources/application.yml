@@ -3,11 +3,11 @@ security:
 
 spring:
   jpa:
-    hibernate:
-      jdbc:
-        lob:
-          non-contextual-creation: true
-
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
 ---
 server:
   port: ${PORT}
