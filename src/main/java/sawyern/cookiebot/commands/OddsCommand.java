@@ -2,7 +2,7 @@ package sawyern.cookiebot.commands;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import org.springframework.stereotype.Component;
-import sawyern.cookiebot.util.BotUtil;
+import sawyern.cookiebot.exception.CookieException;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class OddsCommand extends MessageCreateEventBotCommand {
     }
 
     @Override
-    public void execute(MessageCreateEvent event, List<String> args) {
+    public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
         StringBuilder builder = new StringBuilder("```");
         builder.append("0: ").append(LootBoxCommand.getZERO()).append("%\n");
         builder.append("1: ").append(LootBoxCommand.getONE()).append("%\n");
@@ -25,6 +25,6 @@ public class OddsCommand extends MessageCreateEventBotCommand {
         builder.append("6: ").append(LootBoxCommand.getSIX()).append("%\n");
         builder.append("7: ").append(LootBoxCommand.getSEVEN()).append("%\n");
         builder.append("```");
-        BotUtil.sendMessage(event, builder.toString());
+        botUtil.sendMessage(event, builder.toString());
     }
 }

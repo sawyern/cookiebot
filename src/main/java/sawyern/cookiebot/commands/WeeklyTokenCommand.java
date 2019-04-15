@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.LootboxTokenService;
 import sawyern.cookiebot.services.WeeklyCooldownService;
-import sawyern.cookiebot.util.BotUtil;
 
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
@@ -29,15 +28,15 @@ public class WeeklyTokenCommand extends MessageCreateEventBotCommand {
 
     @Override
     public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
-        String id = BotUtil.getMember(event).getId().asString();
+        String id = botUtil.getMember(event).getId().asString();
         if (weeklyCooldownService.isCooldown(id)) {
             weeklyCooldownService.putOnCooldown(id);
-            lootboxTokenService.addLootboxToken(BotUtil.getMember(event).getId().asString(), WEEKLY_TOKENS);
-            BotUtil.sendMessage(event, WEEKLY_TOKENS + " tokens have been awarded. Good luck!");
+            lootboxTokenService.addLootboxToken(botUtil.getMember(event).getId().asString(), WEEKLY_TOKENS);
+            botUtil.sendMessage(event, WEEKLY_TOKENS + " tokens have been awarded. Good luck!");
         } else {
             long remainingCd = weeklyCooldownService.getRemainingCooldownHours(id);
             NumberFormat format = new DecimalFormat("##.##");
-            BotUtil.sendMessage(event, MessageFormat.format("Weekly cooldown not reset. Time remaining: {0} hours", format.format(remainingCd)));
+            botUtil.sendMessage(event, MessageFormat.format("Weekly cooldown not reset. Time remaining: {0} hours", format.format(remainingCd)));
         }
     }
 }

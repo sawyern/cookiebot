@@ -7,7 +7,6 @@ import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.AccountService;
 import sawyern.cookiebot.services.CookieService;
-import sawyern.cookiebot.util.BotUtil;
 import sawyern.cookiebot.util.MapUtil;
 
 import java.util.HashMap;
@@ -47,6 +46,6 @@ public class LeaderboardCommand extends MessageCreateEventBotCommand {
         }
 
         leaderboard.append("```");
-        BotUtil.sendMessage(event, leaderboard.toString());
+        botUtil.sendMessage(event, leaderboard.toString());
     }
 }

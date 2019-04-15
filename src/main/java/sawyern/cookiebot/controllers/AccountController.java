@@ -11,9 +11,9 @@ import sawyern.cookiebot.services.AccountService;
 import javax.transaction.Transactional;
 
 @RestController
-@RequestMapping(value = "/accounts")
+@RequestMapping(value = "api/cookiebot/v1/accounts")
 @RequiredArgsConstructor
-public class AccountController implements GenericController {
+public class AccountController {
 
     private final AccountService accountService;
 

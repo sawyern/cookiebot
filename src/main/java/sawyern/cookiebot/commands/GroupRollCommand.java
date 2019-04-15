@@ -14,7 +14,6 @@ import sawyern.cookiebot.models.dto.GiveCookieDto;
 import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
-import sawyern.cookiebot.util.BotUtil;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -43,21 +42,21 @@ public class GroupRollCommand extends MessageCreateEventBotCommand {
 
     @Override
     public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
-        int bet = BotUtil.parsePositiveIntArgument(args.get(0));
+        int bet = botUtil.parsePositiveIntArgument(args.get(0));
         countdown = 20;
 
-        Message message = BotUtil.sendMessage(event, getMessageContent(bet));
+        Message message = botUtil.sendMessage(event, getMessageContent(bet));
         message.addReaction(ReactionEmoji.unicode(CommandConstants.DICE));
 
         startCountdownEditMessage(message, bet);
 
         Flux<User> reactions = message.getReactors(ReactionEmoji.unicode(CommandConstants.DICE));
-        BotUtil.sendMessage(event, "Starting rolls...");
+        botUtil.sendMessage(event, "Starting rolls...");
 
         StringBuilder builder = new StringBuilder("```");
         Map<Account, Integer> userRollMap = new HashMap<>();
 
-        String selfId = BotUtil.getSelfId(event);
+        String selfId = botUtil.getSelfId(event);
 
         reactions.toStream().forEach(user -> {
             if (user.getId().asString().equalsIgnoreCase(selfId))
@@ -73,7 +72,7 @@ public class GroupRollCommand extends MessageCreateEventBotCommand {
 
         for (Map.Entry<Account, Integer> entry : userRollMap.entrySet()) {
             if (cookieService.getAllCookiesForAccount(entry.getKey().getDiscordId()) < bet) {
-                BotUtil.sendMessage(event, "<@" + entry.getKey().getDiscordId() + "> can't pay. Roll not considered.");
+                botUtil.sendMessage(event, "<@" + entry.getKey().getDiscordId() + "> can't pay. Roll not considered.");
                 continue;
             }
 
@@ -105,8 +104,8 @@ public class GroupRollCommand extends MessageCreateEventBotCommand {
                     .build()
             );
         }
-        BotUtil.sendMessage(event, builder.toString());
-        BotUtil.sendMessage(event,"Winner <@" + winner.getKey().getDiscordId() + ">!");
+        botUtil.sendMessage(event, builder.toString());
+        botUtil.sendMessage(event,"Winner <@" + winner.getKey().getDiscordId() + ">!");
     }
 
     protected void startCountdownEditMessage(Message message, int bet) throws CookieException {

@@ -12,9 +12,9 @@ import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
 
 @RestController
-@RequestMapping(value = "/cookies")
+@RequestMapping(value = "api/cookiebot/v1/cookies")
 @RequiredArgsConstructor
-public class CookieController implements GenericController {
+public class CookieController {
 
     private final CookieService cookieService;
 

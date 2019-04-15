@@ -4,25 +4,32 @@ import discord4j.core.DiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import sawyern.cookiebot.exception.*;
 import sawyern.cookiebot.constants.CommandConstants;
 import sawyern.cookiebot.util.BotUtil;
 import sawyern.cookiebot.util.MessageUtil;
+import sawyern.cookiebot.util.ThrowingConsumerWrapper;
 
 import java.util.*;
 
 @Component
 @Slf4j
 public abstract class MessageCreateEventBotCommand implements BotCommand {
+
+    protected BotUtil botUtil;
+
     /**
      * subscribes this command to be executed when the input message starts with "!" and matches getCommand()
      * @param client discord client
      */
     @Override
     public void subscribeCommand(@NonNull DiscordClient client) {
-        client.getEventDispatcher().on(MessageCreateEvent.class).subscribe(this::executeCommand);
+        client.getEventDispatcher().on(MessageCreateEvent.class).subscribe(
+                ThrowingConsumerWrapper.throwingConsumerWrapper(this::executeCommand, CookieException.class)
+        );
     }
 
     /**
@@ -48,7 +55,7 @@ public abstract class MessageCreateEventBotCommand implements BotCommand {
      * @see #getCommand()
      * @see #execute
      */
-    final void executeCommand(@NonNull MessageCreateEvent event) {
+    final void executeCommand(@NonNull MessageCreateEvent event) throws CookieException {
         try {
             // get text content from message, ignore non-text messages
             String content = event.getMessage().getContent().orElseThrow(DiscordException::new);
@@ -70,7 +77,7 @@ public abstract class MessageCreateEventBotCommand implements BotCommand {
         } catch (CookieException e) {
             // known exception caught and handled. printed here
             log.error(e.getMessage());
-            BotUtil.sendMessage(event, e.getMessage());
+            botUtil.sendMessage(event, e.getMessage());
         } catch (DiscordException e) {
             // ignore this message
         } catch (Exception e) {
@@ -123,5 +130,10 @@ public abstract class MessageCreateEventBotCommand implements BotCommand {
             return CommandConstants.CommandName.UNKNOWN;
 
         return command.split(CommandConstants.COMMAND_START)[1];
+    }
+
+    @Autowired
+    public void setBotUtil(BotUtil botUtil) {
+        this.botUtil = botUtil;
     }
 }

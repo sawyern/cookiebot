@@ -8,7 +8,6 @@ import sawyern.cookiebot.models.dto.AccountDto;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.AccountService;
 import sawyern.cookiebot.services.CookieService;
-import sawyern.cookiebot.util.BotUtil;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class RegisterCommand extends MessageCreateEventBotCommand {
 
     @Override
     public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
-        Member member = BotUtil.getMember(event);
+        Member member = botUtil.getMember(event);
         AccountDto accountDto = AccountDto.builder()
                 .discordId(member.getId().asString())
                 .username(member.getUsername())
@@ -30,7 +29,7 @@ public class RegisterCommand extends MessageCreateEventBotCommand {
 
         for (int i = 0; i < 10; i++)
             cookieService.generateCookie(accountDto.getDiscordId());
-        BotUtil.sendMessage(event, "Successfully registered " + accountDto.getUsername());
+        botUtil.sendMessage(event, "Successfully registered " + accountDto.getUsername());
     }
 
     @Override

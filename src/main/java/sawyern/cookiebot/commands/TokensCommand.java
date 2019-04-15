@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.LootboxTokenService;
-import sawyern.cookiebot.util.BotUtil;
 
 import java.util.List;
 
@@ -22,8 +21,8 @@ public class TokensCommand extends MessageCreateEventBotCommand {
 
     @Override
     public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
-        String id = BotUtil.getMember(event).getId().asString();
+        String id = botUtil.getMember(event).getId().asString();
         int numLootboxes = lootboxTokenService.getAllByAccount(id).size();
-        BotUtil.sendMessage(event, BotUtil.getMember(event).getUsername() + " has " + numLootboxes + " tokens.");
+        botUtil.sendMessage(event, botUtil.getMember(event).getUsername() + " has " + numLootboxes + " tokens.");
     }
 }

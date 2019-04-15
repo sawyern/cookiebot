@@ -7,7 +7,6 @@ import sawyern.cookiebot.constants.CookieType;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.services.LootboxTokenService;
-import sawyern.cookiebot.util.BotUtil;
 
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class LootBoxCommand extends MessageCreateEventBotCommand {
         else
             numCookiesWon = 0;
 
-        String id = BotUtil.getMember(event).getId().asString();
+        String id = botUtil.getMember(event).getId().asString();
 
         if (!lootboxTokenService.getAllByAccount(id).isEmpty())
             useToken = true;
@@ -67,19 +66,19 @@ public class LootBoxCommand extends MessageCreateEventBotCommand {
 
         if (useToken) {
             lootboxTokenService.deleteLootBoxToken(id);
-            BotUtil.sendMessage(event, "Spending token. Remaining tokens: " + lootboxTokenService.getAllByAccount(id).size());
+            botUtil.sendMessage(event, "Spending token. Remaining tokens: " + lootboxTokenService.getAllByAccount(id).size());
         }
         else {
             cookieService.removeCookieOfType(id, CookieType.NORMAL);
-            BotUtil.sendMessage(event, "Spending cookie. Remaining cookies: " + cookieService.getAllCookiesForAccount(id));
+            botUtil.sendMessage(event, "Spending cookie. Remaining cookies: " + cookieService.getAllCookiesForAccount(id));
         }
 
         cookieService.generateCookie(id, CookieType.NORMAL, numCookiesWon);
         int newTotal = cookieService.getAllCookiesForAccount(id);
 
-        BotUtil.sendMessage(event, "```You open the lootbox!\nContains..." + numCookiesWon + " cookies!\n" +
-                BotUtil.getMember(event).getUsername() + " cookies: " + newTotal + "\n" +
-                BotUtil.getMember(event).getUsername() + " tokens: " + lootboxTokenService.getAllByAccount(id).size() + "```");
+        botUtil.sendMessage(event, "```You open the lootbox!\nContains..." + numCookiesWon + " cookies!\n" +
+                botUtil.getMember(event).getUsername() + " cookies: " + newTotal + "\n" +
+                botUtil.getMember(event).getUsername() + " tokens: " + lootboxTokenService.getAllByAccount(id).size() + "```");
     }
 
     public static Integer getCOST() {

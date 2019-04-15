@@ -1,10 +1,8 @@
 package sawyern.cookiebot.services;
 
 import discord4j.core.DiscordClient;
-import discord4j.core.ServiceMediator;
 import discord4j.core.event.EventDispatcher;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
-import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;

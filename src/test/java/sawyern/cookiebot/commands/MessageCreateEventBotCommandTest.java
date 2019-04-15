@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.exception.InvalidCommandArgumentLengthCookieException;
+import sawyern.cookiebot.util.BotUtil;
 
 import java.util.*;
 
@@ -26,8 +27,10 @@ public class MessageCreateEventBotCommandTest {
     private MessageCreateEventBotCommand messageCreateEventBotCommand = new PingCommand();
 
     @Spy
-    private MessageCreateEventBotCommand messageCreateEventBotCommandSpy;
+    private MessageCreateEventBotCommand messageCreateEventBotCommandSpy = new PingCommand();
 
+    @Mock
+    private BotUtil botUtil;
     @Mock
     private DiscordClient discordClient;
     @Mock
@@ -53,12 +56,12 @@ public class MessageCreateEventBotCommandTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void executeCommandIllegalArgument() {
+    public void executeCommandIllegalArgument() throws CookieException {
         messageCreateEventBotCommand.executeCommand(null);
     }
 
     @Test
-    public void executeCommandExecuteGivenInvalidMessageThenThrowsDiscordException() {
+    public void executeCommandExecuteGivenInvalidMessageThenThrowsDiscordException() throws CookieException {
         Mockito.when(messageCreateEvent.getMessage()).thenReturn(message);
         Mockito.when(message.getContent()).thenReturn(Optional.empty());
         messageCreateEventBotCommand.executeCommand(messageCreateEvent);
@@ -66,7 +69,7 @@ public class MessageCreateEventBotCommandTest {
     }
 
     @Test
-    public void executeCommandExecuteGivenInvalidCommandThrowsDiscordException() {
+    public void executeCommandExecuteGivenInvalidCommandThrowsDiscordException() throws CookieException {
         Mockito.when(messageCreateEvent.getMessage()).thenReturn(message);
         Mockito.when(message.getContent()).thenReturn(Optional.of("@ping"));
         messageCreateEventBotCommand.executeCommand(messageCreateEvent);
@@ -88,7 +91,7 @@ public class MessageCreateEventBotCommandTest {
     }
 
     @Test
-    public void executeCommandSuccess() {
+    public void executeCommandSuccess() throws CookieException {
         Mockito.when(messageCreateEvent.getMessage()).thenReturn(message);
         Mockito.when(message.getContent()).thenReturn(Optional.of("!ping"));
 
@@ -115,7 +118,7 @@ public class MessageCreateEventBotCommandTest {
     }
 
     @Test
-    public void executeUnexpectedException() {
+    public void executeUnexpectedException() throws CookieException {
         Mockito.when(messageCreateEvent.getMessage()).thenThrow(new RuntimeException());
         messageCreateEventBotCommand.executeCommand(messageCreateEvent);
         Mockito.verify(messageCreateEvent, Mockito.atLeastOnce()).getMessage();

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import sawyern.cookiebot.constants.CommandConstants;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.CookieService;
-import sawyern.cookiebot.util.BotUtil;
 
 import java.text.MessageFormat;
 import java.util.*;
@@ -41,11 +40,11 @@ public class CookiesCommand extends MessageCreateEventBotCommand {
             username = member.getUsername();
         }
         else if (args.size() == 1) {
-            discordId = BotUtil.getIdFromUser(event, args.get(0));
+            discordId = botUtil.getIdFromUser(event, args.get(0));
             username = args.get(0);
         }
 
         numCookies = cookieService.getAllCookiesForAccount(discordId);
-        BotUtil.sendMessage(event, MessageFormat.format("{0} has {1} cookies.", username, numCookies));
+        botUtil.sendMessage(event, MessageFormat.format("{0} has {1} cookies.", username, numCookies));
     }
 }

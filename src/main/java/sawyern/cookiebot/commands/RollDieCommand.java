@@ -5,7 +5,6 @@ import discord4j.core.event.domain.message.MessageCreateEvent;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.constants.CommandConstants;
 import sawyern.cookiebot.exception.CookieException;
-import sawyern.cookiebot.util.BotUtil;
 
 import java.util.List;
 import java.util.Set;
@@ -37,7 +36,7 @@ public class RollDieCommand extends MessageCreateEventBotCommand {
         if (maxNum <= 0)
             throw new CookieException("Invalid number argument.");
 
-        BotUtil.sendMessage(event, BotUtil.getMember(event).getUsername() + " rolls: " + RollDieCommand.roll(minNum, maxNum).toString());
+        botUtil.sendMessage(event, botUtil.getMember(event).getUsername() + " rolls: " + RollDieCommand.roll(minNum, maxNum).toString());
     }
 
     public static Integer roll(int min, int max) {
