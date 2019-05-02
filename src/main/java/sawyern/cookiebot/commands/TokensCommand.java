@@ -21,8 +21,8 @@ public class TokensCommand extends MessageCreateEventBotCommand {
 
     @Override
     public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
-        String id = botUtil.getMember(event).getId().asString();
+        String id = getBotUtil().getMember(event).getId().asString();
         int numLootboxes = lootboxTokenService.getAllByAccount(id).size();
-        botUtil.sendMessage(event, botUtil.getMember(event).getUsername() + " has " + numLootboxes + " tokens.");
+        getBotUtil().sendMessage(event, getBotUtil().getMember(event).getUsername() + " has " + numLootboxes + " tokens.");
     }
 }

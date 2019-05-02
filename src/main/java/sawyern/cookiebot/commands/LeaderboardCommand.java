@@ -46,6 +46,6 @@ public class LeaderboardCommand extends MessageCreateEventBotCommand {
         }
 
         leaderboard.append("```");
-        botUtil.sendMessage(event, leaderboard.toString());
+        getBotUtil().sendMessage(event, leaderboard.toString());
     }
 }

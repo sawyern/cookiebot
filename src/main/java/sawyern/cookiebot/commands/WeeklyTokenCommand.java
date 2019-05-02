@@ -28,15 +28,15 @@ public class WeeklyTokenCommand extends MessageCreateEventBotCommand {
 
     @Override
     public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
-        String id = botUtil.getMember(event).getId().asString();
+        String id = getBotUtil().getMember(event).getId().asString();
         if (weeklyCooldownService.isCooldown(id)) {
             weeklyCooldownService.putOnCooldown(id);
-            lootboxTokenService.addLootboxToken(botUtil.getMember(event).getId().asString(), WEEKLY_TOKENS);
-            botUtil.sendMessage(event, WEEKLY_TOKENS + " tokens have been awarded. Good luck!");
+            lootboxTokenService.addLootboxToken(getBotUtil().getMember(event).getId().asString(), WEEKLY_TOKENS);
+            getBotUtil().sendMessage(event, WEEKLY_TOKENS + " tokens have been awarded. Good luck!");
         } else {
             long remainingCd = weeklyCooldownService.getRemainingCooldownHours(id);
             NumberFormat format = new DecimalFormat("##.##");
-            botUtil.sendMessage(event, MessageFormat.format("Weekly cooldown not reset. Time remaining: {0} hours", format.format(remainingCd)));
+            getBotUtil().sendMessage(event, MessageFormat.format("Weekly cooldown not reset. Time remaining: {0} hours", format.format(remainingCd)));
         }
     }
 }

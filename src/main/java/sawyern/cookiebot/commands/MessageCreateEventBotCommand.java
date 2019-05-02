@@ -77,7 +77,7 @@ public abstract class MessageCreateEventBotCommand implements BotCommand {
         } catch (CookieException e) {
             // known exception caught and handled. printed here
             log.error(e.getMessage());
-            botUtil.sendMessage(event, e.getMessage());
+            getBotUtil().sendMessage(event, e.getMessage());
         } catch (DiscordException e) {
             // ignore this message
         } catch (Exception e) {
@@ -130,6 +130,10 @@ public abstract class MessageCreateEventBotCommand implements BotCommand {
             return CommandConstants.CommandName.UNKNOWN;
 
         return command.split(CommandConstants.COMMAND_START)[1];
+    }
+
+    public BotUtil getBotUtil() {
+        return botUtil;
     }
 
     @Autowired

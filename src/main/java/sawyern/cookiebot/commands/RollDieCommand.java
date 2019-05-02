@@ -36,7 +36,7 @@ public class RollDieCommand extends MessageCreateEventBotCommand {
         if (maxNum <= 0)
             throw new CookieException("Invalid number argument.");
 
-        botUtil.sendMessage(event, botUtil.getMember(event).getUsername() + " rolls: " + RollDieCommand.roll(minNum, maxNum).toString());
+        getBotUtil().sendMessage(event, getBotUtil().getMember(event).getUsername() + " rolls: " + RollDieCommand.roll(minNum, maxNum).toString());
     }
 
     public static Integer roll(int min, int max) {

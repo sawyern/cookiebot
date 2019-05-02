@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import sawyern.cookiebot.TestConstants;
 import sawyern.cookiebot.exception.CookieException;
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class CookiesCommandTest {
 
     @InjectMocks
+    @Spy
     private CookiesCommand cookiesCommand;
 
     @Mock
@@ -63,6 +65,7 @@ public class CookiesCommandTest {
                 .when(cookieService)
                 .getAllCookiesForAccount(Mockito.eq(TestConstants.USER_ID));
 
+        Mockito.doReturn(botUtil).when(cookiesCommand).getBotUtil();
         Mockito.when(botUtil.sendMessage(Mockito.any(), Mockito.anyString())).thenReturn(null);
 
         cookiesCommand.execute(event, new ArrayList<>());

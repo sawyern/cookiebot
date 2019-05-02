@@ -42,21 +42,21 @@ public class GroupRollCommand extends MessageCreateEventBotCommand {
 
     @Override
     public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
-        int bet = botUtil.parsePositiveIntArgument(args.get(0));
+        int bet = getBotUtil().parsePositiveIntArgument(args.get(0));
         countdown = 20;
 
-        Message message = botUtil.sendMessage(event, getMessageContent(bet));
+        Message message = getBotUtil().sendMessage(event, getMessageContent(bet));
         message.addReaction(ReactionEmoji.unicode(CommandConstants.DICE));
 
         startCountdownEditMessage(message, bet);
 
         Flux<User> reactions = message.getReactors(ReactionEmoji.unicode(CommandConstants.DICE));
-        botUtil.sendMessage(event, "Starting rolls...");
+        getBotUtil().sendMessage(event, "Starting rolls...");
 
         StringBuilder builder = new StringBuilder("```");
         Map<Account, Integer> userRollMap = new HashMap<>();
 
-        String selfId = botUtil.getSelfId(event);
+        String selfId = getBotUtil().getSelfId(event);
 
         reactions.toStream().forEach(user -> {
             if (user.getId().asString().equalsIgnoreCase(selfId))
@@ -72,7 +72,7 @@ public class GroupRollCommand extends MessageCreateEventBotCommand {
 
         for (Map.Entry<Account, Integer> entry : userRollMap.entrySet()) {
             if (cookieService.getAllCookiesForAccount(entry.getKey().getDiscordId()) < bet) {
-                botUtil.sendMessage(event, "<@" + entry.getKey().getDiscordId() + "> can't pay. Roll not considered.");
+                getBotUtil().sendMessage(event, "<@" + entry.getKey().getDiscordId() + "> can't pay. Roll not considered.");
                 continue;
             }
 
@@ -104,8 +104,8 @@ public class GroupRollCommand extends MessageCreateEventBotCommand {
                     .build()
             );
         }
-        botUtil.sendMessage(event, builder.toString());
-        botUtil.sendMessage(event,"Winner <@" + winner.getKey().getDiscordId() + ">!");
+        getBotUtil().sendMessage(event, builder.toString());
+        getBotUtil().sendMessage(event,"Winner <@" + winner.getKey().getDiscordId() + ">!");
     }
 
     protected void startCountdownEditMessage(Message message, int bet) throws CookieException {

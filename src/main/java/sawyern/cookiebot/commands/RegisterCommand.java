@@ -20,7 +20,7 @@ public class RegisterCommand extends MessageCreateEventBotCommand {
 
     @Override
     public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
-        Member member = botUtil.getMember(event);
+        Member member = getBotUtil().getMember(event);
         AccountDto accountDto = AccountDto.builder()
                 .discordId(member.getId().asString())
                 .username(member.getUsername())
@@ -29,7 +29,7 @@ public class RegisterCommand extends MessageCreateEventBotCommand {
 
         for (int i = 0; i < 10; i++)
             cookieService.generateCookie(accountDto.getDiscordId());
-        botUtil.sendMessage(event, "Successfully registered " + accountDto.getUsername());
+        getBotUtil().sendMessage(event, "Successfully registered " + accountDto.getUsername());
     }
 
     @Override

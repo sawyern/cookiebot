@@ -45,6 +45,6 @@ public class CookiesCommand extends MessageCreateEventBotCommand {
         }
 
         numCookies = cookieService.getAllCookiesForAccount(discordId);
-        botUtil.sendMessage(event, MessageFormat.format("{0} has {1} cookies.", username, numCookies));
+        getBotUtil().sendMessage(event, MessageFormat.format("{0} has {1} cookies.", username, numCookies));
     }
 }

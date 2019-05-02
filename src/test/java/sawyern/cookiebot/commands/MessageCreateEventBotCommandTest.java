@@ -111,7 +111,10 @@ public class MessageCreateEventBotCommandTest {
         Mockito.doReturn("ping").when(messageCreateEventBotCommandSpy).parseCommand(Mockito.eq("!ping"));
         Mockito.doReturn(new ArrayList<>()).when(messageCreateEventBotCommandSpy).parseArgs(Mockito.eq("!ping"));
         Mockito.doReturn("ping").when(messageCreateEventBotCommandSpy).getCommand();
-        Mockito.doThrow(new CookieException()).when(messageCreateEventBotCommandSpy).execute(Mockito.any(), Mockito.eq(new ArrayList<>()));
+        Mockito.doThrow(new CookieException()).when(messageCreateEventBotCommandSpy).execute(Mockito.any(), Mockito.any());
+
+        Mockito.doReturn(botUtil).when(messageCreateEventBotCommandSpy).getBotUtil();
+        Mockito.doReturn(null).when(botUtil).sendMessage(Mockito.any(), Mockito.anyString());
 
         messageCreateEventBotCommandSpy.executeCommand(messageCreateEvent);
         Mockito.verify(messageCreateEventBotCommandSpy, Mockito.atLeastOnce()).getCommand();

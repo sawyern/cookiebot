@@ -35,6 +35,6 @@ public class HelpCommand extends MessageCreateEventBotCommand {
             helpString.append("\n");
         }
         helpString.append("```");
-        botUtil.sendMessage(event, helpString.toString());
+        getBotUtil().sendMessage(event, helpString.toString());
     }
 }

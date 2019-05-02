@@ -25,6 +25,6 @@ public class OddsCommand extends MessageCreateEventBotCommand {
         builder.append("6: ").append(LootBoxCommand.getSIX()).append("%\n");
         builder.append("7: ").append(LootBoxCommand.getSEVEN()).append("%\n");
         builder.append("```");
-        botUtil.sendMessage(event, builder.toString());
+        getBotUtil().sendMessage(event, builder.toString());
     }
 }

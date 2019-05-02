@@ -13,7 +13,7 @@ import java.util.Set;
 public class PingCommand extends MessageCreateEventBotCommand {
     @Override
     public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
-        botUtil.sendMessage(event, "pong!");
+        getBotUtil().sendMessage(event, "pong!");
     }
 
     @Override

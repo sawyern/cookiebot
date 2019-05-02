@@ -57,7 +57,7 @@ public class LootBoxCommand extends MessageCreateEventBotCommand {
         else
             numCookiesWon = 0;
 
-        String id = botUtil.getMember(event).getId().asString();
+        String id = getBotUtil().getMember(event).getId().asString();
 
         if (!lootboxTokenService.getAllByAccount(id).isEmpty())
             useToken = true;
@@ -66,19 +66,19 @@ public class LootBoxCommand extends MessageCreateEventBotCommand {
 
         if (useToken) {
             lootboxTokenService.deleteLootBoxToken(id);
-            botUtil.sendMessage(event, "Spending token. Remaining tokens: " + lootboxTokenService.getAllByAccount(id).size());
+            getBotUtil().sendMessage(event, "Spending token. Remaining tokens: " + lootboxTokenService.getAllByAccount(id).size());
         }
         else {
             cookieService.removeCookieOfType(id, CookieType.NORMAL);
-            botUtil.sendMessage(event, "Spending cookie. Remaining cookies: " + cookieService.getAllCookiesForAccount(id));
+            getBotUtil().sendMessage(event, "Spending cookie. Remaining cookies: " + cookieService.getAllCookiesForAccount(id));
         }
 
         cookieService.generateCookie(id, CookieType.NORMAL, numCookiesWon);
         int newTotal = cookieService.getAllCookiesForAccount(id);
 
-        botUtil.sendMessage(event, "```You open the lootbox!\nContains..." + numCookiesWon + " cookies!\n" +
-                botUtil.getMember(event).getUsername() + " cookies: " + newTotal + "\n" +
-                botUtil.getMember(event).getUsername() + " tokens: " + lootboxTokenService.getAllByAccount(id).size() + "```");
+        getBotUtil().sendMessage(event, "```You open the lootbox!\nContains..." + numCookiesWon + " cookies!\n" +
+                getBotUtil().getMember(event).getUsername() + " cookies: " + newTotal + "\n" +
+                getBotUtil().getMember(event).getUsername() + " tokens: " + lootboxTokenService.getAllByAccount(id).size() + "```");
     }
 
     public static Integer getCOST() {
