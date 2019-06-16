@@ -1,4 +1,4 @@
-package sawyern.cookiebot.bot;
+package sawyern.cookiebot.commands;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,6 @@ import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.AccountService;
 import sawyern.cookiebot.services.CookieService;
-import sawyern.cookiebot.util.BotUtil;
 import sawyern.cookiebot.util.MapUtil;
 
 import java.util.HashMap;
@@ -16,7 +15,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class LeaderboardCommand extends GenericBotCommand {
+public class LeaderboardCommand extends MessageCreateEventBotCommand {
 
     private final CookieService cookieService;
     private final AccountService accountService;
@@ -27,7 +26,7 @@ public class LeaderboardCommand extends GenericBotCommand {
     }
 
     @Override
-    public void execute(MessageCreateEvent event) throws CookieException {
+    public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
         StringBuilder leaderboard = new StringBuilder("```");
         Map<String, Integer> leaderboardMap = new HashMap<>();
 
@@ -47,6 +46,6 @@ public class LeaderboardCommand extends GenericBotCommand {
         }
 
         leaderboard.append("```");
-        BotUtil.sendMessage(event, leaderboard.toString());
+        getBotUtil().sendMessage(event, leaderboard.toString());
     }
 }

@@ -9,7 +9,6 @@ import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.repository.AccountRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -29,7 +28,6 @@ public class AccountService {
      * @param accountDto
      * @throws CookieException
      */
-    @Transactional
     public void registerAccount(AccountDto accountDto) throws CookieException {
         if (accountRepository.findByDiscordId(accountDto.getDiscordId()).isPresent())
             throw new CookieException("Account already registered.");

@@ -1,4 +1,4 @@
-package sawyern.cookiebot.bot;
+package sawyern.cookiebot.commands;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Member;
@@ -8,18 +8,19 @@ import sawyern.cookiebot.models.dto.AccountDto;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.services.AccountService;
 import sawyern.cookiebot.services.CookieService;
-import sawyern.cookiebot.util.BotUtil;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class RegisterCommand extends GenericBotCommand {
+public class RegisterCommand extends MessageCreateEventBotCommand {
 
     private final AccountService accountService;
     private final CookieService cookieService;
 
     @Override
-    public void execute(MessageCreateEvent event) throws CookieException {
-        Member member = BotUtil.getMember(event);
+    public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
+        Member member = getBotUtil().getMember(event);
         AccountDto accountDto = AccountDto.builder()
                 .discordId(member.getId().asString())
                 .username(member.getUsername())
@@ -28,7 +29,7 @@ public class RegisterCommand extends GenericBotCommand {
 
         for (int i = 0; i < 10; i++)
             cookieService.generateCookie(accountDto.getDiscordId());
-        BotUtil.sendMessage(event, "Successfully registered " + accountDto.getUsername());
+        getBotUtil().sendMessage(event, "Successfully registered " + accountDto.getUsername());
     }
 
     @Override
