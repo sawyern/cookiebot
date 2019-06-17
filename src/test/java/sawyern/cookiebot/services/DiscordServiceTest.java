@@ -58,7 +58,7 @@ public class DiscordServiceTest {
     @Test(expected = IllegalStateException.class)
     public void setDiscordClientWhenNullPropertiesThenThrowException() {
         mockNullClient();
-        discordService.setDiscordClientProperties(null);
+        discordService = new DiscordService(null, botCommands);
         discordService.setDiscordClient();
     }
 
@@ -85,21 +85,7 @@ public class DiscordServiceTest {
     @Test(expected = IllegalStateException.class)
     public void subscribeAllCommandsWhenNullBotCommandsThenThrowException() {
         mockNonNullClient();
-        discordService.setBotCommands(null);
-        discordService.subscribeAllCommands();
-    }
-
-    @Test
-    public void subscribeAllCommandsWhenEmptyList() {
-        mockNonNullClient();
-        discordService.setBotCommands(new ArrayList<>());
-        discordService.subscribeAllCommands();
-    }
-
-    @Test
-    public void subscribeAllCommandsWhenNonEmptyList() {
-        mockNonNullClient();
-        discordService.setBotCommands(Arrays.asList(botCommand));
+        discordService = new DiscordService(discordClientProperties, null);
         discordService.subscribeAllCommands();
     }
 

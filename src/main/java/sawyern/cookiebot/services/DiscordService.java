@@ -3,10 +3,7 @@ package sawyern.cookiebot.services;
 import discord4j.core.DiscordClient;
 import discord4j.core.DiscordClientBuilder;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -18,13 +15,10 @@ import java.util.List;
 
 @Service
 @Slf4j
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class DiscordService {
-
-    @Setter
-    private DiscordClientProperties discordClientProperties;
-    @Setter
-    private List<BotCommand> botCommands;
+    private final DiscordClientProperties discordClientProperties;
+    private final List<BotCommand> botCommands;
 
     @Getter(AccessLevel.PROTECTED)
     private DiscordClient discordClient;
