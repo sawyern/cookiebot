@@ -24,6 +24,7 @@ public class WorldBoss extends DbItem {
     @JoinColumn(name = "HAS_COOKIES")
     List<WorldBossHasCookie> hasCookies;
 
-    @Column(name = "ACCOUNT_ID")
+    @OneToOne
+    @JoinColumn(name = "ACCOUNT_ID")
     Account lastFed;
 }
