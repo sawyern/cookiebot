@@ -89,20 +89,6 @@ public class DiscordServiceTest {
         discordService.subscribeAllCommands();
     }
 
-    @Test
-    public void subscribeAllCommandsWhenEmptyList() {
-        mockNonNullClient();
-        discordService = new DiscordService(discordClientProperties, new ArrayList<>());
-        discordService.subscribeAllCommands();
-    }
-
-    @Test
-    public void subscribeAllCommandsWhenNonEmptyList() {
-        mockNonNullClient();
-        discordService = new DiscordService(discordClientProperties, Arrays.asList(botCommand));
-        discordService.subscribeAllCommands();
-    }
-
     @Test(expected = IllegalStateException.class)
     public void subscribeReadyWhenNullClientThenThrowException() {
         mockNullClient();
