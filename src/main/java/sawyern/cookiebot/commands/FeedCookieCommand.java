@@ -1,7 +1,7 @@
 package sawyern.cookiebot.commands;
 
 import discord4j.core.event.domain.message.MessageCreateEvent;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import sawyern.cookiebot.constants.CookieType;
 import sawyern.cookiebot.exception.CookieException;
@@ -14,12 +14,11 @@ import sawyern.cookiebot.services.WorldBossService;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
 public class FeedCookieCommand extends MessageCreateEventBotCommand {
 
-    private final WorldBossService worldBossService;
-    public final AccountService accountService;
-    public final CookieService cookieService;
+    private WorldBossService worldBossService;
+    private AccountService accountService;
+    private CookieService cookieService;
 
     @Override
     public String getCommand() {
@@ -53,5 +52,20 @@ public class FeedCookieCommand extends MessageCreateEventBotCommand {
             getBotUtil().sendMessage(event,"```The boss devours the cookie, but is not yet satisfied...```");
         }
         worldBossService.setLastFed(currentBoss, accountService.getAccount(discordId));
+    }
+
+    @Autowired
+    public void setWorldBossService(WorldBossService worldBossService) {
+        this.worldBossService = worldBossService;
+    }
+
+    @Autowired
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    @Autowired
+    public void setCookieService(CookieService cookieService) {
+        this.cookieService = cookieService;
     }
 }

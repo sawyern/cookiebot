@@ -1,7 +1,7 @@
 package sawyern.cookiebot.services;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import sawyern.cookiebot.exception.CookieException;
@@ -19,14 +19,13 @@ import java.util.List;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class WorldBossService {
 
-    private final WorldBossRepository worldBossRepository;
-    private final WorldBossHasCookieRepository worldBossHasCookieRepository;
-    private final LootboxTokenService lootboxTokenService;
-    private final AccountService accountService;
-    private final BotUtil botUtil;
+    private WorldBossRepository worldBossRepository;
+    private WorldBossHasCookieRepository worldBossHasCookieRepository;
+    private LootboxTokenService lootboxTokenService;
+    private AccountService accountService;
+    private BotUtil botUtil;
 
     @Scheduled(cron = "0 17 * * 2,5 *")
     public void spawnWorldBoss() {
@@ -106,5 +105,30 @@ public class WorldBossService {
         int min = 1;
         double roll = Math.random() * ((max - min) + 1) + min;
         return roll < 50;
+    }
+
+    @Autowired
+    public void setWorldBossRepository(WorldBossRepository worldBossRepository) {
+        this.worldBossRepository = worldBossRepository;
+    }
+
+    @Autowired
+    public void setWorldBossHasCookieRepository(WorldBossHasCookieRepository worldBossHasCookieRepository) {
+        this.worldBossHasCookieRepository = worldBossHasCookieRepository;
+    }
+
+    @Autowired
+    public void setLootboxTokenService(LootboxTokenService lootboxTokenService) {
+        this.lootboxTokenService = lootboxTokenService;
+    }
+
+    @Autowired
+    public void setAccountService(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    @Autowired
+    public void setBotUtil(BotUtil botUtil) {
+        this.botUtil = botUtil;
     }
 }
