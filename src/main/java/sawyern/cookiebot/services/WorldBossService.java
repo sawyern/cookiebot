@@ -54,7 +54,7 @@ public class WorldBossService {
         worldBossHasCookieRepository.findByWorldBossId(worldBoss.getId()).forEach(hasCookie -> {
             if (!hasCookie.getAccount().getDiscordId().equals(loser)) {
                 try {
-                    if (!hasCookie.getAccount().getDiscordId().equals(winner))
+                    if (hasCookie.getAccount().getDiscordId().equals(winner))
                         lootboxTokenService.addLootboxToken(hasCookie.getAccount().getDiscordId(), (int)Math.ceil(hasCookie.getCookiesFed() * 1.5d));
                     lootboxTokenService.addLootboxToken(hasCookie.getAccount().getDiscordId(), (int)Math.ceil(hasCookie.getCookiesFed() * 2d));
                     winners.add(hasCookie);
