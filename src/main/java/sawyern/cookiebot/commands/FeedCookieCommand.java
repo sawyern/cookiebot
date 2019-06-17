@@ -29,10 +29,10 @@ public class FeedCookieCommand extends MessageCreateEventBotCommand {
     @Override
     public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
         String discordId = getBotUtil().getMember(event).getId().asString();
+        WorldBoss currentBoss = worldBossService.getCurrentBoss();
 
         cookieService.removeCookieOfType(discordId, CookieType.NORMAL);
 
-        WorldBoss currentBoss = worldBossService.getCurrentBoss();
         worldBossService.feedCookie(currentBoss, discordId);
         if (worldBossService.rollExplosion()) {
             worldBossService.killAllWorldBosses();
