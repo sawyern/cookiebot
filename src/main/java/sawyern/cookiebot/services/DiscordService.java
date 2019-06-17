@@ -3,8 +3,11 @@ package sawyern.cookiebot.services;
 import discord4j.core.DiscordClient;
 import discord4j.core.DiscordClientBuilder;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
+import discord4j.core.object.entity.MessageChannel;
+import discord4j.core.object.util.Snowflake;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import sawyern.cookiebot.commands.BotCommand;
@@ -15,10 +18,9 @@ import java.util.List;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class DiscordService {
-    private final DiscordClientProperties discordClientProperties;
-    private final List<BotCommand> botCommands;
+    private DiscordClientProperties discordClientProperties;
+    private List<BotCommand> botCommands;
 
     @Getter(AccessLevel.PROTECTED)
     private DiscordClient discordClient;
@@ -60,5 +62,28 @@ public class DiscordService {
     public void login() {
         Assert.state(getDiscordClient() != null, AssertMessage.DISCORD_CLIENT_NOT_SET);
         getDiscordClient().login().block();
+    }
+
+    /**
+     * get bot channel
+     */
+    public MessageChannel getBotChannel() {
+        return (MessageChannel)getDiscordClient()
+                .getChannelById(Snowflake.of(discordClientProperties.getBotChannelId()))
+                .block();
+    }
+
+    public DiscordClientProperties getDiscordClientProperties() {
+        return discordClientProperties;
+    }
+
+    @Autowired
+    public void setDiscordClientProperties(DiscordClientProperties discordClientProperties) {
+        this.discordClientProperties = discordClientProperties;
+    }
+
+    @Autowired
+    public void setBotCommands(List<BotCommand> botCommands) {
+        this.botCommands = botCommands;
     }
 }

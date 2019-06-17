@@ -16,7 +16,7 @@ public class OddsCommand extends MessageCreateEventBotCommand {
     @Override
     public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
         StringBuilder builder = new StringBuilder("```");
-        builder.append("25% chance of 0, can titanforge indefinitely");
+        builder.append("35% chance of 0, can titanforge indefinitely```");
         getBotUtil().sendMessage(event, builder.toString());
     }
 }
