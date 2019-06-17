@@ -19,16 +19,6 @@ public class LootBoxCommand extends MessageCreateEventBotCommand {
 
     private static final Integer COST = 1;
 
-    private static final double ZERO = 30.3125d;
-    private static final double ONE = 45d;
-    private static final double TWO = 15d;
-    private static final double THREE = 5d;
-    private static final double FOUR = 2.5d;
-    private static final double FIVE = 1.25d;
-    private static final double SIX = .625d;
-    private static final double SEVEN = 0.3125d;
-
-
     @Override
     public String getCommand() {
         return "lootbox";
@@ -36,26 +26,14 @@ public class LootBoxCommand extends MessageCreateEventBotCommand {
 
     @Override
     public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
-        double roll = roll();
-        int numCookiesWon;
+        int numCookiesWon = 0;
         boolean useToken = false;
+        boolean titanForging = true;
 
-        if (roll <= SEVEN)
-            numCookiesWon = 7;
-        else if (roll <= SIX)
-            numCookiesWon = 6;
-        else if (roll <= FIVE)
-            numCookiesWon = 5;
-        else if (roll <= FOUR)
-            numCookiesWon = 4;
-        else if (roll <= THREE)
-            numCookiesWon = 3;
-        else if (roll <= TWO)
-            numCookiesWon = 2;
-        else if (roll <= ONE)
-            numCookiesWon = 1;
-        else
-            numCookiesWon = 0;
+        while (titanForging) {
+            titanForging = roll() < 25;
+            numCookiesWon++;
+        }
 
         String id = getBotUtil().getMember(event).getId().asString();
 
@@ -81,45 +59,9 @@ public class LootBoxCommand extends MessageCreateEventBotCommand {
                 getBotUtil().getMember(event).getUsername() + " tokens: " + lootboxTokenService.getAllByAccount(id).size() + "```");
     }
 
-    public static Integer getCOST() {
-        return COST;
-    }
-
-    public static double getZERO() {
-        return ZERO;
-    }
-
-    public static double getONE() {
-        return ONE;
-    }
-
-    public static double getTWO() {
-        return TWO;
-    }
-
-    public static double getTHREE() {
-        return THREE;
-    }
-
-    public static double getFOUR() {
-        return FOUR;
-    }
-
-    public static double getFIVE() {
-        return FIVE;
-    }
-
-    public static double getSIX() {
-        return SIX;
-    }
-
-    public static double getSEVEN() {
-        return SEVEN;
-    }
-
     private double roll() {
         int max = 100;
-        int min = 0;
+        int min = 1;
         return Math.random() * ((max - min) + 1) + min;
     }
 }
