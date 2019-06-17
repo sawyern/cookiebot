@@ -10,8 +10,6 @@ spring:
             non_contextual_creation: true
 app:
   version: 1.1
-discord:
-  bot-channel-id: 544942649036242964
 
 ---
 server:
@@ -25,9 +23,10 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
 discord:
   token: $(PROD_DISCORD_TOKEN)
+  bot-channel-id: 544942649036242964
 
 ---
 server:
@@ -44,6 +43,7 @@ spring:
       ddl-auto: update
 discord:
   token: $(DEV_DISCORD_TOKEN)
+  bot-channel-id: 589975110090489907
 
 ---
 server:
