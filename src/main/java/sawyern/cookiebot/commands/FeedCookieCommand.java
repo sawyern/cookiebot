@@ -36,7 +36,7 @@ public class FeedCookieCommand extends MessageCreateEventBotCommand {
         worldBossService.feedCookie(currentBoss, discordId);
         if (worldBossService.rollExplosion()) {
             worldBossService.killAllWorldBosses();
-            List<WorldBossHasCookie> winners = worldBossService.awardCookies(currentBoss, discordId);
+            List<WorldBossHasCookie> winners = worldBossService.awardCookies(currentBoss, discordId, currentBoss.getLastFed().getDiscordId());
             StringBuilder builder = new StringBuilder();
             builder.append("```");
             builder.append("The boss devours the cookie, and explodes!\n" +
@@ -52,5 +52,6 @@ public class FeedCookieCommand extends MessageCreateEventBotCommand {
         } else {
             getBotUtil().sendMessage(event,"```The boss devours the cookie, but is not yet satisfied...```");
         }
+        worldBossService.setLastFed(currentBoss, accountService.getAccount(discordId));
     }
 }
