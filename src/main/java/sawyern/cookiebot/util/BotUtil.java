@@ -5,13 +5,22 @@ import discord4j.core.object.entity.Member;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.exception.InvalidNumberParamCookieException;
+import sawyern.cookiebot.services.DiscordService;
 
 @Slf4j
 @Service
 public class BotUtil {
+
+    private DiscordService discordService;
+
+    public Message sendMessage(String message) {
+        return discordService.getBotChannel().createMessage(message).block();
+    }
+
     public Message sendMessage(MessageCreateEvent event, String message) throws CookieException {
         Message messageObj = null;
         try {
@@ -61,5 +70,8 @@ public class BotUtil {
         return parsedArg;
     }
 
-
+    @Autowired
+    public void setDiscordService(DiscordService discordService) {
+        this.discordService = discordService;
+    }
 }

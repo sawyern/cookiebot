@@ -8,14 +8,14 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-
 app:
   version: 1.1
+discord:
+  bot-channel-id: 544942649036242964
 
 ---
 server:
   port: ${PORT}
-
 spring:
   profiles: production
   datasource:
@@ -32,7 +32,6 @@ discord:
 ---
 server:
   port: ${PORT}
-
 spring:
   profiles: dev
   datasource:

@@ -10,6 +10,7 @@ import sawyern.cookiebot.models.entity.WorldBoss;
 import sawyern.cookiebot.models.entity.WorldBossHasCookie;
 import sawyern.cookiebot.repository.WorldBossHasCookieRepository;
 import sawyern.cookiebot.repository.WorldBossRepository;
+import sawyern.cookiebot.util.BotUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,9 +24,12 @@ public class WorldBossService {
     private final WorldBossRepository worldBossRepository;
     private final WorldBossHasCookieRepository worldBossHasCookieRepository;
     private final LootboxTokenService lootboxTokenService;
+    private final AccountService accountService;
+    private final BotUtil botUtil;
 
-    @Scheduled(cron = "0 5 * * 5")
+    @Scheduled(cron = "0 17 * 2,5 *")
     public void spawnWorldBoss() {
+        log.info("Spawning world boss.");
         killAllWorldBosses();
         WorldBoss worldBoss = WorldBoss.builder()
                 .isDead(false)
@@ -33,31 +37,43 @@ public class WorldBossService {
                 .hasCookies(new ArrayList<>())
                 .build();
         worldBossRepository.save(worldBoss);
+        botUtil.sendMessage("@here ```World Boss Spawned!!! and hungry...```");
     }
 
     public void killAllWorldBosses() {
-        List<WorldBoss> oldBosses = worldBossRepository.findByisDead(true);
+        List<WorldBoss> oldBosses = worldBossRepository.findByisDead(false);
         oldBosses.forEach(boss -> {
             boss.setDead(true);
             worldBossRepository.save(boss);
         });
     }
 
-    public void awardCookies(WorldBoss worldBoss, String discordId) {
-        worldBoss.getHasCookies().forEach(hasCookie -> {
+    public List<WorldBossHasCookie> awardCookies(WorldBoss worldBoss, String discordId) {
+        List<WorldBossHasCookie> winners = new ArrayList<>();
+        worldBossHasCookieRepository.findByWorldBossId(worldBoss.getId()).forEach(hasCookie -> {
             if (!hasCookie.getAccount().getDiscordId().equals(discordId)) {
                 try {
                     lootboxTokenService.addLootboxToken(hasCookie.getAccount().getDiscordId(), (int)Math.ceil(hasCookie.getCookiesFed() * 2d));
+                    winners.add(hasCookie);
                 } catch (CookieException e) {
                     throw new RuntimeCookieException(e.getMessage());
                 }
             }
         });
+        return winners;
     }
 
     public void feedCookie(WorldBoss boss, String discordId) throws CookieException {
         try {
             WorldBossHasCookie hasCookie = worldBossHasCookieRepository.findByWorldBossIdAndAccountDiscordId(boss.getId(), discordId);
+            if (hasCookie == null) {
+                hasCookie = WorldBossHasCookie.builder()
+                        .account(accountService.getAccount(discordId))
+                        .cookiesFed(0)
+                        .worldBoss(boss)
+                        .build();
+            }
+
             hasCookie.setCookiesFed(hasCookie.getCookiesFed() + 1);
             worldBossHasCookieRepository.save(hasCookie);
         } catch (RuntimeCookieException e) {

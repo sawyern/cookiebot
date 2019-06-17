@@ -2,22 +2,22 @@ package sawyern.cookiebot.models.entity;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "WORLD_BOSS")
+@Table(name = "WORLD_BOSS_HAS_COOKIE")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(callSuper = true)
 public class WorldBossHasCookie extends DbItem {
-    @Column(name = "DISCORD_ID")
+    @JoinColumn(name = "DISCORD_ID")
+    @OneToOne
     private Account account;
 
-    @Column(name = "WORLD_BOSS")
+    @JoinColumn(name = "WORLD_BOSS")
+    @OneToOne
     private WorldBoss worldBoss;
 
     @Column(name = "COOKIES_FED")
