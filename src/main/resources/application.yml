@@ -44,3 +44,21 @@ spring:
       ddl-auto: update
 discord:
   token: $(DEV_DISCORD_TOKEN)
+
+---
+server:
+  port: 8952
+
+spring:
+  profiles: local
+  datasource:
+    url: jdbc:postgresql://localhost:5432/CookieBot
+    username: postgres
+    password: 2DoRblt2
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+discord:
+  token: NTYyNzgxMDM0OTU4MjkwOTQ0.XKTm7A.UUWF_rVYTaMINzgQfKB5nA2uj6k
+  bot-channel-id: 589975110090489907

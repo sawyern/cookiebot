@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.exception.RuntimeCookieException;
+import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.models.entity.WorldBoss;
 import sawyern.cookiebot.models.entity.WorldBossHasCookie;
 import sawyern.cookiebot.repository.WorldBossHasCookieRepository;
@@ -27,7 +28,7 @@ public class WorldBossService {
     private final AccountService accountService;
     private final BotUtil botUtil;
 
-    @Scheduled(cron = "0 17 * 2,5 *")
+    @Scheduled(cron = "0 17 * * 2,5 *")
     public void spawnWorldBoss() {
         log.info("Spawning world boss.");
         killAllWorldBosses();
@@ -48,11 +49,13 @@ public class WorldBossService {
         });
     }
 
-    public List<WorldBossHasCookie> awardCookies(WorldBoss worldBoss, String discordId) {
+    public List<WorldBossHasCookie> awardCookies(WorldBoss worldBoss, String loser, String winner) {
         List<WorldBossHasCookie> winners = new ArrayList<>();
         worldBossHasCookieRepository.findByWorldBossId(worldBoss.getId()).forEach(hasCookie -> {
-            if (!hasCookie.getAccount().getDiscordId().equals(discordId)) {
+            if (!hasCookie.getAccount().getDiscordId().equals(loser)) {
                 try {
+                    if (!hasCookie.getAccount().getDiscordId().equals(winner))
+                        lootboxTokenService.addLootboxToken(hasCookie.getAccount().getDiscordId(), (int)Math.ceil(hasCookie.getCookiesFed() * 1.5d));
                     lootboxTokenService.addLootboxToken(hasCookie.getAccount().getDiscordId(), (int)Math.ceil(hasCookie.getCookiesFed() * 2d));
                     winners.add(hasCookie);
                 } catch (CookieException e) {
@@ -91,6 +94,11 @@ public class WorldBossService {
             log.error(e.getMessage(), e);
             throw new CookieException(e.getMessage());
         }
+    }
+
+    public void setLastFed(WorldBoss worldBoss, Account account) {
+        worldBoss.setLastFed(account);
+        worldBossRepository.save(worldBoss);
     }
 
     public boolean rollExplosion() {
