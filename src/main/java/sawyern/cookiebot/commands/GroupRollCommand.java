@@ -68,6 +68,7 @@ public class GroupRollCommand extends MessageCreateEventBotCommand {
 
         if (userRollMap.isEmpty())
             throw new CookieException("No players want to play.");
+
         Map.Entry<Account, Integer> winner = null;
 
         for (Map.Entry<Account, Integer> entry : userRollMap.entrySet()) {
@@ -76,16 +77,9 @@ public class GroupRollCommand extends MessageCreateEventBotCommand {
                 continue;
             }
 
-            if (winner == null) {
+            if (winner == null || entry.getValue().compareTo(winner.getValue()) > 0) {
                 winner = entry;
             }
-
-            else if (entry.getValue().compareTo(winner.getValue()) > 0) {
-                winner = entry;
-            }
-
-            else if (entry.getValue().equals(winner.getValue()) && RollDieCommand.roll(0, 1) == 1)
-                    winner = entry;
         }
 
         if (winner == null)
