@@ -33,7 +33,7 @@ public class WorldBossService {
 
     private Map<String, GenericWorldBoss> worldBossMap;
 
-    @Scheduled(cron = "0 0 3 * * TUE-SUN")
+    @Scheduled(cron = "0 0 3 * * SUN-TUE")
     public void spawnDailyWorldBoss() {
         log.info("Spawning daily world boss.");
         killAllWorldBosses();
