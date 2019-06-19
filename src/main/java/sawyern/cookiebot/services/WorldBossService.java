@@ -27,7 +27,7 @@ public class WorldBossService {
     private AccountService accountService;
     private BotUtil botUtil;
 
-    @Scheduled(cron = "0 0 17 ? * TUE,FRI *")
+    @Scheduled(cron = "0 0 17 ? * MON-SAT *")
     public void spawnWorldBoss() {
         log.info("Spawning world boss.");
         killAllWorldBosses();
