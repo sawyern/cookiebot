@@ -55,7 +55,6 @@ public class WorldBossService {
         oldBosses.forEach(boss -> {
             boss.setDead(true);
             worldBossRepository.save(boss);
-            botUtil.sendMessage("@here ```World boss leaves...dissatisfied!!!```");
         });
     }
 
