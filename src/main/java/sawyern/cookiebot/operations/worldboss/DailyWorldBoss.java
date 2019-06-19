@@ -7,7 +7,7 @@ import sawyern.cookiebot.constants.WorldBossType;
 public class DailyWorldBoss implements GenericWorldBoss {
     @Override
     public double getMultiplier() {
-        return 6;
+        return 2;
     }
 
     @Override
