@@ -78,7 +78,7 @@ public class WorldBossService {
 
             hasCookie.setCookiesFed(hasCookie.getCookiesFed() + 1);
             worldBossHasCookieRepository.save(hasCookie);
-        } catch (RuntimeCookieException e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw new CookieException(e.getMessage());
         }
@@ -104,7 +104,7 @@ public class WorldBossService {
         int max = 100;
         int min = 1;
         double roll = Math.random() * ((max - min) + 1) + min;
-        return roll < 50;
+        return roll <= 33;
     }
 
     @Autowired
