@@ -33,7 +33,7 @@ public class WorldBossService {
 
     private Map<String, GenericWorldBoss> worldBossMap;
 
-    @Scheduled(cron = "0 0 17 * * MON-SAT")
+    @Scheduled(cron = "0 0 3 * * TUE-SUN")
     public void spawnDailyWorldBoss() {
         log.info("Spawning daily world boss.");
         killAllWorldBosses();
@@ -42,9 +42,10 @@ public class WorldBossService {
         botUtil.sendMessage("@here ```Daily World Boss Spawned!!! and hungry...```");
     }
 
-    @Scheduled(cron = "0 0 17 * * SUN")
+    @Scheduled(cron = "0 0 3 * * MON")
     public void spawnWeeklyWorldBoss() {
         log.info("Spawning weekly world boss.");
+        killAllWorldBosses();
         WorldBoss worldBoss = worldBossMap.get(WorldBossType.WEEKLY).create();
         worldBossRepository.save(worldBoss);
         botUtil.sendMessage("@here ```Weekly World Boss Spawned!!! and hungry...```");
@@ -67,7 +68,7 @@ public class WorldBossService {
     }
 
     public void killAllWorldBosses() {
-        List<WorldBoss> oldBosses = worldBossRepository.findByisDead(false);
+        List<WorldBoss> oldBosses = worldBossRepository.findByIsDead(false);
         oldBosses.forEach(boss -> {
             boss.setDead(true);
             worldBossRepository.save(boss);
@@ -119,7 +120,7 @@ public class WorldBossService {
 
     public WorldBoss getCurrentBoss() throws CookieException {
         try {
-            return worldBossRepository.findByisDead(false).stream()
+            return worldBossRepository.findByIsDead(false).stream()
                     .findFirst()
                     .orElseThrow(() -> new RuntimeCookieException("All bosses are dead."));
         } catch (RuntimeCookieException e) {
