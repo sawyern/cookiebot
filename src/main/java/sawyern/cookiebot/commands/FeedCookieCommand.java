@@ -31,8 +31,8 @@ public class FeedCookieCommand extends MessageCreateEventBotCommand {
         WorldBoss currentBoss = worldBossService.getCurrentBoss();
 
         cookieService.removeCookieOfType(discordId, CookieType.NORMAL);
-
         worldBossService.feedCookie(currentBoss, discordId);
+
         if (worldBossService.rollExplosion()) {
             worldBossService.killAllWorldBosses();
             List<WorldBossHasCookie> winners = worldBossService.awardCookies(currentBoss, discordId, currentBoss.getLastFed().getDiscordId());
