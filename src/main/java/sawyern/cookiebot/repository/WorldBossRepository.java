@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface WorldBossRepository extends CrudRepository<WorldBoss, String> {
-    List<WorldBoss> findByisDead(boolean isDead);
+    List<WorldBoss> findByIsDead(boolean isDead);
 }
