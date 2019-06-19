@@ -23,7 +23,7 @@ public class WorldBossController {
 
     @PostMapping("/spawn/weekly")
     public void spawnWeeklyWorldBoss() {
-        worldBossService.spawnDailyWorldBoss();
+        worldBossService.spawnWeeklyWorldBoss();
     }
 
     @PostMapping("/kill")
