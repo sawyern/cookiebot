@@ -50,6 +50,22 @@ public class WorldBossService {
         botUtil.sendMessage("@here ```Weekly World Boss Spawned!!! and hungry...```");
     }
 
+    @Scheduled(cron = "0 0 16 * * *")
+    public void despawnBoss() throws CookieException {
+        botUtil.sendMessage("```Despawning world boss...````");
+        WorldBoss currentBoss = getCurrentBoss();
+        WorldBossHasCookie hasCookie = worldBossHasCookieRepository.findByWorldBossId(currentBoss.getId())
+                .stream().filter(hc -> hc.getAccount().getDiscordId().equals(currentBoss.getLastFed().getDiscordId()))
+                .findFirst()
+                .orElseThrow(() -> new CookieException("No last feeder."));
+        final double multiplier = worldBossMap.get(currentBoss.getType()).getMultiplier();
+
+        lootboxTokenService.addLootboxToken(hasCookie.getAccount().getDiscordId(), (int)Math.ceil(hasCookie.getCookiesFed() * multiplier));
+
+        killAllWorldBosses();
+        botUtil.sendMessage("@here ```World Boss leaves... dissatisfied...but leaves behind a treat for the last feeder.```");
+    }
+
     public void killAllWorldBosses() {
         List<WorldBoss> oldBosses = worldBossRepository.findByisDead(false);
         oldBosses.forEach(boss -> {

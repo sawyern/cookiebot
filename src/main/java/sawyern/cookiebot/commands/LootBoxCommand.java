@@ -29,14 +29,7 @@ public class LootBoxCommand extends MessageCreateEventBotCommand {
         int numCookiesWon = 0;
         boolean useToken = false;
         boolean titanForging = true;
-
-        if (roll() <= 50)
-            titanForging = false;
-
-        while (titanForging) {
-            titanForging = roll() <= 50;
-            numCookiesWon++;
-        }
+        double odds;
 
         String id = getBotUtil().getMember(event).getId().asString();
 
@@ -44,6 +37,20 @@ public class LootBoxCommand extends MessageCreateEventBotCommand {
             useToken = true;
         else if (cookieService.getAllCookiesForAccount(id) < COST)
             throw new CookieException("Lootbox costs 1 cookie. Not enough cookies to buy.");
+
+        if (useToken) {
+            odds = 50d;
+        } else {
+            odds = 75d;
+        }
+
+        if (roll() <= odds)
+            titanForging = false;
+
+        while (titanForging) {
+            titanForging = roll() <= 50;
+            numCookiesWon++;
+        }
 
         if (useToken) {
             lootboxTokenService.deleteLootBoxToken(id);
