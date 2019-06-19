@@ -3,12 +3,10 @@ package sawyern.cookiebot.commands;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import sawyern.cookiebot.constants.CookieType;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.models.entity.WorldBoss;
 import sawyern.cookiebot.models.entity.WorldBossHasCookie;
 import sawyern.cookiebot.services.AccountService;
-import sawyern.cookiebot.services.CookieService;
 import sawyern.cookiebot.services.WorldBossService;
 
 import java.util.List;
@@ -18,7 +16,6 @@ public class FeedCookieCommand extends MessageCreateEventBotCommand {
 
     private WorldBossService worldBossService;
     private AccountService accountService;
-    private CookieService cookieService;
 
     @Override
     public String getCommand() {
@@ -30,10 +27,9 @@ public class FeedCookieCommand extends MessageCreateEventBotCommand {
         String discordId = getBotUtil().getMember(event).getId().asString();
         WorldBoss currentBoss = worldBossService.getCurrentBoss();
 
-        cookieService.removeCookieOfType(discordId, CookieType.NORMAL);
         worldBossService.feedCookie(currentBoss, discordId);
 
-        if (worldBossService.rollExplosion()) {
+        if (worldBossService.rollExplosion(currentBoss)) {
             worldBossService.killAllWorldBosses();
             List<WorldBossHasCookie> winners = worldBossService.awardCookies(currentBoss, discordId, currentBoss.getLastFed().getDiscordId());
             StringBuilder builder = new StringBuilder();
@@ -62,10 +58,5 @@ public class FeedCookieCommand extends MessageCreateEventBotCommand {
     @Autowired
     public void setAccountService(AccountService accountService) {
         this.accountService = accountService;
-    }
-
-    @Autowired
-    public void setCookieService(CookieService cookieService) {
-        this.cookieService = cookieService;
     }
 }

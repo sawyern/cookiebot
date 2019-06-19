@@ -30,7 +30,7 @@ public class LootBoxCommand extends MessageCreateEventBotCommand {
         boolean useToken = false;
         boolean titanForging = true;
 
-        if (roll() <= 35)
+        if (roll() <= 50)
             titanForging = false;
 
         while (titanForging) {

@@ -4,18 +4,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import sawyern.cookiebot.constants.CookieType;
+import sawyern.cookiebot.constants.WorldBossType;
 import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.exception.RuntimeCookieException;
 import sawyern.cookiebot.models.entity.Account;
 import sawyern.cookiebot.models.entity.WorldBoss;
 import sawyern.cookiebot.models.entity.WorldBossHasCookie;
+import sawyern.cookiebot.operations.worldboss.GenericWorldBoss;
 import sawyern.cookiebot.repository.WorldBossHasCookieRepository;
 import sawyern.cookiebot.repository.WorldBossRepository;
 import sawyern.cookiebot.util.BotUtil;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -26,18 +29,25 @@ public class WorldBossService {
     private LootboxTokenService lootboxTokenService;
     private AccountService accountService;
     private BotUtil botUtil;
+    private CookieService cookieService;
 
-    @Scheduled(cron = "0 0 17 ? * MON-SAT *")
-    public void spawnWorldBoss() {
-        log.info("Spawning world boss.");
+    private Map<String, GenericWorldBoss> worldBossMap;
+
+    @Scheduled(cron = "0 0 17 * * MON-SAT")
+    public void spawnDailyWorldBoss() {
+        log.info("Spawning daily world boss.");
         killAllWorldBosses();
-        WorldBoss worldBoss = WorldBoss.builder()
-                .isDead(false)
-                .spawnTime(LocalDateTime.now())
-                .hasCookies(new ArrayList<>())
-                .build();
+        WorldBoss worldBoss = worldBossMap.get(WorldBossType.DAILY).create();
         worldBossRepository.save(worldBoss);
-        botUtil.sendMessage("@here ```World Boss Spawned!!! and hungry...```");
+        botUtil.sendMessage("@here ```Daily World Boss Spawned!!! and hungry...```");
+    }
+
+    @Scheduled(cron = "0 0 17 * * SUN")
+    public void spawnWeeklyWorldBoss() {
+        log.info("Spawning weekly world boss.");
+        WorldBoss worldBoss = worldBossMap.get(WorldBossType.WEEKLY).create();
+        worldBossRepository.save(worldBoss);
+        botUtil.sendMessage("@here ```Weekly World Boss Spawned!!! and hungry...```");
     }
 
     public void killAllWorldBosses() {
@@ -45,17 +55,21 @@ public class WorldBossService {
         oldBosses.forEach(boss -> {
             boss.setDead(true);
             worldBossRepository.save(boss);
+            botUtil.sendMessage("@here ```World boss leaves...dissatisfied!!!```");
         });
     }
 
     public List<WorldBossHasCookie> awardCookies(WorldBoss worldBoss, String loser, String winner) {
         List<WorldBossHasCookie> winners = new ArrayList<>();
+
+        final double multiplier = worldBossMap.get(worldBoss.getType()).getMultiplier();
+
         worldBossHasCookieRepository.findByWorldBossId(worldBoss.getId()).forEach(hasCookie -> {
             if (!hasCookie.getAccount().getDiscordId().equals(loser)) {
                 try {
                     if (hasCookie.getAccount().getDiscordId().equals(winner))
                         lootboxTokenService.addLootboxToken(hasCookie.getAccount().getDiscordId(), (int)Math.ceil(hasCookie.getCookiesFed() * 1.5d));
-                    lootboxTokenService.addLootboxToken(hasCookie.getAccount().getDiscordId(), (int)Math.ceil(hasCookie.getCookiesFed() * 2d));
+                    lootboxTokenService.addLootboxToken(hasCookie.getAccount().getDiscordId(), (int)Math.ceil(hasCookie.getCookiesFed() * multiplier));
                     winners.add(hasCookie);
                 } catch (CookieException e) {
                     throw new RuntimeCookieException(e.getMessage());
@@ -67,6 +81,10 @@ public class WorldBossService {
 
     public void feedCookie(WorldBoss boss, String discordId) throws CookieException {
         try {
+            for (int i = 0; i < worldBossMap.get(boss.getType()).getCookieCost(); i++) {
+                cookieService.removeCookieOfType(discordId, CookieType.NORMAL);
+            }
+
             WorldBossHasCookie hasCookie = worldBossHasCookieRepository.findByWorldBossIdAndAccountDiscordId(boss.getId(), discordId);
             if (hasCookie == null) {
                 hasCookie = WorldBossHasCookie.builder()
@@ -76,7 +94,7 @@ public class WorldBossService {
                         .build();
             }
 
-            hasCookie.setCookiesFed(hasCookie.getCookiesFed() + 1);
+            hasCookie.setCookiesFed(hasCookie.getCookiesFed() + worldBossMap.get(boss.getType()).getCookieCost());
             worldBossHasCookieRepository.save(hasCookie);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -100,11 +118,11 @@ public class WorldBossService {
         worldBossRepository.save(worldBoss);
     }
 
-    public boolean rollExplosion() {
+    public boolean rollExplosion(WorldBoss worldBoss) {
         int max = 100;
         int min = 1;
         double roll = Math.random() * ((max - min) + 1) + min;
-        return roll <= 33;
+        return roll <= worldBossMap.get(worldBoss.getType()).getExplosionProbability();
     }
 
     @Autowired
@@ -130,5 +148,15 @@ public class WorldBossService {
     @Autowired
     public void setBotUtil(BotUtil botUtil) {
         this.botUtil = botUtil;
+    }
+
+    @Autowired
+    public void setWorldBossMap(Map<String, GenericWorldBoss> worldBossMap) {
+        this.worldBossMap = worldBossMap;
+    }
+
+    @Autowired
+    public void setCookieService(CookieService cookieService) {
+        this.cookieService = cookieService;
     }
 }

@@ -20,6 +20,9 @@ public class WorldBoss extends DbItem {
     @Column(name = "SPAWN_TIME")
     LocalDateTime spawnTime;
 
+    @Column(name = "TYPE")
+    String type;
+
     @OneToMany
     @JoinColumn(name = "HAS_COOKIES")
     List<WorldBossHasCookie> hasCookies;
