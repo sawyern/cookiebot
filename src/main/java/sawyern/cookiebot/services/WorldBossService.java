@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import sawyern.cookiebot.constants.Constants;
 import sawyern.cookiebot.constants.CookieType;
 import sawyern.cookiebot.constants.WorldBossType;
 import sawyern.cookiebot.exception.CookieException;
@@ -33,7 +34,7 @@ public class WorldBossService {
 
     private Map<String, GenericWorldBoss> worldBossMap;
 
-    @Scheduled(cron = "0 0 3 * * SUN-TUE")
+    @Scheduled(cron = "0 0 20 ? * MON-SAT", zone = Constants.TIME_ZONE_EST)
     public void spawnDailyWorldBoss() {
         log.info("Spawning daily world boss.");
         killAllWorldBosses();
@@ -42,7 +43,7 @@ public class WorldBossService {
         botUtil.sendMessage("@here ```Daily World Boss Spawned!!! and hungry...```");
     }
 
-    @Scheduled(cron = "0 0 3 * * MON")
+    @Scheduled(cron = "0 0 20 ? * SUN", zone = Constants.TIME_ZONE_EST)
     public void spawnWeeklyWorldBoss() {
         log.info("Spawning weekly world boss.");
         killAllWorldBosses();
@@ -51,9 +52,9 @@ public class WorldBossService {
         botUtil.sendMessage("@here ```Weekly World Boss Spawned!!! and hungry...```");
     }
 
-    @Scheduled(cron = "0 0 16 * * *")
+    @Scheduled(cron = "0 0 19 ? * ?", zone = Constants.TIME_ZONE_EST)
     public void despawnBoss() throws CookieException {
-        botUtil.sendMessage("```Despawning world boss...````");
+        botUtil.sendMessage("```Despawning world boss...```");
         WorldBoss currentBoss = getCurrentBoss();
         WorldBossHasCookie hasCookie = worldBossHasCookieRepository.findByWorldBossId(currentBoss.getId())
                 .stream().filter(hc -> hc.getAccount().getDiscordId().equals(currentBoss.getLastFed().getDiscordId()))
