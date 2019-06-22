@@ -56,13 +56,15 @@ public class WorldBossService {
     public void despawnBoss() throws CookieException {
         botUtil.sendMessage("```Despawning world boss...```");
         WorldBoss currentBoss = getCurrentBoss();
-        WorldBossHasCookie hasCookie = worldBossHasCookieRepository.findByWorldBossId(currentBoss.getId())
-                .stream().filter(hc -> hc.getAccount().getDiscordId().equals(currentBoss.getLastFed().getDiscordId()))
-                .findFirst()
-                .orElseThrow(() -> new CookieException("No last feeder."));
-        final double multiplier = worldBossMap.get(currentBoss.getType()).getMultiplier();
 
-        lootboxTokenService.addLootboxToken(hasCookie.getAccount().getDiscordId(), (int)Math.ceil(hasCookie.getCookiesFed() * multiplier));
+        if (currentBoss.getLastFed() != null) {
+            WorldBossHasCookie hasCookie = worldBossHasCookieRepository.findByWorldBossId(currentBoss.getId())
+                    .stream().filter(hc -> hc.getAccount().getDiscordId().equals(currentBoss.getLastFed().getDiscordId()))
+                    .findFirst()
+                    .orElseThrow(() -> new CookieException("No last feeder."));
+            final double multiplier = worldBossMap.get(currentBoss.getType()).getMultiplier();
+            lootboxTokenService.addLootboxToken(hasCookie.getAccount().getDiscordId(), (int) Math.ceil(hasCookie.getCookiesFed() * multiplier));
+        }
 
         killAllWorldBosses();
         botUtil.sendMessage("@here ```World Boss leaves... dissatisfied...but leaves behind a treat for the last feeder.```");
