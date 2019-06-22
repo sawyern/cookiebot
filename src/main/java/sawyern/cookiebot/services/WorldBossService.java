@@ -98,6 +98,10 @@ public class WorldBossService {
 
     public void feedCookie(WorldBoss boss, String discordId) throws CookieException {
         try {
+            if (worldBossMap.get(boss.getType()).getCookieCost() > cookieService.getAllCookiesForAccount(discordId)) {
+                throw new CookieException("Not enough cookies to feed world boss");
+            }
+
             for (int i = 0; i < worldBossMap.get(boss.getType()).getCookieCost(); i++) {
                 cookieService.removeCookieOfType(discordId, CookieType.NORMAL);
             }

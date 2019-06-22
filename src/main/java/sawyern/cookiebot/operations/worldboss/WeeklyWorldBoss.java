@@ -12,7 +12,7 @@ public class WeeklyWorldBoss implements GenericWorldBoss {
 
     @Override
     public int getCookieCost() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -22,6 +22,6 @@ public class WeeklyWorldBoss implements GenericWorldBoss {
 
     @Override
     public double getExplosionProbability() {
-        return 15d;
+        return 20d;
     }
 }

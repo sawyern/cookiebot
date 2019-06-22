@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "WORLD_BOSS")
@@ -22,10 +21,6 @@ public class WorldBoss extends DbItem {
 
     @Column(name = "TYPE")
     String type;
-
-    @OneToMany
-    @JoinColumn(name = "HAS_COOKIES")
-    List<WorldBossHasCookie> hasCookies;
 
     @OneToOne
     @JoinColumn(name = "ACCOUNT_ID")

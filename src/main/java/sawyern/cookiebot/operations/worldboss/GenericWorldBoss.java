@@ -3,7 +3,6 @@ package sawyern.cookiebot.operations.worldboss;
 import sawyern.cookiebot.models.entity.WorldBoss;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public interface GenericWorldBoss {
 
@@ -11,7 +10,6 @@ public interface GenericWorldBoss {
         return WorldBoss.builder()
                 .isDead(false)
                 .spawnTime(LocalDateTime.now())
-                .hasCookies(new ArrayList<>())
                 .type(getType())
                 .build();
     }

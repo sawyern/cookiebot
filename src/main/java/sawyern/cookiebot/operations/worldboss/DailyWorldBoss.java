@@ -12,7 +12,7 @@ public class DailyWorldBoss implements GenericWorldBoss {
 
     @Override
     public int getCookieCost() {
-        return 2;
+        return 1;
     }
 
     @Override
