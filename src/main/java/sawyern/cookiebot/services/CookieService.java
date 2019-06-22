@@ -47,7 +47,7 @@ public class CookieService {
                 .collect(Collectors.toList());
 
         if (cookies.isEmpty())
-            return;
+            throw new CookieException("No cookies to remove.");
 
         try {
             cookieRepository.delete(cookies.stream().findFirst().orElseThrow(() -> new CookieException("Cookie not found")));
