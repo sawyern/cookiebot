@@ -5,39 +5,24 @@ import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.Message;
 import discord4j.core.object.entity.User;
 import discord4j.core.object.reaction.ReactionEmoji;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import sawyern.cookiebot.constants.CommandConstants;
+import sawyern.cookiebot.exception.CookieException;
 import sawyern.cookiebot.models.dto.GiveCookieDto;
 import sawyern.cookiebot.models.entity.Account;
-import sawyern.cookiebot.exception.CookieException;
-import sawyern.cookiebot.services.CookieService;
 
-import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 @Slf4j
-public class GroupRollCommand extends MessageCreateEventBotCommand {
-
-    protected CookieService cookieService;
-
-    protected int countdown;
-
-    protected static int min = 1;
-    protected static int max = 100;
-
-    @Override
-    public String getCommand() {
-        return "grouproll";
-    }
-
-    @Override
-    public Set<Integer> getAllowedNumArgs() {
-        return Sets.newHashSet(1);
-    }
+@RequiredArgsConstructor
+public class DiffRollCommand extends GroupRollCommand {
 
     @Override
     public void execute(MessageCreateEvent event, List<String> args) throws CookieException {
@@ -60,7 +45,7 @@ public class GroupRollCommand extends MessageCreateEventBotCommand {
         reactions.toStream().forEach(user -> {
             if (user.getId().asString().equalsIgnoreCase(selfId))
                 return;
-            int roll = RollDieCommand.roll(min, max);
+            int roll = RollDieCommand.roll(min, bet);
             builder.append(user.getUsername()).append(" rolls: ").append(roll).append("\n");
             userRollMap.put(new Account(user.getId().asString(), user.getUsername()), roll);
         });
@@ -69,6 +54,7 @@ public class GroupRollCommand extends MessageCreateEventBotCommand {
             throw new CookieException("No players want to play.");
 
         Map.Entry<Account, Integer> winner = null;
+        Map.Entry<Account, Integer> loser = null;
 
         for (Map.Entry<Account, Integer> entry : userRollMap.entrySet()) {
             if (cookieService.getAllCookiesForAccount(entry.getKey().getDiscordId()) < bet) {
@@ -79,48 +65,44 @@ public class GroupRollCommand extends MessageCreateEventBotCommand {
             if (winner == null || entry.getValue().compareTo(winner.getValue()) > 0) {
                 winner = entry;
             }
+
+            if (loser == null || entry.getValue().compareTo(loser.getValue()) < 0) {
+                loser = entry;
+            }
         }
 
-        if (winner == null)
+        if (winner == null || loser.getKey().getDiscordId().equals(winner.getKey().getDiscordId()))
             throw new CookieException("No eligible winners. Cancelling bet.");
+
+        if (winner.getValue().equals(loser.getValue()))
+            throw new CookieException("Tie. No winners. Cancelling bet.");
 
         builder.append("```");
 
-        for (Account account : userRollMap.keySet()) {
-            if (cookieService.getAllCookiesForAccount(account.getDiscordId()) < bet)
-                continue;
-            cookieService.giveCookieTo(
-                    GiveCookieDto.builder()
-                    .senderId(account.getDiscordId())
-                    .recieverId(winner.getKey().getDiscordId())
-                    .numCookies(bet)
-                    .build()
-            );
-        }
+        cookieService.giveCookieTo(
+                GiveCookieDto.builder()
+                        .senderId(loser.getKey().getDiscordId())
+                        .recieverId(winner.getKey().getDiscordId())
+                        .numCookies(winner.getValue() - loser.getValue())
+                        .build());
+
         getBotUtil().sendMessage(event, builder.toString());
         getBotUtil().sendMessage(event,"Winner <@" + winner.getKey().getDiscordId() + ">!");
+
     }
 
-    protected void startCountdownEditMessage(Message message, int bet) throws CookieException {
-        try {
-            while (countdown > 0) {
-                TimeUnit.SECONDS.sleep(1);
-                final String messageContent = getMessageContent(bet);
-                message.edit(m ->  m.setContent(messageContent)).block();
-                countdown--;
-            }
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new CookieException("Thread interrupted.");
-        }
-    }
-
+    @Override
     public String getMessageContent(int bet) {
-        return "-- GROUP ROLL -- Highest roll wins " + bet + " cookies from all rolls lower. " + "React " + CommandConstants.DICE + " to join. Betting " + bet + " cookies. Starting in " + this.countdown;
+        return "-- DIFF ROLL -- Lowest roll pays highest roll the difference of their rolls. Ties are cancelled. Other participants lose or win nothing. React " + CommandConstants.DICE + " to join. Starting in " + this.countdown;
     }
 
-    @Autowired
-    public void setCookieService(CookieService cookieService) {
-        this.cookieService = cookieService;
+    @Override
+    public String getCommand() {
+        return "diffroll";
+    }
+
+    @Override
+    public Set<Integer> getAllowedNumArgs() {
+        return Sets.newHashSet(1);
     }
 }
