@@ -65,7 +65,7 @@ public class GroupRollCommand extends MessageCreateEventBotCommand {
             userRollMap.put(new Account(user.getId().asString(), user.getUsername()), roll);
         });
 
-        if (userRollMap.isEmpty())
+        if (userRollMap.isEmpty() || userRollMap.size() == 1)
             throw new CookieException("No players want to play.");
 
         Map.Entry<Account, Integer> winner = null;
