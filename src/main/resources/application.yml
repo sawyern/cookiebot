@@ -9,8 +9,7 @@ spring:
           lob:
             non_contextual_creation: true
 app:
-  version: 1.1
-
+  version: 2.0
 ---
 server:
   port: ${PORT}
@@ -25,8 +24,13 @@ spring:
     hibernate:
       ddl-auto: update
 discord:
-  token: $(PROD_DISCORD_TOKEN)
+  token: ${PROD_DISCORD_TOKEN}
   bot-channel-id: 544942649036242964
+okta:
+  oauth2:
+    issuer: ${OAUTH_ISSUER}
+    client-id: ${OAUTH_CLIENT_ID}
+    client-secret: ${OAUTH_CLIENT_SECRET}
 
 ---
 server:
@@ -42,23 +46,11 @@ spring:
     hibernate:
       ddl-auto: update
 discord:
-  token: $(DEV_DISCORD_TOKEN)
+  token: ${DEV_DISCORD_TOKEN}
   bot-channel-id: 589975110090489907
+okta:
+  oauth2:
+    issuer: ${OAUTH_ISSUER}
+    client-id: ${OAUTH_CLIENT_ID}
+    client-secret: ${OAUTH_CLIENT_SECRET}
 
----
-server:
-  port: 8952
-
-spring:
-  profiles: local
-  datasource:
-    url: jdbc:postgresql://localhost:5432/CookieBot
-    username: postgres
-    password: 2DoRblt2
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create
-discord:
-  token: NTYyNzgxMDM0OTU4MjkwOTQ0.XKTm7A.UUWF_rVYTaMINzgQfKB5nA2uj6k
-  bot-channel-id: 589975110090489907
