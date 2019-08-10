@@ -54,3 +54,25 @@ okta:
     client-id: ${OAUTH_CLIENT_ID}
     client-secret: ${OAUTH_CLIENT_SECRET}
 
+---
+server:
+  port: 8952
+
+spring:
+  profiles: local
+  datasource:
+    url: jdbc:postgresql://localhost:5432/CookieBot
+    username: postgres
+    password: 2DoRblt2
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+discord:
+  token: NTYyNzgxMDM0OTU4MjkwOTQ0.XKTm7A.UUWF_rVYTaMINzgQfKB5nA2uj6k
+  bot-channel-id: 589975110090489907
+okta:
+  oauth2:
+    issuer: https://dev-844845.okta.com/oauth2/default
+    client-id: 0oa120ta3d43FsB17357
+    client-secret: R_z8ODDTeWALVhWbECuH-t11xhZAlcjnCjrNQMQe
