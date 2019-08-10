@@ -24,7 +24,7 @@ spring:
     hibernate:
       ddl-auto: update
 discord:
-  token: $(PROD_DISCORD_TOKEN)
+  token: ${PROD_DISCORD_TOKEN}
   bot-channel-id: 544942649036242964
 okta:
   oauth2:
@@ -46,7 +46,7 @@ spring:
     hibernate:
       ddl-auto: update
 discord:
-  token: $(DEV_DISCORD_TOKEN)
+  token: ${DEV_DISCORD_TOKEN}
   bot-channel-id: 589975110090489907
 okta:
   oauth2:
