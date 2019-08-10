@@ -50,11 +50,11 @@ class CookieService @Autowired constructor(
         return cookieRepository.findByAccountDiscordIdAndSeason(discordId, season).size
     }
 
-    fun generateCookie(discordId: String, numCookies: Int = 1) {
+    fun generateCookie(discordId: String, numCookies: Int = 1, season: Season = seasonService.getCurrentSeason()) {
         val account = accountService.getAccount(discordId)
 
         for(i in 1..numCookies) {
-            val cookie = Cookie(account, seasonService.getCurrentSeason())
+            val cookie = Cookie(account, season)
             cookieRepository.save(cookie)
         }
 

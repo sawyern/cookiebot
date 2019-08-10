@@ -33,29 +33,32 @@ class SeasonService @Autowired constructor(
     fun startNewSeason(seasonName: String) {
         val currentSeason = seasonRepository.findByStatus(Constants.SEASON_ACTIVE)
 
+        // create new season
+        val newSeason = Season(seasonName, Constants.SEASON_ACTIVE)
+        seasonRepository.save(newSeason)
+
         if (currentSeason != null) {
+
             currentSeason.status = Constants.SEASON_INACTIVE
             seasonRepository.save(currentSeason)
 
-            addPrestige()
+            addPrestige(currentSeason, newSeason)
 
             logger.info("Ending season ${currentSeason.name}")
         }
 
-        // create new season
-        val newSeason = Season(seasonName, Constants.SEASON_ACTIVE)
-        seasonRepository.save(newSeason)
         logger.info("Starting season ${newSeason.name}")
     }
 
-    fun addPrestige() {
+    fun addPrestige(oldSeason: Season, newSeason: Season) {
         val accounts = accountService.findAll()
         val accountMap = HashMap<String, Int>()
 
         logger.info("Calculating prestige earned from previous season...")
 
         for (account in accounts) {
-            val cookies = cookieService.getCookiesForAccount(account.discordId)
+            val cookies = cookieService.getCookiesForAccount(account.discordId, oldSeason)
+            cookieService.generateCookie(account.discordId, Constants.Cookie.STARTING_COOKIES, newSeason)
             accountMap[account.discordId] = cookies
         }
 
