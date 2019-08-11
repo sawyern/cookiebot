@@ -6,10 +6,15 @@ import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
 @RestController
-@RequestMapping("/api/cookiebot/v1")
+@RequestMapping("/test")
 class TestController {
-    @GetMapping("/test")
+    @GetMapping("/secure/ping")
     fun hello(principal: Principal): String {
         return "hello ${principal.name}"
+    }
+
+    @GetMapping("/ping")
+    fun hello(): String {
+        return "hello anonymous!"
     }
 }
