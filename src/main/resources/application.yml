@@ -31,6 +31,7 @@ okta:
     issuer: ${OAUTH_ISSUER}
     client-id: ${OAUTH_CLIENT_ID}
     client-secret: ${OAUTH_CLIENT_SECRET}
+    roles-claim: groups
 
 ---
 server:
@@ -53,4 +54,5 @@ okta:
     issuer: ${OAUTH_ISSUER}
     client-id: ${OAUTH_CLIENT_ID}
     client-secret: ${OAUTH_CLIENT_SECRET}
+    roles-claim: groups
 
