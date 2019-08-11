@@ -8,8 +8,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 class OktaOAuth2WebSecurityConfigurerAdapter: WebSecurityConfigurerAdapter() {
     override fun configure(web: WebSecurity?) {
         http
-            .authorizeRequests().anyRequest().authenticated()
-            .and()
-            .oauth2ResourceServer().jwt();
+                .authorizeRequests()
+                .antMatchers("/api/**").authenticated()
+                .and()
+                .oauth2ResourceServer().jwt()
     }
 }
