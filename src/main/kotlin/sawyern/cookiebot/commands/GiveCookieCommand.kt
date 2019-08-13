@@ -35,7 +35,7 @@ class GiveCookieCommand @Autowired constructor(
             throw CookieException("Can't give cookies to yourself.")
 
         if (args.size == 2)
-            numCookies = botUtilService.parseIntArgument(args[0], true)
+            numCookies = botUtilService.parseIntArgument(args[1], true)
 
         cookieService.giveCookieTo(senderUser.id.asString(), receiverId, numCookies)
 
