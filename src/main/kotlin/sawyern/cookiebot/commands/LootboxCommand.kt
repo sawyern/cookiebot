@@ -45,6 +45,7 @@ class LootboxCommand(
 
 
         for (i in 1..numBoxes) {
+            numCookiesWon = 0
             if (roll() <= odds)
                 titanForging = false
 
