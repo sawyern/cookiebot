@@ -54,7 +54,6 @@ class LootboxCommand(
             }
 
             lootboxTokenService.deleteLootbox(id)
-            botUtilService.sendMessage(event, "Spending token. Remaining tokens: ${lootboxTokenService.getLootboxesForAccount(id)}")
             cookieService.generateCookie(id, numCookiesWon)
             builder.append("You open the lootbox!\nContains...$numCookiesWon cookies!\n")
 
