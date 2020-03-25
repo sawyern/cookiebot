@@ -56,8 +56,8 @@ class LootboxCommand(
             lootboxTokenService.deleteLootbox(id)
             cookieService.generateCookie(id, numCookiesWon)
             builder.append("You open the lootbox!\nContains...$numCookiesWon cookies!\n")
-
         }
+
         val newTotal = cookieService.getCookiesForAccount(id)
         builder.append("${botUtilService.getMember(event).username} cookies: $newTotal tokens: ${currentLootboxes - numBoxes}")
         builder.append("```")
