@@ -46,8 +46,7 @@ class LootboxCommand(
 
         for (i in 1..numBoxes) {
             numCookiesWon = 0
-            if (roll() <= odds)
-                titanForging = false
+            titanForging = roll() <= odds
 
             while (titanForging) {
                 titanForging = roll() <= 50
@@ -55,11 +54,10 @@ class LootboxCommand(
             }
 
             lootboxTokenService.deleteLootbox(id)
-            botUtilService.sendMessage(event, "Spending token. Remaining tokens: ${lootboxTokenService.getLootboxesForAccount(id)}")
             cookieService.generateCookie(id, numCookiesWon)
             builder.append("You open the lootbox!\nContains...$numCookiesWon cookies!\n")
-
         }
+
         val newTotal = cookieService.getCookiesForAccount(id)
         builder.append("${botUtilService.getMember(event).username} cookies: $newTotal tokens: ${currentLootboxes - numBoxes}")
         builder.append("```")
