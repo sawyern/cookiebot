@@ -12,7 +12,8 @@ script:
 #  - mvn clean -DskipTests package
 deploy:
   provider: heroku
-  api_key: $HEROKU_TOKEN
+  api_key:
+    secure: $HEROKU_TOKEN
   app:
     master: cookiebot-discord-heroku
     dev: cookiebot-discord-dev
