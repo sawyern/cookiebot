@@ -13,7 +13,7 @@ script:
 deploy:
   provider: heroku
   api_key:
-    secure: GmOgWylNnpn5GtHGohdyWyWSpQsNvKS3lA3xKGmE5gVD+P5U05SgcUSw+xRjA7UzU5QLi56pXiRUyQztd5flM8VZiPiZMTkz/Ip0MHywjCKaSp8731niSq4eBZ76u/6bE0dL3c851xlKVHtfXDi76oNExKKa0pCMqZJ6KimHlxI/aUDc9L5rWz9PKy38wj9Xwezejdqf9dS4qC73ItWDUGztK3+biuO/wT6h61ygh2QYjw+jmkj3WavG+51FszNDKYjnih2tz3v5unTo1rIqaGoOUffIKeDdLya34a/WkfxGq/56LX3MoHa3Z3QZr+BOWIw6XzGaLL566/IFnVLA+6WZzXfiqHjMSIiu46BamA9kjIZTwDV6fYcWyAWFrsTYo7blMxIAz4rFvgzjYEXQTHXPEAmRFtfszn96FSfwMfVE+CAnJoEVJfvL2RmqH5CLxoXXLVUVBFUOQIMTyX/txv1Y3QxSypUk7GyAOael9UHX3z6R1iuhlm8aZ/53nx1Boj+9/cpSVOtDc4mWEwUkBJTSGG4kxhNdr/3EonRWupOfcvqyrznlQdz7wXQJClj8XTU9S/LCrKuN2oZccbI6GGvNDk5tipmG3eXovYjwdNb7rM1eSC+Mh3ikP3rD+Rs5JlajPJ7JM2NV+lyaOftcRJF5Dq6252LYB3W+LvqJmZ8=
+    secure: $HEROKU_TOKEN
   app:
     master: cookiebot-discord-heroku
     dev: cookiebot-discord-dev
