@@ -1,6 +1,6 @@
 package sawyern.cookiebot.commands
 
-import discord4j.core.DiscordClient
+import discord4j.core.GatewayDiscordClient
 import discord4j.core.event.domain.message.MessageCreateEvent
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -21,9 +21,9 @@ abstract class MessageCreateEventBotCommand  @Autowired constructor(
 
     private val logger: Logger = LoggerFactory.getLogger(MessageCreateEventBotCommand::class.java)
     
-    override fun subscribe(client: DiscordClient) {
-        client.eventDispatcher.on(MessageCreateEvent::class.java).subscribe {
-            event -> this.executeCommand(event)
+    override fun subscribe(client: GatewayDiscordClient) {
+        client.eventDispatcher.on(MessageCreateEvent::class.java).subscribe { event ->
+            this.executeCommand(event)
         }
     }
 
@@ -34,7 +34,7 @@ abstract class MessageCreateEventBotCommand  @Autowired constructor(
     internal fun executeCommand(event: MessageCreateEvent) {
         try {
             // get text content from message, ignore non-text messages
-            val content = event.message.content.orElseThrow { DiscordException("Error getting message content") }
+            val content = event.message.content
 
             // only process messages that start with "!", optimization
             if (!content.startsWith(CommandConstants.COMMAND_START))

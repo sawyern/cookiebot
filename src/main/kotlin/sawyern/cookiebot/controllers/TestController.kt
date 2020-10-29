@@ -1,26 +1,23 @@
 package sawyern.cookiebot.controllers
 
-import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import java.security.Principal
-import org.springframework.security.core.context.SecurityContextHolder
-import kotlin.math.log
+import org.springframework.security.oauth2.core.oidc.user.OidcUser
 
 
 @RestController
 @RequestMapping("/test")
 class TestController {
     @GetMapping("/secure/ping")
-    fun hello(principal: Principal): String {
-        return "hello ${principal.name}"
+    fun hello(@AuthenticationPrincipal user: OidcUser): String {
+        return "hello ${user.name}"
     }
 
     @GetMapping("/nonsecure/ping")
-    fun hello2(principal: Principal): String {
-        print(SecurityContextHolder.getContext().authentication)
-        return "hello ${principal.name}"
+    fun hello2(@AuthenticationPrincipal user: OidcUser): String {
+        return "hello ${user.name}"
     }
 
     @GetMapping("/ping")

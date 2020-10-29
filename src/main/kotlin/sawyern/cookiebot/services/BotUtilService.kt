@@ -50,7 +50,7 @@ class BotUtilService @Autowired constructor(@Lazy private val discordService: Di
     }
 
     fun getSelfId(event: MessageCreateEvent): String {
-        return event.client.selfId.orElseThrow { CookieException("Error getting commands id") }.asString()
+        return event.client.selfId.asString()
     }
 
     fun parseIntArgument(arg: String, isPositive: Boolean): Int {

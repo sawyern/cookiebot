@@ -21,9 +21,12 @@ class CookieBotDiscordClient @Autowired constructor(
     @EventListener(ApplicationReadyEvent::class)
     fun startDiscordClient() {
         addTestData()
-        discordService.subscribeReady()
-        discordService.subscribeAllCommands()
-        discordService.login()
+        val gateway = discordService.login()
+        if (gateway != null) {
+            discordService.subscribeReady(gateway)
+            discordService.subscribeAllCommands(gateway)
+            gateway.onDisconnect().block()
+        }
     }
 
     fun addTestData() {
