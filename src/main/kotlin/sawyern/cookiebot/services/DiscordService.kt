@@ -3,8 +3,8 @@ package sawyern.cookiebot.services
 import discord4j.common.util.Snowflake
 import discord4j.core.DiscordClient
 import discord4j.core.GatewayDiscordClient
-import discord4j.core.`object`.entity.channel.MessageChannel
 import discord4j.core.event.domain.lifecycle.ReadyEvent
+import discord4j.rest.entity.RestChannel
 import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -33,10 +33,8 @@ constructor(
 
     internal fun login() : GatewayDiscordClient? { return discordClient.login().block() }
 
-    internal fun getBotChannel(): MessageChannel {
-        return discordClient
-                .getChannelById(Snowflake.of(discordClientProperties.botChannelId))
-                as MessageChannel
+    internal fun getBotChannel(): RestChannel {
+        return discordClient.getChannelById(Snowflake.of(discordClientProperties.botChannelId))
     }
 }
 

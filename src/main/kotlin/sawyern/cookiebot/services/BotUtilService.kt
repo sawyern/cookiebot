@@ -3,6 +3,7 @@ package sawyern.cookiebot.services
 import discord4j.core.`object`.entity.Member
 import discord4j.core.`object`.entity.Message
 import discord4j.core.event.domain.message.MessageCreateEvent
+import discord4j.discordjson.json.MessageData
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +21,7 @@ import java.util.regex.Pattern
 class BotUtilService @Autowired constructor(@Lazy private val discordService: DiscordService) {
     private val logger: Logger = LoggerFactory.getLogger(BotUtilService::class.java)
 
-    fun sendMessage(message: String): Message? {
+    fun sendMessage(message: String): MessageData? {
         logger.info("Sending message: \"$message\"")
         return discordService.getBotChannel().createMessage(message).block()
     }
