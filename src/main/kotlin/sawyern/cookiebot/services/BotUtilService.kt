@@ -18,7 +18,10 @@ import java.util.ArrayList
 import java.util.regex.Pattern
 
 @Service
-class BotUtilService @Autowired constructor(@Lazy private val discordService: DiscordService) {
+class BotUtilService @Autowired constructor(
+        @Lazy private val discordService: DiscordService,
+        @Lazy private val accountService: AccountService
+) {
     private val logger: Logger = LoggerFactory.getLogger(BotUtilService::class.java)
 
     fun sendMessage(message: String): MessageData? {
@@ -27,7 +30,7 @@ class BotUtilService @Autowired constructor(@Lazy private val discordService: Di
     }
 
     fun sendMessage(event: MessageCreateEvent, message: String): Message? {
-        var messageObj: Message?
+        val messageObj: Message?
         try {
             messageObj = event.message.channel.block()!!.createMessage(message).block()
             logger.info("Sending message: $message")
@@ -39,11 +42,7 @@ class BotUtilService @Autowired constructor(@Lazy private val discordService: Di
     }
 
     fun getIdFromUser(event: MessageCreateEvent, username: String): String {
-        val user = event.client.users
-                .toStream()
-                .filter { u -> u.username.equals(username, ignoreCase = true) }
-                .findFirst().orElseThrow { CookieException("Error getting user $username") }
-        return user.id.asString()
+        return accountService.getAccountByName(username).discordId
     }
 
     fun getMember(event: MessageCreateEvent): Member {

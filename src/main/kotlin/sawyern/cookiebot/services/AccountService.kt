@@ -28,6 +28,10 @@ class AccountService @Autowired constructor(private val accountRepository: Accou
         return accountRepository.findByDiscordId(discordId) ?: throw CookieException("Unable to find account with id $discordId")
     }
 
+    fun getAccountByName(name: String): Account {
+        return accountRepository.findByUsernameIgnoreCase(name) ?: throw CookieException("Unable to find account with name $name")
+    }
+
     fun deleteAccount(discordId: String) {
         val account = accountRepository.findByDiscordId(discordId) ?: throw CookieException("Account does not exist therefore cannot be deleted")
         accountRepository.delete(account)

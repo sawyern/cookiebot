@@ -7,4 +7,5 @@ import sawyern.cookiebot.models.Account
 @Repository
 interface AccountRepository: JpaRepository<Account, String> {
     fun findByDiscordId(discordId: String): Account?
+    fun findByUsernameIgnoreCase(name: String): Account?
 }
